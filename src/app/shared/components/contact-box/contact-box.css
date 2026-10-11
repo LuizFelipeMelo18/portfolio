@@ -3,15 +3,19 @@
   --text: #abb2bf;
   --text-active: #fff;
   --accent: #61afef;
-  display: inline-block;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   font-family: 'Fira Code', ui-monospace, 'Cascadia Code', Consolas, monospace;
 }
 
 .contact-box {
   display: flex;
   flex-direction: column;
-  gap: 2.75rem;
-  padding: 1.35rem 1.65rem;
+  gap: 1.75rem;
+  padding: 1.25rem 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
   border: 1px solid var(--text);
   background: var(--bg);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -34,9 +38,10 @@
   align-items: center;
   gap: 0.75rem;
   color: var(--text);
-  font-size: 1.05rem;
+  font-size: 1rem;
   text-decoration: none;
   word-break: break-all;
+  overflow-wrap: anywhere;
   transition: color 0.2s ease;
 }
 
@@ -64,4 +69,19 @@
 .contact-box__email:focus-visible {
   outline: 1px dashed var(--accent);
   outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .contact-box {
+    padding: 1rem 1rem;
+    gap: 1.25rem;
+  }
+
+  .contact-box__title {
+    font-size: 1.05rem;
+  }
+
+  .contact-box__email {
+    font-size: 0.95rem;
+  }
 }

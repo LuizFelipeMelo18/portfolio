@@ -48,4 +48,12 @@ describe('Contacts', () => {
     );
     expect(compiled.textContent).toContain('Fale comigo aqui');
   });
+
+  it('should render the sidebar and the contact box components', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('app-social-sidebar')).toBeTruthy();
+    expect(compiled.querySelector('app-contact-box')).toBeTruthy();
+  });
 });
+

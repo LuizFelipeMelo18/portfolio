@@ -1,11 +1,15 @@
 :host {
   display: block;
   width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .footer {
   width: 100%;
+  box-sizing: border-box;
   padding-bottom: 2rem;
+  overflow-x: hidden;
 }
 
 .footer__divider {
@@ -21,6 +25,7 @@
   justify-content: center;
   padding: 1.5rem 1rem 0;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .footer__role {
