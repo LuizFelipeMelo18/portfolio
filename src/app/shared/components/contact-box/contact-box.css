@@ -1,0 +1,66 @@
+:host {
+  --bg: #282c33;
+  --text: #abb2bf;
+  --text-active: #fff;
+  --accent: #61afef;
+  display: inline-block;
+  font-family: 'Fira Code', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+.contact-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding: 1rem;
+  border: 1px solid var(--text);
+  background: var(--bg);
+  transition: border-color 0.2s ease;
+}
+
+.contact-box:hover {
+  border-color: var(--accent);
+}
+
+.contact-box__title {
+  margin: 0;
+  color: var(--text-active);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.contact-box__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+  font-size: 1rem;
+  text-decoration: none;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.contact-box__icon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.125rem;
+  fill: var(--text);
+  stroke: var(--bg);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition: fill 0.2s ease;
+}
+
+.contact-box__email:hover,
+.contact-box__email:focus-visible {
+  color: var(--accent);
+}
+
+.contact-box__email:hover .contact-box__icon,
+.contact-box__email:focus-visible .contact-box__icon {
+  fill: var(--accent);
+}
+
+.contact-box__email:focus-visible {
+  outline: 1px dashed var(--accent);
+  outline-offset: 3px;
+}
