@@ -1,6 +1,6 @@
 :host {
-  display: block;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg, #282c33);
   color: var(--text, #abb2bf);
   font-family: var(--font-mono, 'Fira Code', monospace);
@@ -9,7 +9,7 @@
 .contacts-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  flex: 1 0 auto;
   justify-content: space-between;
   position: relative;
   overflow-x: hidden;

@@ -1,5 +1,6 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg, #282c33);
   color: var(--text, #abb2bf);
   font-family: var(--font-mono, 'Fira Code', monospace);
@@ -9,6 +10,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
+  justify-content: space-between;
   overflow-x: hidden;
 }
 
@@ -69,6 +72,7 @@
 .about-page__body {
   position: relative;
   z-index: 1;
+  flex: 1 0 auto;
   width: 100%;
   max-width: 1360px;
   margin: 0 auto;

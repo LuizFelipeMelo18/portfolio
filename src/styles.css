@@ -21,3 +21,20 @@ body {
   font-family: var(--font-mono);
   -webkit-font-smoothing: antialiased;
 }
+
+/* App shell: navbar no topo + página roteada ocupando exatamente o espaço restante */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+app-root > app-header {
+  flex: 0 0 auto;
+}
+
+app-root > router-outlet + * {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
