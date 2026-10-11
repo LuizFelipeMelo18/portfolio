@@ -52,6 +52,16 @@ export const EN: Translations = {
   contactBox: {
     title: 'Message me here',
   },
+  home: {
+    hero: {
+      subtitle: 'I build scalable solutions, taking ideas off paper and putting them into practice through code',
+      contactBtn: 'Contact me!!',
+    },
+    projects: {
+      title: 'projects',
+      viewAll: 'View all ~~>',
+    },
+  },
   footer: {
     role: 'Full Stack Developer',
   },

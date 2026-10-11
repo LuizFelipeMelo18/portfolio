@@ -55,6 +55,16 @@ export interface Translations {
   readonly contactBox: {
     readonly title: string;
   };
+  readonly home: {
+    readonly hero: {
+      readonly subtitle: string;
+      readonly contactBtn: string;
+    };
+    readonly projects: {
+      readonly title: string;
+      readonly viewAll: string;
+    };
+  };
   readonly footer: {
     readonly role: string;
   };

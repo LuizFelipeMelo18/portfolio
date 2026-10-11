@@ -1,1 +1,101 @@
-<p>home works!</p>
+<div class="home-page">
+
+  <!-- Decorações de fundo da página (como na referência) -->
+  <div class="decor decor--dots decor--dots-a" aria-hidden="true"></div>
+  <div class="decor decor--dots decor--dots-b" aria-hidden="true"></div>
+  <div class="decor decor--frame-right" aria-hidden="true"></div>
+
+  <div class="home-page__body">
+    <!-- 2. Hero Section - Lado esquerdo: barra vertical com ícones do GitHub e LinkedIn -->
+    <app-social-sidebar class="home-page__sidebar" />
+
+    <main class="home-page__main">
+      <!-- 2. Hero Section - Centro e Lado Direito -->
+      <section class="hero" aria-label="Hero section">
+        <div class="hero__content">
+          <h1 class="hero__title">
+            Luiz is a <span class="hero__highlight">Full Stack Developer</span>
+          </h1>
+
+          <p class="hero__subtitle">
+            {{ t().home.hero.subtitle }}
+          </p>
+
+          <a
+            class="hero__button"
+            routerLink="/contacts"
+            id="hero-contact-button"
+            aria-label="Contact me"
+          >
+            {{ t().home.hero.contactBtn }}
+          </a>
+        </div>
+
+        <!-- Lado direito da Hero Section inspirado no layout de referência -->
+        <div class="hero__visual" aria-hidden="true">
+          <div class="hero__decor-dots hero__decor-dots--top"></div>
+
+          <div class="hero__logo-card">
+            <svg class="hero__art-svg" viewBox="0 0 160 160" fill="none">
+              <rect x="25" y="25" width="105" height="105" stroke="var(--accent)" stroke-width="2" />
+              <rect
+                x="15"
+                y="40"
+                width="105"
+                height="105"
+                stroke="#abb2bf"
+                stroke-width="1.5"
+                stroke-dasharray="5 5"
+                opacity="0.6"
+              />
+              <path
+                d="M48 80L70 102L112 55"
+                stroke="var(--accent)"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+
+          <div class="hero__decor-dots hero__decor-dots--bottom"></div>
+        </div>
+      </section>
+
+      <!-- 3. Projects Section & 4. Listagem de Projetos -->
+      <section class="projects" aria-labelledby="projects-title">
+        <header class="projects__header">
+          <div class="projects__title-group">
+            <h2 id="projects-title" class="projects__title">
+              <span class="accent" aria-hidden="true">#</span>{{ t().home.projects.title }}
+            </h2>
+            <div class="projects__line" aria-hidden="true"></div>
+          </div>
+
+          <a
+            class="projects__view-all"
+            routerLink="/works"
+            id="view-all-projects-link"
+            aria-label="View all projects"
+          >
+            View all <span class="arrow" aria-hidden="true">~~&gt;</span>
+          </a>
+        </header>
+
+        <!-- 4. Listagem de Projetos com ProjectCardComponent -->
+        <div class="projects__grid">
+          @for (project of projects(); track project.githubLink) {
+            <app-project-card
+              [title]="project.title"
+              [technologies]="project.technologies"
+              [description]="project.description"
+              [githubLink]="project.githubLink"
+            />
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

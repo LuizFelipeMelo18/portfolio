@@ -11,6 +11,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/works/works').then((m) => m.Works),
   },
   {
+    path: 'projects',
+    redirectTo: 'works',
+    pathMatch: 'full',
+  },
+  {
     path: 'about-me',
     loadComponent: () => import('./features/about-me/about-me').then((m) => m.AboutMe),
   },

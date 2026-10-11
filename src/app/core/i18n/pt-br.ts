@@ -52,6 +52,16 @@ export const PT_BR: Translations = {
   contactBox: {
     title: 'Fale comigo aqui',
   },
+  home: {
+    hero: {
+      subtitle: 'Construo soluções escaláveis, tirando ideias do papel e colocando em prática através do código',
+      contactBtn: 'Contact me!!',
+    },
+    projects: {
+      title: 'projetos',
+      viewAll: 'Ver todos ~~>',
+    },
+  },
   footer: {
     role: 'Desenvolvedor Full Stack',
   },
