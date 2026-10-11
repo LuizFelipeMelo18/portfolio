@@ -1,9 +1,12 @@
 :host {
   display: block;
+  width: 100%;
+  box-sizing: border-box;
   font-family: var(--font-mono, 'Fira Code', monospace);
 }
 
 .skills-box {
+  width: 100%;
   box-sizing: border-box;
   border: 1px solid var(--text, #abb2bf);
   background-color: var(--bg, #282c33);
