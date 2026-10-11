@@ -61,6 +61,22 @@ export const PT_BR: Translations = {
       title: 'projetos',
       viewAll: 'Ver todos ~~>',
     },
+    skills: {
+      title: 'habilidades',
+    },
+    aboutMe: {
+      title: 'sobre-mim',
+      greeting: 'Olá, eu sou o Luiz Felipe!',
+      paragraphs: [
+        'Sou desenvolvedor Full Stack com quase 2 anos de experiência desenvolvendo soluções em software.',
+        'Gosto de transformar curiosidade e conhecimento em soluções práticas, sempre buscando aprender novas tecnologias e construir aplicações limpas e escaláveis.',
+      ],
+      readMore: 'Saiba mais ->',
+    },
+    contacts: {
+      title: 'contatos',
+      text: 'Estou sempre aberto a networking. Se você tiver alguma dúvida, quiser se conectar ou apenas dar um oi, não hesite em entrar em contato comigo.',
+    },
   },
   footer: {
     role: 'Desenvolvedor Full Stack',

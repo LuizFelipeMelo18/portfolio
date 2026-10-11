@@ -61,6 +61,22 @@ export const EN: Translations = {
       title: 'projects',
       viewAll: 'View all ~~>',
     },
+    skills: {
+      title: 'skills',
+    },
+    aboutMe: {
+      title: 'about-me',
+      greeting: "Hello, i'm Luiz Felipe!",
+      paragraphs: [
+        "I'm a Full Stack Developer with nearly 2 years of experience developing software solutions.",
+        'I enjoy turning curiosity and knowledge into practical solutions, continuously learning new technologies and building clean, scalable applications.',
+      ],
+      readMore: 'Read more ->',
+    },
+    contacts: {
+      title: 'contacts',
+      text: "I am always open to networking. If you have any questions, want to connect, or just want to say hi, please don't hesitate to contact me.",
+    },
   },
   footer: {
     role: 'Full Stack Developer',

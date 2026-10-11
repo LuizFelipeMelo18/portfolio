@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Footer } from '../../core/layout/footer/footer';
 import { SocialSidebar } from '../../core/layout/social-sidebar/social-sidebar';
 import { TranslationService } from '../../core/services/translation.service';
 import { ProjectCard } from '../../shared/components/project-card/project-card';
@@ -13,7 +12,7 @@ interface Project {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ProjectCard, SocialSidebar, Footer],
+  imports: [ProjectCard, SocialSidebar],
   selector: 'app-works',
   styleUrl: './works.css',
   templateUrl: './works.html',

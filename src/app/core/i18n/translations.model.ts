@@ -64,6 +64,19 @@ export interface Translations {
       readonly title: string;
       readonly viewAll: string;
     };
+    readonly skills: {
+      readonly title: string;
+    };
+    readonly aboutMe: {
+      readonly title: string;
+      readonly greeting: string;
+      readonly paragraphs: readonly string[];
+      readonly readMore: string;
+    };
+    readonly contacts: {
+      readonly title: string;
+      readonly text: string;
+    };
   };
   readonly footer: {
     readonly role: string;

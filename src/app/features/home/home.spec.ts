@@ -26,12 +26,6 @@ describe('Home', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render Footer at the bottom', () => {
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('app-footer')).toBeTruthy();
-  });
-
   it('should render the vertical social sidebar on the left', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
@@ -78,5 +72,67 @@ describe('Home', () => {
     expect(titles).toContain('Portfolio');
     expect(titles).toContain('StartingCoding');
     expect(titles).toContain('Movies Lab');
+  });
+
+  it('should render skills section with #skills, 5 skills boxes, and geometric decorations', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const skillsTitle = compiled.querySelector('#skills-title');
+    expect(skillsTitle?.textContent).toContain('#');
+    expect(skillsTitle?.textContent).toContain('skills');
+
+    const skillBoxes = compiled.querySelectorAll('app-skills-box');
+    expect(skillBoxes.length).toBe(5);
+
+    const titles = Array.from(skillBoxes).map(
+      (box) => box.querySelector('.skills-box__title')?.textContent?.trim()
+    );
+    expect(titles).toContain('Languages');
+    expect(titles).toContain('Databases');
+    expect(titles).toContain('Other');
+    expect(titles).toContain('Tools');
+    expect(titles).toContain('Frameworks');
+
+    expect(compiled.querySelector('.skills__decor')).toBeTruthy();
+  });
+
+  it('should render about-me section with #about-me, presentation text, and "Read more ->" button', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const aboutTitle = compiled.querySelector('#about-title');
+    expect(aboutTitle?.textContent).toContain('#');
+    expect(aboutTitle?.textContent).toContain('about-me');
+
+    expect(compiled.querySelector('.about__greeting')?.textContent).toContain("Hello, i'm Luiz Felipe!");
+
+    const readMoreBtn = compiled.querySelector('#about-read-more-button');
+    expect(readMoreBtn).toBeTruthy();
+    expect(readMoreBtn?.getAttribute('routerlink') || readMoreBtn?.getAttribute('href')).toBeTruthy();
+    expect(readMoreBtn?.textContent).toContain('Read more ->');
+  });
+
+  it('should render contacts section with #contacts, networking text, and ContactBoxComponent', () => {
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const contactsTitle = compiled.querySelector('#contacts-title');
+    expect(contactsTitle?.textContent).toContain('#');
+    expect(contactsTitle?.textContent).toContain('contacts');
+
+    expect(compiled.querySelector('.contacts__text')?.textContent).toContain(
+      'I am always open to networking'
+    );
+    expect(compiled.querySelector('app-contact-box')).toBeTruthy();
+  });
+
+  it('should update section titles when changing language to PT-BR', async () => {
+    translationService.setLanguage('PT-BR');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('#skills-title')?.textContent).toContain('habilidades');
+    expect(compiled.querySelector('#about-title')?.textContent).toContain('sobre-mim');
+    expect(compiled.querySelector('#contacts-title')?.textContent).toContain('contatos');
+    expect(compiled.querySelector('#about-read-more-button')?.textContent).toContain('Saiba mais ->');
   });
 });

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SocialSidebar } from '../../core/layout/social-sidebar/social-sidebar';
-import { Footer } from '../../core/layout/footer/footer';
 import { ContactBox } from '../../shared/components/contact-box/contact-box';
 import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SocialSidebar, ContactBox, Footer],
+  imports: [SocialSidebar, ContactBox],
   selector: 'app-contacts',
   styleUrl: './contacts.css',
   templateUrl: './contacts.html',

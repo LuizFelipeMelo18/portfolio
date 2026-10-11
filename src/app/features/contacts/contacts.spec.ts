@@ -35,7 +35,6 @@ describe('Contacts', () => {
       'I am always open to networking'
     );
     expect(compiled.textContent).toContain('Message me here');
-    expect(compiled.textContent).toContain('Full Stack Developer');
 
     translationService.setLanguage('PT-BR');
     fixture.detectChanges();
@@ -48,6 +47,5 @@ describe('Contacts', () => {
       'Estou sempre aberto a networking'
     );
     expect(compiled.textContent).toContain('Fale comigo aqui');
-    expect(compiled.textContent).toContain('Desenvolvedor Full Stack');
   });
 });

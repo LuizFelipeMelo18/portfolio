@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { Footer } from '../../core/layout/footer/footer';
 import { SocialSidebar } from '../../core/layout/social-sidebar/social-sidebar';
 import { TranslationService } from '../../core/services/translation.service';
 import { SkillsBox } from '../../shared/components/skills-box/skills-box';
@@ -11,7 +10,7 @@ interface SkillGroup {
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SkillsBox, SocialSidebar, Footer],
+  imports: [SkillsBox, SocialSidebar],
   selector: 'app-about-me',
   styleUrl: './about-me.css',
   templateUrl: './about-me.html',

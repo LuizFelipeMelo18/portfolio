@@ -38,3 +38,7 @@ app-root > router-outlet + * {
   flex-direction: column;
   flex: 1 0 auto;
 }
+
+app-root > app-footer {
+  flex: 0 0 auto;
+}
