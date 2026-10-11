@@ -1,0 +1,139 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg, #282c33);
+  color: var(--text, #abb2bf);
+  font-family: var(--font-mono, 'Fira Code', monospace);
+}
+
+.contacts-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  justify-content: space-between;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Moldura retangular no canto direito da tela, exatamente como na referência */
+.contacts-page__edge-frame {
+  position: absolute;
+  right: 0;
+  top: 15.5rem;
+  width: 6rem;
+  height: 11rem;
+  border: 1px solid var(--text, #abb2bf);
+  border-right: none;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contacts-page__body {
+  display: flex;
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem 5rem 2rem;
+  box-sizing: border-box;
+}
+
+.contacts-page__sidebar {
+  position: absolute;
+  top: -4.5rem;
+  left: 1.5rem;
+  z-index: 5;
+}
+
+.contacts-page__main {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-left: 6.5rem;
+  margin-top: 3rem;
+  gap: 4rem;
+}
+
+.contacts-page__left {
+  max-width: 580px;
+}
+
+.contacts-page__title {
+  margin: 0 0 1.25rem;
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.contacts-page__slash {
+  color: var(--accent, #61afef);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.contacts-page__subtitle {
+  margin: 0 0 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.contacts-page__text {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--text, #abb2bf);
+}
+
+.contacts-page__right {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-right: 4rem;
+}
+
+@media (max-width: 1024px) {
+  .contacts-page__edge-frame {
+    display: none;
+  }
+
+  .contacts-page__right {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .contacts-page__sidebar {
+    display: none;
+  }
+
+  .contacts-page__main {
+    margin-left: 0;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .contacts-page__body {
+    padding: 1rem;
+  }
+
+  .contacts-page__title {
+    font-size: 2rem;
+  }
+
+  .contacts-page__subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .contacts-page__text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}

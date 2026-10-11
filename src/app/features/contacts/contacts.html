@@ -1,1 +1,36 @@
-<p>contacts works!</p>
+<div class="contacts-page">
+  <!-- 1. Topo: NavbarComponent -->
+  <app-header />
+
+  <!-- Quadrado decorativo no canto direito da tela (referência da imagem) -->
+  <div class="contacts-page__edge-frame" aria-hidden="true"></div>
+
+  <div class="contacts-page__body">
+    <!-- 2. Barra Lateral Esquerda: Linha fina vertical e ícones GitHub / LinkedIn -->
+    <app-social-sidebar class="contacts-page__sidebar" />
+
+    <!-- 3. Conteúdo Principal e 4. ContactBoxComponent à direita -->
+    <main class="contacts-page__main">
+      <div class="contacts-page__left">
+        <h1 class="contacts-page__title">
+          <span class="contacts-page__slash" aria-hidden="true">/</span>contacts
+        </h1>
+
+        <h2 class="contacts-page__subtitle">Who am i?</h2>
+
+        <p class="contacts-page__text">
+          I'm interested in freelance opportunities. However,<br />
+          if you have other request or question, don't<br />
+          hesitate to contact me
+        </p>
+      </div>
+
+      <div class="contacts-page__right">
+        <app-contact-box />
+      </div>
+    </main>
+  </div>
+
+  <!-- 5. Rodapé: Linha divisória, e-mail centralizado e "Full Stack Developer" -->
+  <app-footer />
+</div>

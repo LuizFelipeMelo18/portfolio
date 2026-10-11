@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global design tokens and base styles */
+:root {
+  --bg: #282c33;
+  --text: #abb2bf;
+  --text-active: #fff;
+  --accent: #61afef;
+  --font-mono: 'Fira Code', ui-monospace, 'Cascadia Code', Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+}

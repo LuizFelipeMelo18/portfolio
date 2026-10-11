@@ -12,3 +12,6 @@ export class ContactBox {
 
   protected readonly mailtoHref = computed(() => `mailto:${this.email()}`);
 }
+
+export { ContactBox as ContactBoxComponent };
+
