@@ -1,13 +1,42 @@
-<main class="about-me">
-  <h1 class="about-me__title">
-    <span class="about-me__slash" aria-hidden="true">/</span>{{ t().aboutMe.title }}
-  </h1>
-  <p class="about-me__subtitle">{{ t().aboutMe.subtitle }}</p>
+<div class="about-page">
+  <!-- Decorações flutuantes de fundo (pontilhados e molduras) -->
+  <div class="decor decor--dots decor--dots-a" aria-hidden="true"></div>
+  <div class="decor decor--dots decor--dots-b" aria-hidden="true"></div>
+  <div class="decor decor--dots decor--dots-c" aria-hidden="true"></div>
+  <div class="decor decor--dots decor--dots-d" aria-hidden="true"></div>
+  <div class="decor decor--frame-right" aria-hidden="true"></div>
+  <div class="decor decor--frame-left" aria-hidden="true"></div>
 
-  <section class="about-me__intro">
-    <p>{{ t().aboutMe.greeting }}</p>
-    @for (paragraph of t().aboutMe.paragraphs; track $index) {
-      <p>{{ paragraph }}</p>
-    }
-  </section>
-</main>
+  <div class="about-page__body">
+    <app-social-sidebar class="about-page__sidebar" />
+
+    <main class="about-page__main">
+      <header class="about-page__intro">
+        <h1 class="about-page__title">
+          <span class="accent" aria-hidden="true">/</span>{{ t().aboutMe.title }}
+        </h1>
+        <p class="about-page__subtitle">{{ t().aboutMe.subtitle }}</p>
+      </header>
+
+      <section class="about-page__text">
+        @for (paragraph of t().aboutMe.paragraphs; track $index) {
+          <p>{{ paragraph }}</p>
+        }
+      </section>
+
+      <section class="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title" class="skills__title">
+          <span class="accent" aria-hidden="true">#</span>{{ t().aboutMe.skills.title }}
+        </h2>
+
+        <div class="skills__grid">
+          @for (group of skillGroups(); track $index) {
+            <app-skills-box [title]="group.title" [skills]="group.items" />
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

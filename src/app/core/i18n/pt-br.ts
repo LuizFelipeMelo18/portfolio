@@ -14,7 +14,9 @@ export const PT_BR: Translations = {
     title: 'sobre-mim',
     subtitle: 'Quem sou eu?',
     greeting: 'Olá, eu sou o Luiz Felipe!',
-    paragraphs: [],
+    paragraphs: [
+      'Meu nome é Luiz, tenho 21 anos, atualmente trabalho com desenvolvimento de software e tenho praticamente 2 anos de experiência. Gosto de transformar minha curiosidade e conhecimento em soluções práticas, sempre buscando aprender coisas novas.',
+    ],
     readMore: 'Saiba mais',
     skills: {
       title: 'habilidades',

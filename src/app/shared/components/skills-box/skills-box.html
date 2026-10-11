@@ -1,0 +1,8 @@
+<article class="skills-box">
+  <h3 class="skills-box__title">{{ title }}</h3>
+  <ul class="skills-box__list">
+    @for (skill of skills; track skill) {
+      <li class="skills-box__item">{{ skill }}</li>
+    }
+  </ul>
+</article>

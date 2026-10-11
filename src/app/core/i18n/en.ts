@@ -14,7 +14,9 @@ export const EN: Translations = {
     title: 'about-me',
     subtitle: 'Who am i?',
     greeting: "Hello, i'm Luiz Felipe!",
-    paragraphs: [],
+    paragraphs: [
+      "My name is Luiz, I'm 21 years old, I currently work in software development and have almost 2 years of experience. I enjoy turning my curiosity and knowledge into practical solutions, always looking to learn new things.",
+    ],
     readMore: 'Read more',
     skills: {
       title: 'skills',
