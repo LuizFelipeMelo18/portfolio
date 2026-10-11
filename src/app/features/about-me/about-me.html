@@ -1,1 +1,13 @@
-<p>about-me works!</p>
+<main class="about-me">
+  <h1 class="about-me__title">
+    <span class="about-me__slash" aria-hidden="true">/</span>{{ t().aboutMe.title }}
+  </h1>
+  <p class="about-me__subtitle">{{ t().aboutMe.subtitle }}</p>
+
+  <section class="about-me__intro">
+    <p>{{ t().aboutMe.greeting }}</p>
+    @for (paragraph of t().aboutMe.paragraphs; track $index) {
+      <p>{{ paragraph }}</p>
+    }
+  </section>
+</main>

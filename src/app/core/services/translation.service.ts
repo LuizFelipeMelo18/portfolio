@@ -1,103 +1,41 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { DOCUMENT, computed, effect, inject, Injectable, signal } from '@angular/core';
+import { EN } from '../i18n/en';
+import { PT_BR } from '../i18n/pt-br';
+import { HTML_LANG, Language, SUPPORTED_LANGUAGES, Translations } from '../i18n/translations.model';
 
-export type Language = 'EN' | 'PT-BR';
-
-export interface Translations {
-  readonly nav: {
-    readonly home: string;
-    readonly works: string;
-    readonly aboutMe: string;
-    readonly contacts: string;
-    readonly selectLanguage: string;
-  };
-  readonly contacts: {
-    readonly title: string;
-    readonly subtitle: string;
-    readonly description: string;
-  };
-  readonly contactBox: {
-    readonly title: string;
-  };
-  readonly footer: {
-    readonly role: string;
-  };
-  readonly social: {
-    readonly githubAria: string;
-    readonly linkedinAria: string;
-    readonly sidebarAria: string;
-  };
-}
+export type { Language, Translations } from '../i18n/translations.model';
 
 export const TRANSLATIONS: Record<Language, Translations> = {
-  'EN': {
-    nav: {
-      home: 'home',
-      works: 'works',
-      aboutMe: 'about-me',
-      contacts: 'contacts',
-      selectLanguage: 'Select language',
-    },
-    contacts: {
-      title: 'contacts',
-      subtitle: 'Who am i?',
-      description:
-        "I am always open to networking. If you have any questions, want to connect, or just want to say hi, please don't hesitate to contact me.",
-    },
-    contactBox: {
-      title: 'Message me here',
-    },
-    footer: {
-      role: 'Full Stack Developer',
-    },
-    social: {
-      githubAria: "Luiz Felipe Melo's GitHub profile",
-      linkedinAria: "Luiz Felipe Melo's LinkedIn profile",
-      sidebarAria: 'Social profiles',
-    },
-  },
-  'PT-BR': {
-    nav: {
-      home: 'início',
-      works: 'projetos',
-      aboutMe: 'sobre-mim',
-      contacts: 'contatos',
-      selectLanguage: 'Selecionar idioma',
-    },
-    contacts: {
-      title: 'contatos',
-      subtitle: 'Quem sou eu?',
-      description:
-        'Estou sempre aberto a networking. Se você tiver alguma dúvida, quiser se conectar ou apenas dar um oi, não hesite em entrar em contato comigo.',
-    },
-    contactBox: {
-      title: 'Fale comigo aqui',
-    },
-    footer: {
-      role: 'Desenvolvedor Full Stack',
-    },
-    social: {
-      githubAria: 'Perfil do GitHub de Luiz Felipe Melo',
-      linkedinAria: 'Perfil do LinkedIn de Luiz Felipe Melo',
-      sidebarAria: 'Perfis sociais',
-    },
-  },
+  'EN': EN,
+  'PT-BR': PT_BR,
 };
+
+const STORAGE_KEY = 'portfolio_language';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TranslationService {
-  readonly languages: readonly Language[] = ['EN', 'PT-BR'];
+  private readonly document = inject(DOCUMENT);
+
+  readonly languages: readonly Language[] = SUPPORTED_LANGUAGES;
 
   readonly currentLanguage = signal<Language>(this.getInitialLanguage());
 
   readonly t = computed(() => TRANSLATIONS[this.currentLanguage()]);
 
+  constructor() {
+    // Mantém o atributo lang do <html> sincronizado (acessibilidade/SEO)
+    effect(() => {
+      this.document.documentElement.lang = HTML_LANG[this.currentLanguage()];
+    });
+  }
+
   setLanguage(language: Language): void {
     this.currentLanguage.set(language);
     if (typeof localStorage !== 'undefined') {
       try {
-        localStorage.setItem('portfolio_language', language);
+        localStorage.setItem(STORAGE_KEY, language);
       } catch {
         // Ignora erros de quota ou restrição de storage
       }
@@ -107,9 +45,9 @@ export class TranslationService {
   private getInitialLanguage(): Language {
     if (typeof localStorage !== 'undefined') {
       try {
-        const saved = localStorage.getItem('portfolio_language') as Language | null;
-        if (saved && (saved === 'EN' || saved === 'PT-BR')) {
-          return saved;
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved && (SUPPORTED_LANGUAGES as readonly string[]).includes(saved)) {
+          return saved as Language;
         }
       } catch {
         // Ignora erros de acesso a localStorage
