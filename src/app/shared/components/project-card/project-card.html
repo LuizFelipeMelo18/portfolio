@@ -1,0 +1,20 @@
+<article class="project-card">
+  <p class="project-card__techs">{{ technologies }}</p>
+
+  <div class="project-card__body">
+    <h3 class="project-card__title">{{ title }}</h3>
+    @if (description) {
+      <p class="project-card__description">{{ description }}</p>
+    }
+
+    <a
+      class="project-card__button"
+      [href]="githubLink"
+      target="_blank"
+      rel="noopener noreferrer"
+      [attr.aria-label]="'Github: ' + title"
+    >
+      Github <span class="project-card__icon" aria-hidden="true">&lt;~&gt;</span>
+    </a>
+  </div>
+</article>

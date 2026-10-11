@@ -1,0 +1,134 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg, #282c33);
+  color: var(--text, #abb2bf);
+  font-family: var(--font-mono, 'Fira Code', monospace);
+}
+
+/* Preenche o espaço abaixo da navbar e mantém o rodapé no fim da tela */
+.works-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  justify-content: space-between;
+  overflow-x: hidden;
+}
+
+.accent {
+  color: var(--accent, #61afef);
+  margin-right: 2px;
+}
+
+/* ---------- Decorações ---------- */
+.decor {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decor--dots {
+  background-image: radial-gradient(var(--text, #abb2bf) 1.3px, transparent 1.6px);
+  background-size: 16px 16px;
+  opacity: 0.45;
+  animation: float 7s ease-in-out infinite;
+}
+
+.decor--dots-a { top: 14rem; left: 1rem; width: 64px; height: 48px; }
+.decor--dots-b { bottom: 8rem; right: 2rem; width: 84px; height: 84px; animation-delay: -3s; }
+
+.decor--frame-right {
+  top: 9rem;
+  right: 0;
+  width: 4.5rem;
+  height: 6.5rem;
+  border: 1px solid var(--text, #abb2bf);
+  border-right: none;
+  opacity: 0.3;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ---------- Conteúdo ---------- */
+.works-page__body {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 1.5rem 3rem 4rem 2rem;
+  box-sizing: border-box;
+}
+
+.works-page__sidebar {
+  position: absolute;
+  top: -4.5rem;
+  left: 1.5rem;
+  z-index: 5;
+}
+
+.works-page__main {
+  margin-left: 6.5rem;
+  margin-top: 1.5rem;
+}
+
+.works-page__title {
+  margin: 0 0 0.75rem;
+  font-size: 2.75rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.works-page__subtitle {
+  margin: 0;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.projects {
+  margin-top: 3.5rem;
+}
+
+.projects__title {
+  margin: 0 0 1.5rem;
+  font-size: 2rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Grade responsiva; cada card mantém sua própria altura, como na referência */
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: start;
+  max-width: 1000px;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1024px) {
+  .projects__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .decor--frame-right { display: none; }
+}
+
+@media (max-width: 900px) {
+  .works-page__sidebar { display: none; }
+  .works-page__main { margin-left: 0; }
+}
+
+@media (max-width: 600px) {
+  .works-page__body { padding: 1rem 1rem 3rem; }
+  .works-page__title { font-size: 2rem; }
+  .projects__grid { grid-template-columns: 1fr; }
+  .decor--dots { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor--dots { animation: none; }
+}

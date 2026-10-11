@@ -31,6 +31,18 @@ export const PT_BR: Translations = {
       items: [],
     },
   },
+  works: {
+    title: 'projetos',
+    subtitle: 'Lista dos meus projetos',
+    sectionTitle: 'projetos',
+    githubAria: 'Abrir no GitHub',
+    projects: {
+      portfolio: 'Meu portfólio pessoal criado em Angular',
+      startingCoding:
+        'Plataforma educacional com trilhas de cursos, comunidades por curso, desafios, projetos colaborativos, certificados, mentoria e gerenciamento de aprendizado.',
+      moviesLab: 'Site com consumo de API para consulta de filmes.',
+    },
+  },
   contacts: {
     title: 'contatos',
     subtitle: 'Quem sou eu?',

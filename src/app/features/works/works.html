@@ -1,1 +1,38 @@
-<p>works works!</p>
+<div class="works-page">
+  <!-- Decorações flutuantes de fundo -->
+  <div class="decor decor--dots decor--dots-a" aria-hidden="true"></div>
+  <div class="decor decor--dots decor--dots-b" aria-hidden="true"></div>
+  <div class="decor decor--frame-right" aria-hidden="true"></div>
+
+  <div class="works-page__body">
+    <app-social-sidebar class="works-page__sidebar" />
+
+    <main class="works-page__main">
+      <header>
+        <h1 class="works-page__title">
+          <span class="accent" aria-hidden="true">/</span>{{ t().works.title }}
+        </h1>
+        <p class="works-page__subtitle">{{ t().works.subtitle }}</p>
+      </header>
+
+      <section class="projects" aria-labelledby="projects-title">
+        <h2 id="projects-title" class="projects__title">
+          <span class="accent" aria-hidden="true">#</span>{{ t().works.sectionTitle }}
+        </h2>
+
+        <div class="projects__grid">
+          @for (project of projects(); track project.githubLink) {
+            <app-project-card
+              [title]="project.title"
+              [technologies]="project.technologies"
+              [description]="project.description"
+              [githubLink]="project.githubLink"
+            />
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <app-footer />
+</div>

@@ -31,6 +31,18 @@ export const EN: Translations = {
       items: [],
     },
   },
+  works: {
+    title: 'projects',
+    subtitle: 'List of my projects',
+    sectionTitle: 'projects',
+    githubAria: 'Open on GitHub',
+    projects: {
+      portfolio: 'My personal portfolio built with Angular',
+      startingCoding:
+        'Educational platform with course tracks, course communities, challenges, collaborative projects, certificates, mentoring and learning management.',
+      moviesLab: 'Website that consumes an API to search for movies.',
+    },
+  },
   contacts: {
     title: 'contacts',
     subtitle: 'Who am i?',

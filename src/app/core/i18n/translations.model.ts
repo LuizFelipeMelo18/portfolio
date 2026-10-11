@@ -36,6 +36,17 @@ export interface Translations {
       readonly items: readonly string[];
     };
   };
+  readonly works: {
+    readonly title: string;
+    readonly subtitle: string;
+    readonly sectionTitle: string;
+    readonly githubAria: string;
+    readonly projects: {
+      readonly portfolio: string;
+      readonly startingCoding: string;
+      readonly moviesLab: string;
+    };
+  };
   readonly contacts: {
     readonly title: string;
     readonly subtitle: string;
