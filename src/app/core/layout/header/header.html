@@ -1,0 +1,55 @@
+<header class="header">
+  <nav class="nav" aria-label="Navegação principal">
+    <ul class="nav__list">
+      @for (item of navItems; track item.path) {
+        <li>
+          <a
+            class="nav__link"
+            [routerLink]="item.path"
+            routerLinkActive="nav__link--active"
+            ariaCurrentWhenActive="page"
+          >
+            <span class="nav__hash" aria-hidden="true">#</span>{{ item.label }}
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="lang">
+    <button
+      id="language-selector"
+      class="lang__toggle"
+      type="button"
+      aria-haspopup="listbox"
+      aria-label="Selecionar idioma"
+      [attr.aria-expanded]="isLanguageMenuOpen()"
+      (click)="toggleLanguageMenu()"
+    >
+      {{ selectedLanguage() }}
+      <svg class="lang__chevron" viewBox="0 0 10 6" aria-hidden="true">
+        <path d="M1 1l4 4 4-4" />
+      </svg>
+    </button>
+
+    @if (isLanguageMenuOpen()) {
+      <ul class="lang__menu" role="listbox" aria-labelledby="language-selector">
+        @for (language of languages; track language) {
+          <li
+            class="lang__option"
+            role="option"
+            tabindex="0"
+            [id]="'language-option-' + language.toLowerCase()"
+            [class.lang__option--selected]="language === selectedLanguage()"
+            [attr.aria-selected]="language === selectedLanguage()"
+            (click)="selectLanguage(language)"
+            (keydown.enter)="selectLanguage(language)"
+            (keydown.space)="selectLanguage(language); $event.preventDefault()"
+          >
+            {{ language }}
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</header>
