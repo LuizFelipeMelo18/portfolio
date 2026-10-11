@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
-type Language = 'EN' | 'PT-BR';
+import { Language, TranslationService } from '../../services/translation.service';
 
 interface NavItem {
   readonly label: string;
@@ -21,24 +20,26 @@ interface NavItem {
 })
 export class Header {
   private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly translationService = inject(TranslationService);
 
-  protected readonly navItems: readonly NavItem[] = [
-    { label: 'home', path: '/home' },
-    { label: 'works', path: '/works' },
-    { label: 'about-me', path: '/about-me' },
-    { label: 'contacts', path: '/contacts' },
-  ];
-
-  protected readonly languages: readonly Language[] = ['EN', 'PT-BR'];
-  protected readonly selectedLanguage = signal<Language>('EN');
+  protected readonly t = this.translationService.t;
+  protected readonly selectedLanguage = this.translationService.currentLanguage;
+  protected readonly languages = this.translationService.languages;
   protected readonly isLanguageMenuOpen = signal(false);
+
+  protected readonly navItems = computed<readonly NavItem[]>(() => [
+    { label: this.t().nav.home, path: '/home' },
+    { label: this.t().nav.works, path: '/works' },
+    { label: this.t().nav.aboutMe, path: '/about-me' },
+    { label: this.t().nav.contacts, path: '/contacts' },
+  ]);
 
   protected toggleLanguageMenu(): void {
     this.isLanguageMenuOpen.update((isOpen) => !isOpen);
   }
 
   protected selectLanguage(language: Language): void {
-    this.selectedLanguage.set(language);
+    this.translationService.setLanguage(language);
     this.closeLanguageMenu();
   }
 
@@ -54,4 +55,3 @@ export class Header {
 }
 
 export { Header as NavbarComponent };
-

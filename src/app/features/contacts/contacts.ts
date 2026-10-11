@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Header } from '../../core/layout/header/header';
 import { SocialSidebar } from '../../core/layout/social-sidebar/social-sidebar';
 import { Footer } from '../../core/layout/footer/footer';
 import { ContactBox } from '../../shared/components/contact-box/contact-box';
+import { TranslationService } from '../../core/services/translation.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -11,6 +12,10 @@ import { ContactBox } from '../../shared/components/contact-box/contact-box';
   styleUrl: './contacts.css',
   templateUrl: './contacts.html',
 })
-export class Contacts {}
+export class Contacts {
+  private readonly translationService = inject(TranslationService);
+
+  protected readonly t = this.translationService.t;
+}
 
 export { Contacts as ContactComponent };

@@ -1,7 +1,7 @@
 <header class="header">
   <nav class="nav" aria-label="Navegação principal">
     <ul class="nav__list">
-      @for (item of navItems; track item.path) {
+      @for (item of navItems(); track item.path) {
         <li>
           <a
             class="nav__link"
@@ -22,7 +22,7 @@
       class="lang__toggle"
       type="button"
       aria-haspopup="listbox"
-      aria-label="Selecionar idioma"
+      [attr.aria-label]="t().nav.selectLanguage"
       [attr.aria-expanded]="isLanguageMenuOpen()"
       (click)="toggleLanguageMenu()"
     >

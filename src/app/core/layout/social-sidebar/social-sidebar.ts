@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CONTACT_INFO } from '../../constants/contact-info';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,5 +9,8 @@ import { CONTACT_INFO } from '../../constants/contact-info';
   templateUrl: './social-sidebar.html',
 })
 export class SocialSidebar {
+  private readonly translationService = inject(TranslationService);
+
   protected readonly contactInfo = CONTACT_INFO;
+  protected readonly social = computed(() => this.translationService.t().social);
 }

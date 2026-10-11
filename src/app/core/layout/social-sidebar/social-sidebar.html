@@ -1,14 +1,14 @@
-<aside class="sidebar" aria-label="Links sociais">
+<aside class="sidebar" [attr.aria-label]="social().sidebarAria">
   <div class="sidebar__line" aria-hidden="true"></div>
 
-  <nav class="sidebar__links" aria-label="Perfis sociais">
+  <nav class="sidebar__links" [attr.aria-label]="social().sidebarAria">
     <a
       id="social-github"
       class="sidebar__link"
       [href]="contactInfo.githubUrl"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Perfil do GitHub de Luiz Felipe Melo"
+      [attr.aria-label]="social().githubAria"
     >
       <svg class="sidebar__icon" viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -23,7 +23,7 @@
       [href]="contactInfo.linkedinUrl"
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Perfil do LinkedIn de Luiz Felipe Melo"
+      [attr.aria-label]="social().linkedinAria"
     >
       <svg class="sidebar__icon" viewBox="0 0 24 24" aria-hidden="true">
         <path
