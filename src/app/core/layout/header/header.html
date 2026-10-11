@@ -1,55 +1,190 @@
 <header class="header">
-  <nav class="nav" [attr.aria-label]="t().nav.mainNavigation">
-    <ul class="nav__list">
-      @for (item of navItems(); track item.path) {
-        <li>
-          <a
-            class="nav__link"
-            [routerLink]="item.path"
-            routerLinkActive="nav__link--active"
-            ariaCurrentWhenActive="page"
-          >
-            <span class="nav__hash" aria-hidden="true">#</span>{{ item.label }}
-          </a>
-        </li>
-      }
-    </ul>
-  </nav>
+  <!-- Logo à esquerda -->
+  <a class="header__logo" routerLink="/home" (click)="closeMobileMenu()" aria-label="Luiz - Home">
+    <svg class="header__logo-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="7" height="7" stroke="var(--accent, #61afef)" stroke-width="1.5" />
+      <rect x="7" y="7" width="7" height="7" stroke="#ffffff" stroke-width="1.5" />
+    </svg>
+    <span class="header__logo-text">Luiz</span>
+  </a>
 
-  <div class="lang">
-    <button
-      id="language-selector"
-      class="lang__toggle"
-      type="button"
-      aria-haspopup="listbox"
-      [attr.aria-label]="t().nav.selectLanguage"
-      [attr.aria-expanded]="isLanguageMenuOpen()"
-      (click)="toggleLanguageMenu()"
-    >
-      {{ selectedLanguage() }}
-      <svg class="lang__chevron" viewBox="0 0 10 6" aria-hidden="true">
-        <path d="M1 1l4 4 4-4" />
-      </svg>
-    </button>
-
-    @if (isLanguageMenuOpen()) {
-      <ul class="lang__menu" role="listbox" aria-labelledby="language-selector">
-        @for (language of languages; track language) {
-          <li
-            class="lang__option"
-            role="option"
-            tabindex="0"
-            [id]="'language-option-' + language.toLowerCase()"
-            [class.lang__option--selected]="language === selectedLanguage()"
-            [attr.aria-selected]="language === selectedLanguage()"
-            (click)="selectLanguage(language)"
-            (keydown.enter)="selectLanguage(language)"
-            (keydown.space)="selectLanguage(language); $event.preventDefault()"
-          >
-            {{ language }}
+  <!-- Menu Desktop (oculto no mobile) -->
+  <div class="header__desktop">
+    <nav class="nav" [attr.aria-label]="t().nav.mainNavigation">
+      <ul class="nav__list">
+        @for (item of navItems(); track item.path) {
+          <li>
+            <a
+              class="nav__link"
+              [routerLink]="item.path"
+              routerLinkActive="nav__link--active"
+              ariaCurrentWhenActive="page"
+            >
+              <span class="nav__hash" aria-hidden="true">#</span>{{ item.label }}
+            </a>
           </li>
         }
       </ul>
-    }
+    </nav>
+
+    <div class="lang">
+      <button
+        id="language-selector"
+        class="lang__toggle"
+        type="button"
+        aria-haspopup="listbox"
+        [attr.aria-label]="t().nav.selectLanguage"
+        [attr.aria-expanded]="isLanguageMenuOpen()"
+        (click)="toggleLanguageMenu()"
+      >
+        {{ selectedLanguage() }}
+        <svg class="lang__chevron" viewBox="0 0 10 6" aria-hidden="true">
+          <path d="M1 1l4 4 4-4" />
+        </svg>
+      </button>
+
+      @if (isLanguageMenuOpen()) {
+        <ul class="lang__menu" role="listbox" aria-labelledby="language-selector">
+          @for (language of languages; track language) {
+            <li
+              class="lang__option"
+              role="option"
+              tabindex="0"
+              [id]="'language-option-' + language.toLowerCase()"
+              [class.lang__option--selected]="language === selectedLanguage()"
+              [attr.aria-selected]="language === selectedLanguage()"
+              (click)="selectLanguage(language)"
+              (keydown.enter)="selectLanguage(language)"
+              (keydown.space)="selectLanguage(language); $event.preventDefault()"
+            >
+              {{ language }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
   </div>
+
+  <!-- Botão Hamburger no mobile (oculto no desktop) -->
+  <button
+    id="mobile-menu-toggle"
+    class="header__hamburger"
+    type="button"
+    [attr.aria-label]="isMobileMenuOpen() ? 'Fechar menu' : 'Abrir menu'"
+    [attr.aria-expanded]="isMobileMenuOpen()"
+    (click)="toggleMobileMenu()"
+  >
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+  </button>
 </header>
+
+<!-- Overlay em tela cheia no mobile -->
+@if (isMobileMenuOpen()) {
+  <div class="mobile-overlay" role="dialog" aria-modal="true" aria-label="Menu de navegação">
+    <div class="mobile-overlay__header">
+      <a class="header__logo" routerLink="/home" (click)="closeMobileMenu()" aria-label="Luiz - Home">
+        <svg class="header__logo-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="2" y="2" width="7" height="7" stroke="var(--accent, #61afef)" stroke-width="1.5" />
+          <rect x="7" y="7" width="7" height="7" stroke="#ffffff" stroke-width="1.5" />
+        </svg>
+        <span class="header__logo-text">Luiz</span>
+      </a>
+
+      <button
+        id="mobile-menu-close"
+        class="mobile-overlay__close"
+        type="button"
+        aria-label="Fechar menu"
+        (click)="closeMobileMenu()"
+      >
+        <svg viewBox="0 0 24 24" class="mobile-overlay__close-icon" aria-hidden="true">
+          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mobile-overlay__nav" [attr.aria-label]="t().nav.mainNavigation">
+      <ul class="mobile-overlay__list">
+        @for (item of navItems(); track item.path) {
+          <li class="mobile-overlay__item">
+            <a
+              class="mobile-overlay__link"
+              [routerLink]="item.path"
+              routerLinkActive="mobile-overlay__link--active"
+              ariaCurrentWhenActive="page"
+              (click)="closeMobileMenu()"
+            >
+              <span class="nav__hash" aria-hidden="true">#</span>{{ item.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="mobile-overlay__lang">
+      <button
+        id="mobile-language-selector"
+        class="lang__toggle mobile-lang__toggle"
+        type="button"
+        [attr.aria-label]="t().nav.selectLanguage"
+        [attr.aria-expanded]="isMobileLanguageMenuOpen()"
+        (click)="toggleMobileLanguageMenu()"
+      >
+        {{ selectedLanguage() }}
+        <svg class="lang__chevron" viewBox="0 0 10 6" aria-hidden="true">
+          <path d="M1 1l4 4 4-4" />
+        </svg>
+      </button>
+
+      @if (isMobileLanguageMenuOpen()) {
+        <ul class="mobile-lang__menu" role="listbox">
+          @for (language of languages; track language) {
+            <li
+              class="lang__option mobile-lang__option"
+              role="option"
+              tabindex="0"
+              [class.lang__option--selected]="language === selectedLanguage()"
+              (click)="selectLanguage(language)"
+            >
+              {{ language }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- Ícones do GitHub e LinkedIn centralizados no rodapé do menu -->
+    <div class="mobile-overlay__footer">
+      <a
+        id="mobile-social-github"
+        class="mobile-overlay__social-link"
+        [href]="contactInfo.githubUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="social().githubAria"
+      >
+        <svg class="mobile-overlay__social-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"
+          />
+        </svg>
+      </a>
+
+      <a
+        id="mobile-social-linkedin"
+        class="mobile-overlay__social-link"
+        [href]="contactInfo.linkedinUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="social().linkedinAria"
+      >
+        <svg class="mobile-overlay__social-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.27a1.64 1.64 0 0 0-1.66 1.66 1.66 1.66 0 0 0 1.66 1.66 1.67 1.67 0 0 0 1.67-1.66c0-.92-.75-1.66-1.67-1.66z"
+          />
+        </svg>
+      </a>
+    </div>
+  </div>
+}
