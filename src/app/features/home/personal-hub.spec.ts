@@ -17,16 +17,18 @@ describe('PersonalHub', () => {
     expect(tabs.map((tab) => tab.textContent?.trim())).toEqual(['Anime', 'Mangás', 'Filmes', 'Games', 'Música']);
 
     // Default tab: Anime
-    expect(host.querySelectorAll('.personal-card').length).toBe(6);
+    expect(host.querySelectorAll('.personal-card').length).toBe(9);
     expect(host.querySelector('.personal__grid')?.textContent).toContain('Shingeki no Kyojin');
-    expect(host.querySelector('.personal__grid')?.textContent).toContain('Solo Leveling');
+    expect(host.querySelector('.personal__grid')?.textContent).toContain('Fullmetal Alchemist');
+    expect(host.querySelector('.personal__grid')?.textContent).toContain('Cowboy Bebop');
 
     // Switch to Mangás
     tabs[1].click();
     fixture.detectChanges();
-    expect(host.querySelectorAll('.personal-card').length).toBe(6);
+    expect(host.querySelectorAll('.personal-card').length).toBe(9);
     expect(host.querySelector('.personal__grid')?.textContent).toContain('Vagabond');
-    expect(host.querySelector('.personal__grid')?.textContent).toContain('Gachiakuta');
+    expect(host.querySelector('.personal__grid')?.textContent).toContain('Vinland Saga');
+    expect(host.querySelector('.personal__grid')?.textContent).toContain('Alice in Borderland');
 
     // Switch to Filmes
     tabs[2].click();

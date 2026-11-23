@@ -66,6 +66,27 @@ export const PERSONAL_ITEMS: readonly PersonalItem[] = [
     subtitle: 'A-1 Pictures · 2024',
     cover: '/personal/anime-solo-leveling.jpg',
   },
+  {
+    id: 'fullmetal-alchemist',
+    tab: 'anime',
+    title: 'Fullmetal Alchemist',
+    subtitle: 'Bones · 2009',
+    cover: '/personal/anime-fma.jpg',
+  },
+  {
+    id: 'dr-stone',
+    tab: 'anime',
+    title: 'Dr. Stone',
+    subtitle: 'TMS Entertainment · 2019',
+    cover: '/personal/anime-dr-stone.jpg',
+  },
+  {
+    id: 'cowboy-bebop',
+    tab: 'anime',
+    title: 'Cowboy Bebop',
+    subtitle: 'Sunrise · 1998',
+    cover: '/personal/anime-cowboy-bebop.jpg',
+  },
 
   // Mangás
   {
@@ -109,6 +130,27 @@ export const PERSONAL_ITEMS: readonly PersonalItem[] = [
     title: 'Cavaleiros do Zodíaco: The Lost Canvas',
     subtitle: 'Shiori Teshirogi',
     cover: '/personal/manga-lost-canvas.jpg',
+  },
+  {
+    id: 'vinland-saga',
+    tab: 'manga',
+    title: 'Vinland Saga',
+    subtitle: 'Makoto Yukimura',
+    cover: '/personal/manga-vinland-saga.jpg',
+  },
+  {
+    id: 'hunter-x-hunter',
+    tab: 'manga',
+    title: 'Hunter x Hunter',
+    subtitle: 'Yoshihiro Togashi',
+    cover: '/personal/manga-hunter-x-hunter.png',
+  },
+  {
+    id: 'alice-in-borderland',
+    tab: 'manga',
+    title: 'Alice in Borderland',
+    subtitle: 'Haro Aso',
+    cover: '/personal/manga-alice-in-borderland.jpg',
   },
 
   // Filmes
