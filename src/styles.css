@@ -47,11 +47,23 @@ a { color: inherit; }
 .app-content__path { margin: 0 0 8px; color: #a5bac7; font: 12px var(--mono); }
 .app-content h2 { margin: 0 0 20px; font-size: 29px; letter-spacing: -.05em; }
 .app-content__text { color: #b9c9d2; line-height: 1.7; }
-.about-content { max-width: 710px; padding: 32px; }
-.about-content h2 { margin-bottom: 7px; }
-.about-content__role { margin: 0 0 24px; color: #b6c4cf; font: 12px var(--mono); }
-.about-content__role span { padding: 0 4px; color: #7895a8; }
-.about-content > p:not(.app-content__path):not(.about-content__role) { max-width: 62ch; margin: 0 0 15px; color: #e0e6ea; font-size: 15px; line-height: 1.75; }
+.zed-editor { display: flex; flex-direction: column; height: 100%; min-height: 0; background: rgba(31,36,43,.68); color: #dce3e7; font: 13px/1.5 var(--mono); }
+.zed-editor__tabs { flex: 0 0 37px; display: flex; align-items: stretch; border-bottom: 1px solid #ffffff17; background: #343a43a8; }
+.zed-editor__brand { display: grid; place-items: center; width: 58px; color: #a4adb5; font-size: 12px; font-weight: 700; letter-spacing: -.06em; }
+.zed-editor__tab { display: flex; align-items: center; gap: 8px; padding: 0 17px; border-right: 1px solid #ffffff19; border-bottom: 1px solid #9eb4c3; background: #2b323b; color: #e6edf0; font-size: 12px; }
+.zed-editor__file-icon { color: #a7bed4; font-size: 10px; font-weight: 700; }
+.zed-editor__breadcrumb { flex: 0 0 29px; display: flex; align-items: center; gap: 9px; padding: 0 18px; color: #9ca9b3; font-size: 11px; }
+.zed-editor__breadcrumb span { color: #6f7d88; }
+.zed-editor__code { flex: 1; min-height: 0; overflow: auto; padding: 7px 0 14px; scrollbar-color: #65717e transparent; }
+.zed-editor__line { display: grid; grid-template-columns: 50px max-content; align-items: baseline; width: max-content; min-width: 100%; min-height: 22px; }
+.zed-editor__number { padding-right: 16px; color: #79858e; text-align: right; user-select: none; }
+.zed-editor__line code { display: block; padding-right: 24px; color: #dce3e7; font: inherit; white-space: pre; }
+.zed-editor__token--comment { color: #91a09d; }
+.zed-editor__token--keyword { color: #c5b5d4; }
+.zed-editor__token--property { color: #a5c3d4; }
+.zed-editor__token--string { color: #bdd0aa; }
+.zed-editor__status { flex: 0 0 27px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 13px; border-top: 1px solid #ffffff17; background: #343a43a8; color: #adb9c2; font-size: 10px; white-space: nowrap; }
+.zed-editor__status i { padding: 0 4px; color: #7f8e99; font-style: normal; }
 .file-list { border-top: 1px solid var(--line); }.file-list a { display: grid; grid-template-columns: 36px 1fr auto; gap: 13px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--line); text-decoration: none; }.file-list a:hover strong,.file-list a:hover b { color: var(--cyan); }.file-list__icon { color: var(--cyan); font-size: 26px; }.file-list strong,.file-list small { display: block; }.file-list strong { margin-bottom: 5px; }.file-list small { margin-top: 4px; color: var(--muted); line-height: 1.5; }.file-list b { font-weight: 400; }
 .stack-list { display: grid; gap: 9px; }.stack-list div { display: grid; grid-template-columns: 140px 1fr; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 5px; font: 12px/1.6 var(--mono); }.stack-list strong { color: var(--cyan); }.stack-list span { color: #c5d2da; }
 .contact-fetch { padding: 22px 26px; font: 12px var(--mono); }
@@ -113,8 +125,10 @@ a { color: inherit; }
   .app-window { position: fixed; inset: 8px 8px 46px !important; width: auto !important; height: auto !important; min-width: 0; min-height: 0; max-height: none; }
   .app-window__body { overflow-y: auto; }
   .app-window__resize { display: none; }
-  .about-content { padding: 22px; }
-  .about-content > p:not(.app-content__path):not(.about-content__role) { font-size: 14px; }
+  .zed-editor { font-size: 12px; }
+  .zed-editor__brand { width: 45px; }
+  .zed-editor__line { grid-template-columns: 38px max-content; }
+  .zed-editor__number { padding-right: 10px; }
   .contact-fetch { padding: 18px; font-size: 11px; }
   .contact-fetch__grid { grid-template-columns: 1fr; gap: 13px; margin: 15px 0; }
   .contact-fetch__ascii { justify-self: center; font-size: 10px; }

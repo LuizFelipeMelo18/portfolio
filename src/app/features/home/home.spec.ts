@@ -27,7 +27,9 @@ describe('Desktop home', () => {
     const host = fixture.nativeElement as HTMLElement;
     (host.querySelector('[aria-label="Abrir Sobre"]') as HTMLButtonElement).click();
     fixture.detectChanges();
-    expect(host.querySelector('.about-content')?.textContent).toContain('Java, Kotlin e Spring Boot');
+    expect(host.querySelector('.zed-editor__tab')?.textContent).toContain('about.ts');
+    expect(host.querySelectorAll('.zed-editor__line').length).toBe(17);
+    expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Spring Boot');
     expect(host.querySelectorAll('.taskbar__window').length).toBe(1);
     (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
     fixture.detectChanges();
@@ -139,7 +141,7 @@ describe('Desktop home', () => {
     expect(host.querySelectorAll('.desktop-context-menu [role="menuitem"]').length).toBe(4);
     (host.querySelector('.desktop-context-menu [role="menuitem"]') as HTMLButtonElement).click();
     fixture.detectChanges();
-    expect(host.querySelector('.about-content')).toBeTruthy();
+    expect(host.querySelector('.zed-editor')).toBeTruthy();
     expect(host.querySelector('.desktop-context-menu')).toBeNull();
     fixture.destroy();
   });

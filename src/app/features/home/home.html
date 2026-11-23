@@ -23,12 +23,18 @@
         <div class="app-window__body">
           @switch (desktopWindow.id) {
             @case ('about') {
-              <div class="app-content about-content">
-                <p class="app-content__path">~/about.txt</p>
-                <h2>{{ isPt() ? 'Sobre mim' : 'About me' }}</h2>
-                <p class="about-content__role">Luiz Felipe Melo <span>·</span> Full Stack Developer</p>
-                <p>{{ isPt() ? 'Desenvolvedor Full Stack com foco em Java, Kotlin e Spring Boot. Participo de todo o ciclo de desenvolvimento, da modelagem de dados ao deploy em nuvem, criando sistemas seguros, escaláveis e fáceis de manter.' : 'Full Stack Developer focused on Java, Kotlin and Spring Boot. I work across the development lifecycle, from data modeling to cloud deployment, building secure, scalable and maintainable systems.' }}</p>
-                <p>{{ isPt() ? 'Tenho experiência com Angular, React, bancos relacionais, testes automatizados, CI/CD, autenticação e mensageria. Qualidade de código, colaboração e aprendizado contínuo orientam meu trabalho.' : 'My experience includes Angular, React, relational databases, automated testing, CI/CD, authentication and messaging. Code quality, collaboration and continuous learning guide my work.' }}</p>
+              <div class="zed-editor" role="region" [attr.aria-label]="isPt() ? 'Sobre mim no editor Zed' : 'About me in the Zed editor'">
+                <div class="zed-editor__tabs"><span class="zed-editor__brand">zed</span><span class="zed-editor__tab"><span class="zed-editor__file-icon">TS</span> about.ts</span></div>
+                <div class="zed-editor__breadcrumb">src <span>/</span> about.ts</div>
+                <div class="zed-editor__code">
+                  @for (line of aboutLines(); track $index) {
+                    <div class="zed-editor__line">
+                      <span class="zed-editor__number" aria-hidden="true">{{ $index + 1 }}</span>
+                      <code [style.padding-left.ch]="line.indent * 2">@for (part of line.parts; track $index) {<span [class]="'zed-editor__token zed-editor__token--' + (part.tone ?? 'plain')">{{ part.text }}</span>}</code>
+                    </div>
+                  }
+                </div>
+                <div class="zed-editor__status"><span>⎇ main</span><span>TypeScript <i>·</i> UTF-8 <i>·</i> {{ isPt() ? 'PT-BR' : 'EN' }}</span></div>
               </div>
             }
             @case ('projects') {
@@ -36,6 +42,9 @@
             }
             @case ('stacks') {
               <div class="app-content"><p class="app-content__path">~/config/stack.json</p><h2>Stacks</h2><div class="stack-list"><div><strong>{{ t().aboutMe.skills.languages }}</strong><span>Java · JavaScript · TypeScript · Kotlin</span></div><div><strong>Frameworks</strong><span>Spring Boot · Angular · React</span></div><div><strong>{{ t().aboutMe.skills.databases }}</strong><span>PostgreSQL · MySQL</span></div><div><strong>{{ t().aboutMe.skills.tools }}</strong><span>Git · Docker · Linux · AWS · GitHub Actions</span></div></div></div>
+            }
+            @case ('media') {
+              <app-media-player [isPt]="isPt()" />
             }
             @case ('contact') {
               <div class="contact-fetch">

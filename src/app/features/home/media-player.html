@@ -1,0 +1,55 @@
+<div class="music-player" role="region" [attr.aria-label]="isPt() ? 'Reprodutor de música' : 'Music player'">
+  <audio #audio preload="metadata" (loadedmetadata)="onLoadedMetadata()" (timeupdate)="onTimeUpdate()" (play)="playing.set(true)" (pause)="playing.set(false)" (ended)="onEnded()" (error)="playbackError.set(true)"></audio>
+
+  <header class="music-player__header">
+    <div class="music-player__state">
+      <span class="music-player__state-label">[{{ playing() ? (isPt() ? 'Tocando' : 'Playing') : (isPt() ? 'Pausado' : 'Paused') }}]</span>
+      <span>{{ formatTime(currentTime()) }} / {{ formatTime(duration()) }}</span>
+    </div>
+    <div class="music-player__now" aria-live="polite">
+      <strong>{{ selectedTrack().title }}</strong>
+      <span>{{ selectedTrack().artist }}</span>
+    </div>
+    <label class="music-player__volume">
+      <span>Volume: {{ volume() }}%</span>
+      <input type="range" min="0" max="100" [value]="volume()" (input)="changeVolume($event)" aria-label="Volume" />
+    </label>
+  </header>
+
+  <div class="music-player__toolbar">
+    <span>{{ isPt() ? 'Biblioteca' : 'Library' }}</span>
+    <span>{{ tracks.length }} {{ isPt() ? 'faixas' : 'tracks' }}</span>
+  </div>
+
+  <div class="music-player__main">
+    <aside class="music-player__art">
+      <img class="music-player__cover" [src]="coverUrl()" [alt]="(isPt() ? 'Capa de ' : 'Cover of ') + selectedTrack().title" />
+      <div class="music-player__transport">
+        <button type="button" (click)="step(-1)" [attr.aria-label]="isPt() ? 'Faixa anterior' : 'Previous track'">⏮</button>
+        <button type="button" class="music-player__play" (click)="togglePlayback()" [attr.aria-label]="playing() ? (isPt() ? 'Pausar' : 'Pause') : (isPt() ? 'Reproduzir' : 'Play')">{{ playing() ? '⏸' : '▶' }}</button>
+        <button type="button" (click)="step(1)" [attr.aria-label]="isPt() ? 'Próxima faixa' : 'Next track'">⏭</button>
+      </div>
+      <div class="music-player__seek">
+        <span>{{ formatTime(currentTime()) }}</span>
+        <input type="range" min="0" [max]="duration() || 0" [value]="currentTime()" (input)="seek($event)" [attr.aria-label]="isPt() ? 'Posição da música' : 'Track position'" />
+        <span>{{ formatTime(duration()) }}</span>
+      </div>
+      @if (playbackError()) {
+        <p class="music-player__error" role="alert">{{ isPt() ? 'Não foi possível reproduzir esta faixa.' : 'This track could not be played.' }}</p>
+      }
+    </aside>
+
+    <div class="music-player__library">
+      <div class="music-player__columns" aria-hidden="true"><span>#</span><span>{{ isPt() ? 'Artista' : 'Artist' }}</span><span>{{ isPt() ? 'Título' : 'Title' }}</span></div>
+      <div class="music-player__tracks">
+        @for (track of tracks; track track.file; let index = $index) {
+          <button class="music-player__track" type="button" [class.music-player__track--active]="selectedIndex() === index" [attr.aria-current]="selectedIndex() === index ? 'true' : null" (click)="selectTrack(index)" [attr.aria-label]="track.title + ' — ' + track.artist">
+            <span class="music-player__track-number">{{ (index + 1).toString().padStart(2, '0') }}</span>
+            <span class="music-player__track-artist" [title]="track.artist">{{ track.artist }}</span>
+            <span class="music-player__track-title" [title]="track.title">{{ track.title }}</span>
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

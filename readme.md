@@ -7,10 +7,11 @@ Portfólio em Angular com interface de área de trabalho inspirada no Arch Linux
 - Barra inferior com logo do sistema, janelas abertas, idioma PT/EN e relógio.
 - Menu do sistema com busca e acesso aos nove aplicativos; clique direito na área de trabalho abre um menu de contexto.
 - Janelas com foco, arraste, redimensionamento pelas bordas, minimizar, maximizar e fechar.
-- Aplicativo **Sobre** com apresentação profissional resumida em português e inglês.
+- Aplicativo **Sobre** com apresentação profissional em português e inglês, no visual de um editor de código.
 - **Projetos**, **Stacks** e **Contato** usam os dados já presentes no portfólio.
 - **Personalizar** permite trocar o wallpaper entre oito opções e mantém a escolha no navegador.
-- **Experiência e formação**, **Biblioteca**, **Personal** e **Media Player** já abrem como janelas e aguardam suas etapas de conteúdo.
+- **Media Player** reproduz os 12 arquivos da pasta `Musicas/` em uma interface inspirada em players de terminal. As capas, obtidas pelo Cover Art Archive, ficam em `public/covers/`.
+- **Experiência e formação**, **Biblioteca** e **Personal** já abrem como janelas e aguardam suas etapas de conteúdo.
 - URLs antigas como `/works`, `/about-me` e `/contacts` abrem o aplicativo correspondente dentro do desktop.
 
 ## Desenvolvimento
