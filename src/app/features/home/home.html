@@ -24,17 +24,17 @@
           @switch (desktopWindow.id) {
             @case ('about') {
               <div class="zed-editor" role="region" [attr.aria-label]="isPt() ? 'Sobre mim no editor Zed' : 'About me in the Zed editor'">
-                <div class="zed-editor__tabs"><span class="zed-editor__brand">zed</span><span class="zed-editor__tab"><span class="zed-editor__file-icon">TS</span> about.ts</span></div>
-                <div class="zed-editor__breadcrumb">src <span>/</span> about.ts</div>
+                <div class="zed-editor__tabs"><span class="zed-editor__brand">zed</span><span class="zed-editor__tab"><span class="zed-editor__file-icon">MD</span> about.md</span></div>
+                <div class="zed-editor__breadcrumb">src <span>/</span> about.md</div>
                 <div class="zed-editor__code">
                   @for (line of aboutLines(); track $index) {
                     <div class="zed-editor__line">
                       <span class="zed-editor__number" aria-hidden="true">{{ $index + 1 }}</span>
-                      <code [style.padding-left.ch]="line.indent * 2">@for (part of line.parts; track $index) {<span [class]="'zed-editor__token zed-editor__token--' + (part.tone ?? 'plain')">{{ part.text }}</span>}</code>
+                      <code>@for (part of line.parts; track $index) {<span [class]="'zed-editor__token zed-editor__token--' + (part.tone ?? 'plain')">{{ part.text }}</span>}</code>
                     </div>
                   }
                 </div>
-                <div class="zed-editor__status"><span>⎇ main</span><span>TypeScript <i>·</i> UTF-8 <i>·</i> {{ isPt() ? 'PT-BR' : 'EN' }}</span></div>
+                <div class="zed-editor__status"><span>⎇ main</span><span>Markdown <i>·</i> UTF-8 <i>·</i> {{ isPt() ? 'PT-BR' : 'EN' }}</span></div>
               </div>
             }
             @case ('projects') {

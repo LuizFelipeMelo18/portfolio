@@ -27,9 +27,10 @@ describe('Desktop home', () => {
     const host = fixture.nativeElement as HTMLElement;
     (host.querySelector('[aria-label="Abrir Sobre"]') as HTMLButtonElement).click();
     fixture.detectChanges();
-    expect(host.querySelector('.zed-editor__tab')?.textContent).toContain('about.ts');
-    expect(host.querySelectorAll('.zed-editor__line').length).toBe(17);
-    expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Spring Boot');
+    expect(host.querySelector('.zed-editor__tab')?.textContent).toContain('about.md');
+    expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Desenvolvo sistemas corporativos de ponta a ponta');
+    expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Java, Kotlin e Spring Boot');
+    expect(host.querySelector('.zed-editor__code')?.textContent).not.toContain('export const');
     expect(host.querySelectorAll('.taskbar__window').length).toBe(1);
     (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
     fixture.detectChanges();

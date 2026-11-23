@@ -7,6 +7,8 @@ interface Track {
   readonly cover: string;
 }
 
+type LibraryView = 'tracks' | 'artists' | 'albums' | 'search';
+
 const TRACKS: readonly Track[] = [
   { title: 'Somewhere I Belong', artist: 'Linkin Park', file: 'Somewhere I Belong (Official Music Video) [4K UPGRADE] – Linkin Park.mp3', cover: 'meteora.jpg' },
   { title: 'Papercut', artist: 'Linkin Park', file: 'Papercut [Official HD Music Video] - Linkin Park.mp3', cover: 'hybrid-theory.jpg' },
@@ -39,9 +41,22 @@ export class MediaPlayer implements AfterViewInit {
   protected readonly duration = signal(0);
   protected readonly volume = signal(80);
   protected readonly playbackError = signal(false);
+  protected readonly view = signal<LibraryView>('tracks');
+  protected readonly searchQuery = signal('');
   protected readonly selectedTrack = computed(() => this.tracks[this.selectedIndex()]);
   protected readonly sourceUrl = computed(() => `/music/${encodeURIComponent(this.selectedTrack().file)}`);
   protected readonly coverUrl = computed(() => `/covers/${this.selectedTrack().cover}`);
+  protected readonly progress = computed(() => this.duration() > 0 ? Math.min(100, this.currentTime() / this.duration() * 100) : 0);
+  protected readonly visibleTracks = computed(() => {
+    const items = this.tracks.map((track, index) => ({ track, index }));
+    if (this.view() === 'artists') return items.sort((a, b) => a.track.artist.localeCompare(b.track.artist) || a.track.title.localeCompare(b.track.title));
+    if (this.view() === 'albums') return items.sort((a, b) => a.track.cover.localeCompare(b.track.cover) || a.track.title.localeCompare(b.track.title));
+    if (this.view() === 'search') {
+      const query = this.searchQuery().trim().toLocaleLowerCase();
+      return items.filter(({ track }) => `${track.title} ${track.artist}`.toLocaleLowerCase().includes(query));
+    }
+    return items;
+  });
 
   ngAfterViewInit(): void {
     const player = this.audio?.nativeElement;
@@ -86,6 +101,14 @@ export class MediaPlayer implements AfterViewInit {
     const value = Number((event.target as HTMLInputElement).value);
     this.volume.set(value);
     if (this.audio) this.audio.nativeElement.volume = value / 100;
+  }
+
+  protected changeView(view: LibraryView): void {
+    this.view.set(view);
+  }
+
+  protected updateSearch(event: Event): void {
+    this.searchQuery.set((event.target as HTMLInputElement).value);
   }
 
   protected onLoadedMetadata(): void {

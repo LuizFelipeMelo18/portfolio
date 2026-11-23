@@ -36,8 +36,7 @@ interface Wallpaper {
 }
 
 interface EditorLine {
-  readonly indent: number;
-  readonly parts: readonly { readonly text: string; readonly tone?: 'comment' | 'keyword' | 'property' | 'string' }[];
+  readonly parts: readonly { readonly text: string; readonly tone?: 'keyword' | 'heading' | 'comment' }[];
 }
 
 const WALLPAPER_STORAGE_KEY = 'portfolio-wallpaper';
@@ -77,27 +76,22 @@ export class Home implements OnInit, OnDestroy {
   protected readonly projects = computed(() => portfolioProjects(this.t().works.projects));
   protected readonly aboutLines = computed<readonly EditorLine[]>(() => {
     const pt = this.isPt();
-    const line = (indent: number, ...parts: EditorLine['parts']): EditorLine => ({ indent, parts });
-    const key = (text: string) => ({ text, tone: 'property' as const });
-    const string = (text: string) => ({ text: `"${text}"`, tone: 'string' as const });
+    const line = (...parts: EditorLine['parts']): EditorLine => ({ parts });
     return [
-      line(0, { text: pt ? '// sobre.ts · portfolio' : '// about.ts · portfolio', tone: 'comment' }),
-      line(0),
-      line(0, { text: 'export const ', tone: 'keyword' }, { text: 'luizFelipe = {' }),
-      line(1, key('name'), { text: ': ' }, string('Luiz Felipe Melo'), { text: ',' }),
-      line(1, key('role'), { text: ': ' }, string('Full Stack Developer'), { text: ',' }),
-      line(0),
-      line(1, { text: pt ? '// O que faço' : '// What I do', tone: 'comment' }),
-      line(1, key('focus'), { text: ': [' }, string('Java'), { text: ', ' }, string('Kotlin'), { text: ', ' }, string('Spring Boot'), { text: '],' }),
-      line(1, key('work'), { text: ': ' }, string(pt ? 'Da modelagem ao deploy em nuvem.' : 'From data modeling to cloud deployment.'), { text: ',' }),
-      line(1, key('goal'), { text: ': ' }, string(pt ? 'Sistemas seguros, escaláveis e fáceis de manter.' : 'Secure, scalable and maintainable systems.'), { text: ',' }),
-      line(0),
-      line(1, { text: pt ? '// Ferramentas e práticas' : '// Tools and practices', tone: 'comment' }),
-      line(1, key('frontend'), { text: ': [' }, string('Angular'), { text: ', ' }, string('React'), { text: '],' }),
-      line(1, key('databases'), { text: ': [' }, string('PostgreSQL'), { text: ', ' }, string('MySQL'), { text: '],' }),
-      line(1, key('practices'), { text: ': [' }, string(pt ? 'Testes' : 'Testing'), { text: ', ' }, string('CI/CD'), { text: ', ' }, string(pt ? 'Autenticação' : 'Authentication'), { text: ', ' }, string(pt ? 'Mensageria' : 'Messaging'), { text: '],' }),
-      line(1, key('values'), { text: ': [' }, string(pt ? 'Qualidade' : 'Quality'), { text: ', ' }, string(pt ? 'Colaboração' : 'Collaboration'), { text: ', ' }, string(pt ? 'Aprendizado contínuo' : 'Continuous learning'), { text: '],' }),
-      line(0, { text: '} ' }, { text: 'as const', tone: 'keyword' }, { text: ';' }),
+      line({ text: '# ', tone: 'keyword' }, { text: 'Luiz Felipe Melo', tone: 'heading' }),
+      line({ text: pt ? 'Desenvolvedor Full Stack' : 'Full Stack Developer', tone: 'comment' }),
+      line(),
+      line({ text: pt
+        ? 'Desenvolvo sistemas corporativos de ponta a ponta, com foco em Java, Kotlin e Spring Boot. Participo desde a concepção e modelagem de dados até os testes automatizados, pipelines de CI/CD e deploy em nuvem.'
+        : 'I build enterprise systems end to end, focusing on Java, Kotlin and Spring Boot. I work from the initial concept and data modeling through automated tests, CI/CD pipelines and cloud deployment.' }),
+      line(),
+      line({ text: pt
+        ? 'No dia a dia, trabalho com bancos de dados, mensageria assíncrona e autenticação segura. Contribuo para decisões técnicas e de arquitetura para criar soluções escaláveis, confiáveis e fáceis de manter.'
+        : 'My day-to-day work includes databases, asynchronous messaging and secure authentication. I contribute to technical and architectural decisions to keep systems scalable, reliable and maintainable.' }),
+      line(),
+      line({ text: pt
+        ? 'Também desenvolvo interfaces com Angular, React e TypeScript. Valorizo código limpo, testes, colaboração e aprendizado contínuo.'
+        : 'I also build interfaces with Angular, React and TypeScript. I value clean code, testing, collaboration and continuous learning.' }),
     ];
   });
 
@@ -115,7 +109,7 @@ export class Home implements OnInit, OnDestroy {
   protected readonly selectedWallpaper = computed(() => this.wallpapers.find((wallpaper) => wallpaper.id === this.wallpaperId())!);
 
   protected readonly apps: readonly DesktopApp[] = [
-    { id: 'about', pt: 'Sobre', en: 'About', hint: 'about.ts' },
+    { id: 'about', pt: 'Sobre', en: 'About', hint: 'about.md' },
     { id: 'projects', pt: 'Projetos', en: 'Projects', hint: '~/dev' },
     { id: 'stacks', pt: 'Stacks', en: 'Stacks', hint: 'stack.json' },
     { id: 'experience', pt: 'Experiência e formação', en: 'Experience & education', hint: 'history.log' },
@@ -155,8 +149,8 @@ export class Home implements OnInit, OnDestroy {
       this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
     } else {
       const offset = this.windows().length * 28;
-      const width = Math.min(id === 'media' ? 930 : id === 'about' ? 800 : 660, window.innerWidth - 40);
-      const preferredHeight = id === 'media' ? 590 : id === 'customize' ? 600 : id === 'about' ? 500 : id === 'contact' ? 370 : 440;
+      const width = Math.min(id === 'media' ? 860 : id === 'about' ? 800 : 660, window.innerWidth - 40);
+      const preferredHeight = id === 'media' ? 450 : id === 'customize' ? 600 : id === 'about' ? 500 : id === 'contact' ? 370 : 440;
       const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
       const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));

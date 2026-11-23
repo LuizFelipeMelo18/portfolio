@@ -14,11 +14,23 @@ describe('MediaPlayer', () => {
       const audio = host.querySelector('audio') as HTMLAudioElement;
 
       expect(host.querySelectorAll('.music-player__track').length).toBe(12);
+      expect(host.querySelectorAll('.music-player__tabs button').length).toBe(4);
       expect(host.querySelector('.music-player__track')?.textContent).toContain('Somewhere I Belong');
       expect(host.querySelector('.music-player__track')?.textContent).not.toContain('Meteora');
       expect(decodeURIComponent(audio.src)).toContain('Somewhere I Belong (Official Music Video) [4K UPGRADE] – Linkin Park.mp3');
       expect(host.querySelector<HTMLImageElement>('.music-player__cover')?.src).toContain('/covers/meteora.jpg');
+      expect(host.querySelector('.music-player__progress input[aria-label="Posição da música"]')).toBeTruthy();
 
+      (host.querySelectorAll('.music-player__tabs button')[3] as HTMLButtonElement).click();
+      fixture.detectChanges();
+      const search = host.querySelector('.music-player__search input') as HTMLInputElement;
+      search.value = 'Joji';
+      search.dispatchEvent(new Event('input'));
+      fixture.detectChanges();
+      expect(host.querySelectorAll('.music-player__track').length).toBe(2);
+
+      (host.querySelectorAll('.music-player__tabs button')[0] as HTMLButtonElement).click();
+      fixture.detectChanges();
       (host.querySelector('[aria-label="Papercut — Linkin Park"]') as HTMLButtonElement).click();
       fixture.detectChanges();
       expect(decodeURIComponent(audio.src)).toContain('Papercut [Official HD Music Video] - Linkin Park.mp3');
