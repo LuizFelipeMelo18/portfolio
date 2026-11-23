@@ -1,0 +1,160 @@
+<div class="explorer" role="region" [attr.aria-label]="isPt() ? 'Explorador de projetos' : 'Projects file explorer'">
+  <header class="explorer__toolbar">
+    <nav class="explorer__breadcrumb" [attr.aria-label]="isPt() ? 'Caminho atual' : 'Current path'">
+      <span class="explorer__crumb explorer__crumb--muted">~</span>
+      <span class="explorer__sep" aria-hidden="true">/</span>
+      <span class="explorer__crumb explorer__crumb--muted">dev</span>
+      <span class="explorer__sep" aria-hidden="true">/</span>
+      <button
+        type="button"
+        class="explorer__crumb explorer__crumb--link"
+        [class.explorer__crumb--current]="!selectedProject()"
+        (click)="openRootOverview()"
+      >
+        {{ rootFolderName() }}
+      </button>
+      @if (selectedProject(); as project) {
+        <span class="explorer__sep" aria-hidden="true">/</span>
+        <span class="explorer__crumb explorer__crumb--current">{{ project.folder }}</span>
+      }
+    </nav>
+    <span class="explorer__count">
+      {{ projects().length }} {{ isPt() ? 'pastas' : 'folders' }}
+    </span>
+  </header>
+
+  <div class="explorer__body">
+    <aside class="explorer__sidebar" [attr.aria-label]="isPt() ? 'Árvore de diretórios' : 'Directory tree'">
+      <div class="explorer-tree" role="tree" [attr.aria-label]="rootFolderName()">
+        <div class="explorer-tree__root-wrap" role="treeitem" [attr.aria-expanded]="treeExpanded()">
+          <button
+            type="button"
+            class="explorer-tree__root"
+            [class.explorer-tree__root--active]="!selectedProject()"
+            (click)="toggleRoot()"
+          >
+            <span class="explorer-tree__chevron" [class.explorer-tree__chevron--open]="treeExpanded()" aria-hidden="true">▸</span>
+            <svg class="explorer-tree__folder" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+            </svg>
+            <span class="explorer-tree__label">{{ rootFolderName() }}</span>
+          </button>
+
+          @if (treeExpanded()) {
+            <ul class="explorer-tree__children" role="group">
+              @for (project of projects(); track project.id) {
+                <li class="explorer-tree__item" role="none">
+                  <button
+                    type="button"
+                    role="treeitem"
+                    class="explorer-tree__node"
+                    [class.explorer-tree__node--active]="selectedProject()?.id === project.id"
+                    [attr.aria-selected]="selectedProject()?.id === project.id"
+                    (click)="selectProject(project.id)"
+                  >
+                    @if (selectedProject()?.id === project.id) {
+                      <svg class="explorer-tree__folder explorer-tree__folder--open" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.5l1.6 1.7h5.8a1.5 1.5 0 0 1 1.5 1.5v1.1H5.3a1.6 1.6 0 0 0-1.5 1.1l-1.3 4.3V5.2Z" opacity=".78" />
+                        <path d="M4.6 9h12.2a1 1 0 0 1 .95 1.3l-1.6 5.1a1.5 1.5 0 0 1-1.43 1.1H3.6a1 1 0 0 1-.95-1.3l1.55-5.1A1.4 1.4 0 0 1 4.6 9Z" />
+                      </svg>
+                    } @else {
+                      <svg class="explorer-tree__folder" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+                      </svg>
+                    }
+                    <span class="explorer-tree__label">{{ project.title }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      </div>
+    </aside>
+
+    <section class="explorer__detail" [attr.aria-label]="isPt() ? 'Detalhes do projeto' : 'Project details'">
+      @if (selectedProject(); as project) {
+        <div class="explorer-summary">
+          <div class="explorer-summary__filebar">
+            <span class="explorer-summary__badge">README.md</span>
+            <span class="explorer-summary__filepath">{{ currentPath() }}/README.md</span>
+          </div>
+
+          <div class="explorer-summary__content">
+            <div class="explorer-summary__header">
+              <div class="explorer-summary__icon" aria-hidden="true">
+                <svg viewBox="0 0 20 20">
+                  <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.5l1.6 1.7h5.8a1.5 1.5 0 0 1 1.5 1.5v1.1H5.3a1.6 1.6 0 0 0-1.5 1.1l-1.3 4.3V5.2Z" opacity=".78" />
+                  <path d="M4.6 9h12.2a1 1 0 0 1 .95 1.3l-1.6 5.1a1.5 1.5 0 0 1-1.43 1.1H3.6a1 1 0 0 1-.95-1.3l1.55-5.1A1.4 1.4 0 0 1 4.6 9Z" />
+                </svg>
+              </div>
+              <div class="explorer-summary__heading">
+                <h2>{{ project.title }}</h2>
+                <p>{{ project.repoName }}</p>
+              </div>
+            </div>
+
+            <div class="explorer-summary__section">
+              <h3>{{ isPt() ? 'Resumo' : 'Summary' }}</h3>
+              <p class="explorer-summary__description">{{ project.description }}</p>
+            </div>
+
+            <div class="explorer-summary__section">
+              <h3>{{ isPt() ? 'Tecnologias' : 'Technologies' }}</h3>
+              <ul class="explorer-summary__tags">
+                @for (tech of project.stack; track tech) {
+                  <li>{{ tech }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="explorer-summary__meta">
+              <div>
+                <span>{{ isPt() ? 'Diretório' : 'Directory' }}</span>
+                <strong>{{ currentPath() }}</strong>
+              </div>
+              <div>
+                <span>{{ isPt() ? 'Repositório' : 'Repository' }}</span>
+                <strong>{{ project.repoName }}</strong>
+              </div>
+            </div>
+
+            <div class="explorer-summary__actions">
+              <a
+                class="explorer-summary__repo-link"
+                [href]="project.githubLink"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>{{ isPt() ? 'Abrir repositório no GitHub' : 'Open repository on GitHub' }}</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="explorer-overview">
+          <p class="explorer-overview__hint">
+            {{ isPt() ? 'Selecione uma pasta para ver o resumo e o link do repositório.' : 'Select a folder to view its summary and repository link.' }}
+          </p>
+          <div class="explorer-overview__grid">
+            @for (project of projects(); track project.id) {
+              <button type="button" class="explorer-overview__card" (click)="selectProject(project.id)">
+                <svg class="explorer-tree__folder" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+                </svg>
+                <strong>{{ project.title }}</strong>
+                <small>{{ project.technologies }}</small>
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </section>
+  </div>
+
+  <footer class="explorer__status">
+    <span>{{ currentPath() }}</span>
+    <span>{{ isPt() ? 'GitHub' : 'GitHub' }} <i>·</i> {{ projects().length }} {{ isPt() ? 'itens' : 'items' }}</span>
+  </footer>
+</div>
