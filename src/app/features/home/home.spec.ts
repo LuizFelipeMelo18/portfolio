@@ -14,6 +14,17 @@ describe('Desktop home', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelectorAll('.desktop-icon').length).toBe(9);
+    expect(Array.from(host.querySelectorAll('.desktop-icon__label')).map((el) => el.textContent?.trim())).toEqual([
+      'Sobre',
+      'Projetos',
+      'Stacks',
+      'Experiência e formação',
+      'Personal',
+      'Media Player',
+      'Biblioteca',
+      'Personalizar',
+      'Contato',
+    ]);
     expect(host.querySelectorAll('.desktop-icon__tile img').length).toBe(9);
     expect(host.querySelectorAll('.app-window').length).toBe(0);
     expect(host.querySelectorAll('.taskbar__window').length).toBe(0);

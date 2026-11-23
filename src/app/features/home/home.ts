@@ -129,10 +129,10 @@ export class Home implements OnInit, OnDestroy {
     { id: 'projects', pt: 'Projetos', en: 'Projects', hint: '~/dev' },
     { id: 'stacks', pt: 'Stacks', en: 'Stacks', hint: 'stack.json' },
     { id: 'experience', pt: 'Experiência e formação', en: 'Experience & education', hint: 'history.log' },
-    { id: 'library', pt: 'Biblioteca', en: 'Library', hint: 'library' },
     { id: 'personal', pt: 'Personal', en: 'Personal', hint: 'personal' },
-    { id: 'customize', pt: 'Personalizar', en: 'Customize', hint: 'settings' },
     { id: 'media', pt: 'Media Player', en: 'Media Player', hint: 'media' },
+    { id: 'library', pt: 'Biblioteca', en: 'Library', hint: 'library' },
+    { id: 'customize', pt: 'Personalizar', en: 'Customize', hint: 'settings' },
     { id: 'contact', pt: 'Contato', en: 'Contact', hint: 'network' },
   ];
 
