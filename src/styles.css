@@ -55,7 +55,11 @@ a { color: inherit; }
 .zed-editor__tabs { flex: 0 0 37px; display: flex; align-items: stretch; border-bottom: 1px solid #ffffff17; background: #343a43a8; }
 .zed-editor__brand { display: grid; place-items: center; width: 58px; color: #a4adb5; font-size: 12px; font-weight: 700; letter-spacing: -.06em; }
 .zed-editor__tab { display: flex; align-items: center; gap: 8px; padding: 0 17px; border-right: 1px solid #ffffff19; border-bottom: 1px solid #9eb4c3; background: #2b323b; color: #e6edf0; font-size: 12px; }
+.zed-editor__tab-btn { border-top: 0; border-left: 0; font-family: inherit; }
+.zed-editor__tab--inactive { border-bottom-color: transparent; background: transparent; color: #96a4ae; }
+.zed-editor__tab--inactive:hover,.zed-editor__tab--inactive:focus-visible { background: #2f3640; color: #dce3e7; }
 .zed-editor__file-icon { color: #a7bed4; font-size: 10px; font-weight: 700; }
+.zed-editor__file-icon--json { color: #bdd0aa; }
 .zed-editor__breadcrumb { flex: 0 0 29px; display: flex; align-items: center; gap: 9px; padding: 0 18px; color: #9ca9b3; font-size: 11px; }
 .zed-editor__breadcrumb span { color: #6f7d88; }
 .zed-editor__code { flex: 1; min-height: 0; overflow: auto; padding: 7px 0 14px; scrollbar-color: #65717e transparent; }
@@ -67,6 +71,7 @@ a { color: inherit; }
 .zed-editor__token--heading { color: #e5ecee; font-weight: 700; }
 .zed-editor__token--property { color: #a5c3d4; }
 .zed-editor__token--string { color: #bdd0aa; }
+.zed-editor__token--punct { color: #8c9aa4; }
 .zed-editor__status { flex: 0 0 27px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 13px; border-top: 1px solid #ffffff17; background: #343a43a8; color: #adb9c2; font-size: 10px; white-space: nowrap; }
 .zed-editor__status i { padding: 0 4px; color: #7f8e99; font-style: normal; }
 .file-list { border-top: 1px solid var(--line); }.file-list a { display: grid; grid-template-columns: 36px 1fr auto; gap: 13px; align-items: start; padding: 16px 0; border-bottom: 1px solid var(--line); text-decoration: none; }.file-list a:hover strong,.file-list a:hover b { color: var(--cyan); }.file-list__icon { color: var(--cyan); font-size: 26px; }.file-list strong,.file-list small { display: block; }.file-list strong { margin-bottom: 5px; }.file-list small { margin-top: 4px; color: var(--muted); line-height: 1.5; }.file-list b { font-weight: 400; }

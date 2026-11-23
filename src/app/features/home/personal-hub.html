@@ -1,0 +1,51 @@
+<div class="personal" role="region" [attr.aria-label]="isPt() ? 'Favoritos pessoais' : 'Personal favorites'">
+  <header class="personal__header">
+    <div class="personal__title">
+      <span class="personal__path">~/personal/{{ currentTab().path }}</span>
+      <span class="personal__total">{{ totalItems }} {{ isPt() ? 'favoritos' : 'favorites' }}</span>
+    </div>
+
+    <nav class="personal__tabs" role="tablist" [attr.aria-label]="isPt() ? 'Categorias pessoais' : 'Personal categories'">
+      @for (tab of tabs; track tab.id) {
+        <button
+          type="button"
+          role="tab"
+          class="personal__tab"
+          [class.personal__tab--active]="activeTab() === tab.id"
+          [attr.aria-selected]="activeTab() === tab.id"
+          (click)="selectTab(tab.id)"
+        >
+          <span>{{ tabLabel(tab) }}</span>
+        </button>
+      }
+    </nav>
+  </header>
+
+  <main class="personal__content" [attr.aria-label]="tabLabel(currentTab())">
+    <div class="personal__grid" [class.personal__grid--music]="activeTab() === 'music'">
+      @for (item of visibleItems(); track item.id) {
+        <article class="personal-card" [class.personal-card--music]="activeTab() === 'music'">
+          <div class="personal-card__media">
+            @if (activeTab() === 'music') {
+              <span class="personal-card__vinyl" aria-hidden="true"></span>
+            }
+            <div class="personal-card__frame">
+              <img [src]="item.cover" [alt]="item.title" loading="lazy" />
+              <span class="personal-card__index" aria-hidden="true">0{{ $index + 1 }}</span>
+            </div>
+          </div>
+
+          <div class="personal-card__meta">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.subtitle }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  </main>
+
+  <footer class="personal__status">
+    <span>~/personal/{{ currentTab().path }}</span>
+    <span>{{ visibleItems().length }} {{ isPt() ? 'itens' : 'items' }} <i>·</i> {{ tabLabel(currentTab()) }}</span>
+  </footer>
+</div>

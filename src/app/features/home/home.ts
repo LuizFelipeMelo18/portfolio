@@ -7,6 +7,7 @@ import { TranslationService } from '../../core/services/translation.service';
 import { ExperienceLog } from './experience-log';
 import { LibraryShelf } from './library-shelf';
 import { MediaPlayer } from './media-player';
+import { PersonalHub } from './personal-hub';
 import { ProjectsExplorer } from './projects-explorer';
 
 type AppId = 'about' | 'projects' | 'stacks' | 'experience' | 'library' | 'personal' | 'customize' | 'media' | 'contact';
@@ -38,15 +39,19 @@ interface Wallpaper {
   readonly en: string;
 }
 
+type EditorTone = 'keyword' | 'heading' | 'comment' | 'property' | 'string' | 'punct';
+
 interface EditorLine {
-  readonly parts: readonly { readonly text: string; readonly tone?: 'keyword' | 'heading' | 'comment' }[];
+  readonly parts: readonly { readonly text: string; readonly tone?: EditorTone }[];
 }
+
+type StackTab = 'json' | 'md';
 
 const WALLPAPER_STORAGE_KEY = 'portfolio-wallpaper';
 
 @Component({
   selector: 'app-home',
-  imports: [DatePipe, ExperienceLog, LibraryShelf, MediaPlayer, ProjectsExplorer],
+  imports: [DatePipe, ExperienceLog, LibraryShelf, MediaPlayer, PersonalHub, ProjectsExplorer],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -76,6 +81,7 @@ export class Home implements OnInit, OnDestroy {
   protected readonly menuQuery = signal('');
   protected readonly windows = signal<readonly DesktopWindow[]>([]);
   protected readonly activeId = signal<AppId | null>(null);
+  protected readonly stackTab = signal<StackTab>('json');
   protected readonly projects = computed(() => portfolioProjects(this.t().works.projects));
   protected readonly aboutLines = computed<readonly EditorLine[]>(() => {
     const pt = this.isPt();
@@ -110,6 +116,63 @@ export class Home implements OnInit, OnDestroy {
       line({ text: pt ? 'Desenvolvedor Full Stack' : 'Full Stack Developer', tone: 'comment' }),
       line(),
       ...textLines.map((text) => (text ? line({ text }) : line())),
+    ];
+  });
+
+  protected readonly stackLines = computed<readonly EditorLine[]>(() => {
+    const pt = this.isPt();
+    const line = (...parts: EditorLine['parts']): EditorLine => ({ parts });
+    const p = (text: string) => ({ text, tone: 'punct' as const });
+    const key = (name: string) => ({ text: `"${name}"`, tone: 'property' as const });
+    const str = (value: string) => ({ text: `"${value}"`, tone: 'string' as const });
+    const strList = (items: readonly string[], trailingComma = false): EditorLine['parts'] =>
+      items.flatMap((item, idx) =>
+        idx < items.length - 1 ? [str(item), p(', ')] : trailingComma ? [str(item), p(',')] : [str(item)]
+      );
+
+    if (this.stackTab() === 'md') {
+      const h2 = (title: string) => line({ text: '## ', tone: 'keyword' }, { text: title, tone: 'heading' });
+      const bullet = (items: string) => line({ text: '- ', tone: 'property' }, { text: items });
+      return [
+        line({ text: '# ', tone: 'keyword' }, { text: 'Stacks', tone: 'heading' }),
+        line(),
+        h2(pt ? 'Linguagens' : 'Languages'),
+        bullet('Java, Kotlin, TypeScript, JavaScript'),
+        line(),
+        h2('Frameworks'),
+        bullet('Spring Boot, Spring Security, Spring Data JPA'),
+        bullet('Angular, React'),
+        line(),
+        h2(pt ? 'Bancos de dados' : 'Databases'),
+        bullet('PostgreSQL, MySQL'),
+        line(),
+        h2(pt ? 'Ferramentas e Infra' : 'Tools & Infrastructure'),
+        bullet('Git, Docker, Linux, AWS, GitHub Actions'),
+        bullet('RabbitMQ, Apache Kafka'),
+        line(),
+        h2(pt ? 'Testes e Práticas' : 'Testing & Practices'),
+        bullet('JUnit, Mockito, REST APIs, SOLID'),
+        bullet('Clean Code, DDD, Hexagonal Architecture'),
+      ];
+    }
+
+    return [
+      line(p('{')),
+      line(p('  '), key(pt ? 'linguagens' : 'languages'), p(': ['), ...strList(['Java', 'Kotlin', 'TypeScript', 'JavaScript']), p('],')),
+      line(p('  '), key('frameworks'), p(': [')),
+      line(p('    '), ...strList(['Spring Boot', 'Spring Security', 'Spring Data JPA'], true)),
+      line(p('    '), ...strList(['Angular', 'React'])),
+      line(p('  ],')),
+      line(p('  '), key(pt ? 'bancosDeDados' : 'databases'), p(': ['), ...strList(['PostgreSQL', 'MySQL']), p('],')),
+      line(p('  '), key(pt ? 'infraEMensageria' : 'toolsAndInfra'), p(': [')),
+      line(p('    '), ...strList(['Git', 'Docker', 'Linux', 'AWS', 'GitHub Actions'], true)),
+      line(p('    '), ...strList(['RabbitMQ', 'Apache Kafka'])),
+      line(p('  ],')),
+      line(p('  '), key(pt ? 'testesEPraticas' : 'testingAndPractices'), p(': [')),
+      line(p('    '), ...strList(['JUnit', 'Mockito', 'REST APIs', 'SOLID'], true)),
+      line(p('    '), ...strList(['Clean Code', 'DDD', 'Hexagonal Architecture'])),
+      line(p('  ]')),
+      line(p('}')),
     ];
   });
 
@@ -167,8 +230,8 @@ export class Home implements OnInit, OnDestroy {
       this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
     } else {
       const offset = this.windows().length * 28;
-      const width = Math.min(id === 'experience' || id === 'library' ? 960 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : 660, window.innerWidth - 40);
-      const preferredHeight = id === 'customize' ? 600 : id === 'experience' || id === 'library' ? 580 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
+      const width = Math.min(id === 'experience' || id === 'library' ? 960 : id === 'personal' ? 880 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : id === 'stacks' ? 760 : 660, window.innerWidth - 40);
+      const preferredHeight = id === 'customize' ? 600 : id === 'experience' || id === 'library' || id === 'personal' ? 580 : id === 'stacks' ? 560 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
       const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
       const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));
@@ -242,6 +305,10 @@ export class Home implements OnInit, OnDestroy {
 
   protected selectLanguage(language: 'PT-BR' | 'EN'): void {
     this.translation.setLanguage(language);
+  }
+
+  protected selectStackTab(tab: StackTab): void {
+    this.stackTab.set(tab);
   }
 
   protected wallpaperLabel(wallpaper: Wallpaper): string {
