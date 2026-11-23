@@ -18,10 +18,14 @@ interface DesktopWindow {
   readonly id: AppId;
   readonly x: number;
   readonly y: number;
+  readonly width: number;
+  readonly height: number;
   readonly z: number;
   readonly minimized: boolean;
   readonly maximized: boolean;
 }
+
+type ResizeEdge = 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w' | 'nw';
 
 interface Wallpaper {
   readonly id: string;
@@ -41,6 +45,8 @@ const WALLPAPER_STORAGE_KEY = 'portfolio-wallpaper';
   host: {
     '(document:pointermove)': 'onPointerMove($event)',
     '(document:pointerup)': 'endDrag()',
+    '(document:pointercancel)': 'endDrag()',
+    '(document:pointerdown)': 'onDocumentPointerDown($event)',
     '(document:keydown.escape)': 'closeMenu()',
   },
 })
@@ -49,6 +55,7 @@ export class Home implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private nextZ = 10;
   private drag: { id: AppId; startX: number; startY: number; x: number; y: number } | null = null;
+  private resize: { id: AppId; edge: ResizeEdge; startX: number; startY: number; x: number; y: number; width: number; height: number } | null = null;
   private readonly clock = setInterval(() => this.now.set(new Date()), 30_000);
 
   protected readonly now = signal(new Date());
@@ -57,6 +64,7 @@ export class Home implements OnInit, OnDestroy {
   protected readonly t = this.translation.t;
   protected readonly contact = CONTACT_INFO;
   protected readonly menuOpen = signal(false);
+  protected readonly contextMenu = signal<{ x: number; y: number } | null>(null);
   protected readonly menuQuery = signal('');
   protected readonly windows = signal<readonly DesktopWindow[]>([]);
   protected readonly activeId = signal<AppId | null>(null);
@@ -76,7 +84,7 @@ export class Home implements OnInit, OnDestroy {
   protected readonly selectedWallpaper = computed(() => this.wallpapers.find((wallpaper) => wallpaper.id === this.wallpaperId())!);
 
   protected readonly apps: readonly DesktopApp[] = [
-    { id: 'about', pt: 'Sobre', en: 'About', hint: 'fastfetch' },
+    { id: 'about', pt: 'Sobre', en: 'About', hint: 'about.txt' },
     { id: 'projects', pt: 'Projetos', en: 'Projects', hint: '~/dev' },
     { id: 'stacks', pt: 'Stacks', en: 'Stacks', hint: 'stack.json' },
     { id: 'experience', pt: 'Experiência e formação', en: 'Experience & education', hint: 'history.log' },
@@ -116,10 +124,12 @@ export class Home implements OnInit, OnDestroy {
       this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
     } else {
       const offset = this.windows().length * 28;
-      const width = id === 'about' ? 800 : 650;
+      const width = Math.min(660, window.innerWidth - 40);
+      const preferredHeight = id === 'customize' ? 600 : id === 'about' ? 390 : 440;
+      const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
-      const y = Math.max(24, Math.min(70 + offset, window.innerHeight - 220));
-      this.windows.update((items) => [...items, { id, x, y, z, minimized: false, maximized: false }]);
+      const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));
+      this.windows.update((items) => [...items, { id, x, y, width, height, z, minimized: false, maximized: false }]);
     }
     this.activeId.set(id);
     this.closeMenu();
@@ -151,6 +161,7 @@ export class Home implements OnInit, OnDestroy {
   }
 
   protected toggleMenu(): void {
+    this.contextMenu.set(null);
     this.menuOpen.update((open) => !open);
     this.menuQuery.set('');
   }
@@ -158,6 +169,28 @@ export class Home implements OnInit, OnDestroy {
   protected closeMenu(): void {
     this.menuOpen.set(false);
     this.menuQuery.set('');
+    this.contextMenu.set(null);
+  }
+
+  protected openContextMenu(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (target.closest('.app-window, .taskbar, .app-menu, a')) return;
+    event.preventDefault();
+    this.menuOpen.set(false);
+    this.contextMenu.set({
+      x: Math.min(event.clientX, window.innerWidth - 228),
+      y: Math.min(event.clientY, window.innerHeight - 190),
+    });
+  }
+
+  protected onDocumentPointerDown(event: PointerEvent): void {
+    if (this.contextMenu() && !(event.target as HTMLElement).closest('.desktop-context-menu')) this.contextMenu.set(null);
+  }
+
+  protected showDesktop(): void {
+    this.windows.update((items) => items.map((item) => ({ ...item, minimized: true })));
+    this.updateActive();
+    this.closeMenu();
   }
 
   protected updateQuery(event: Event): void {
@@ -189,15 +222,43 @@ export class Home implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
+  protected startResize(event: PointerEvent, desktopWindow: DesktopWindow, edge: ResizeEdge): void {
+    if (desktopWindow.maximized || event.button !== 0 || window.innerWidth <= 600) return;
+    this.focusWindow(desktopWindow.id);
+    this.resize = { id: desktopWindow.id, edge, startX: event.clientX, startY: event.clientY, x: desktopWindow.x, y: desktopWindow.y, width: desktopWindow.width, height: desktopWindow.height };
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   protected onPointerMove(event: PointerEvent): void {
+    if (this.resize) {
+      const origin = this.resize;
+      const dx = event.clientX - origin.startX;
+      const dy = event.clientY - origin.startY;
+      let { x, y, width, height } = origin;
+      if (origin.edge.includes('e')) width = Math.max(340, Math.min(origin.width + dx, window.innerWidth - origin.x - 8));
+      if (origin.edge.includes('w')) {
+        x = Math.max(8, Math.min(origin.x + dx, origin.x + origin.width - 340));
+        width = origin.width + origin.x - x;
+      }
+      if (origin.edge.includes('s')) height = Math.max(260, Math.min(origin.height + dy, window.innerHeight - origin.y - 52));
+      if (origin.edge.includes('n')) {
+        y = Math.max(8, Math.min(origin.y + dy, origin.y + origin.height - 260));
+        height = origin.height + origin.y - y;
+      }
+      this.windows.update((items) => items.map((item) => item.id === origin.id ? { ...item, x, y, width, height } : item));
+      return;
+    }
     if (!this.drag) return;
-    const x = Math.max(0, Math.min(this.drag.x + event.clientX - this.drag.startX, window.innerWidth - 180));
-    const y = Math.max(0, Math.min(this.drag.y + event.clientY - this.drag.startY, window.innerHeight - 110));
+    const current = this.windows().find((item) => item.id === this.drag!.id)!;
+    const x = Math.max(8, Math.min(this.drag.x + event.clientX - this.drag.startX, window.innerWidth - current.width - 8));
+    const y = Math.max(8, Math.min(this.drag.y + event.clientY - this.drag.startY, window.innerHeight - current.height - 52));
     this.windows.update((items) => items.map((item) => item.id === this.drag!.id ? { ...item, x, y } : item));
   }
 
   protected endDrag(): void {
     this.drag = null;
+    this.resize = null;
   }
 
   private updateActive(): void {

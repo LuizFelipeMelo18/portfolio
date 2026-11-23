@@ -1,4 +1,4 @@
-<main class="desktop" aria-label="Área de trabalho" [style.background-image]="'url(' + selectedWallpaper().src + ')'">
+<main class="desktop" aria-label="Área de trabalho" [style.background-image]="'url(' + selectedWallpaper().src + ')'" (contextmenu)="openContextMenu($event)">
   <nav class="desktop-icons" aria-label="Aplicativos na área de trabalho">
     @for (app of apps; track app.id) {
       <button class="desktop-icon" type="button" (click)="openApp(app.id)" [attr.aria-label]="'Abrir ' + label(app)" [attr.title]="label(app)">
@@ -10,7 +10,7 @@
 
   @for (desktopWindow of windows(); track desktopWindow.id) {
     @if (!desktopWindow.minimized) {
-      <section class="app-window" [class.app-window--maximized]="desktopWindow.maximized" [class.app-window--active]="activeId() === desktopWindow.id" [attr.aria-label]="label(appFor(desktopWindow.id))" [attr.data-app]="desktopWindow.id" [style.left.px]="desktopWindow.x" [style.top.px]="desktopWindow.y" [style.z-index]="desktopWindow.z" (pointerdown)="focusWindow(desktopWindow.id)">
+      <section class="app-window" [class.app-window--maximized]="desktopWindow.maximized" [class.app-window--active]="activeId() === desktopWindow.id" [attr.aria-label]="label(appFor(desktopWindow.id))" [attr.data-app]="desktopWindow.id" [style.left.px]="desktopWindow.x" [style.top.px]="desktopWindow.y" [style.width.px]="desktopWindow.width" [style.height.px]="desktopWindow.height" [style.z-index]="desktopWindow.z" (pointerdown)="focusWindow(desktopWindow.id)">
         <header class="app-window__bar">
           <div class="app-window__title" (pointerdown)="startDrag($event, desktopWindow)" [attr.aria-label]="(isPt() ? 'Mover ' : 'Move ') + label(appFor(desktopWindow.id))"></div>
           <div class="app-window__controls">
@@ -23,45 +23,12 @@
         <div class="app-window__body">
           @switch (desktopWindow.id) {
             @case ('about') {
-              <div class="fetch">
-                <div class="fetch__command"><span>luiz&#64;archlinux</span>:~$ fastfetch</div>
-                <div class="fetch__grid">
-                  <pre class="fetch__ascii" aria-hidden="true">
-                 .o+.
-                .ooo/
-               .+oooo:
-              .+oooooo:
-             -+oooooo+:
-           ./:-:++oooo+:
-          ./++++/+++++++:
-         ./++++++++++++++:
-        ./+++ooooooooooooo/
-       ./ooosssso++osssssso+.
-      .oossssso-   .ossssss+.
-     -osssssso.      :ssssss+.
-    :osssssss/        osssso+++.
-   /ossssssss/        +ssssooo/-
-  /ossssso+/:-        -:/+osssso+-
- .osssso+/                       +-
-                ARCH LINUX</pre>
-                  <div class="fetch__details">
-                    <strong>luizfelipe<span>&#64;</span>archlinux</strong>
-                    <div class="fetch__separator"></div>
-                    <dl>
-                      <div><dt>{{ isPt() ? 'Nome' : 'Name' }}</dt><dd>Luiz Felipe Melo</dd></div>
-                      <div><dt>{{ isPt() ? 'Atuação' : 'Role' }}</dt><dd>Full Stack Developer</dd></div>
-                      <div><dt>{{ isPt() ? 'Linguagens' : 'Languages' }}</dt><dd>Java, TypeScript, JavaScript, Kotlin</dd></div>
-                      <div><dt>Frameworks</dt><dd>Spring Boot, Angular, React</dd></div>
-                      <div><dt>{{ isPt() ? 'Bancos' : 'Databases' }}</dt><dd>PostgreSQL, MySQL</dd></div>
-                      <div><dt>{{ isPt() ? 'Ferramentas' : 'Tools' }}</dt><dd>Git, Docker, Linux</dd></div>
-                      <div><dt>{{ isPt() ? 'Contato' : 'Contact' }}</dt><dd><a [href]="'mailto:' + contact.email">{{ contact.email }}</a></dd></div>
-                      <div><dt>GitHub</dt><dd><a [href]="contact.githubUrl" target="_blank" rel="noopener noreferrer">LuizFelipeMelo18</a></dd></div>
-                      <div><dt>LinkedIn</dt><dd><a [href]="contact.linkedinUrl" target="_blank" rel="noopener noreferrer">Luiz Felipe Melo</a></dd></div>
-                    </dl>
-                    <div class="fetch__swatches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                  </div>
-                </div>
-                <div class="fetch__prompt">luiz&#64;archlinux:~$ <span class="fetch__cursor">▌</span></div>
+              <div class="app-content about-content">
+                <p class="app-content__path">~/about.txt</p>
+                <h2>{{ isPt() ? 'Sobre mim' : 'About me' }}</h2>
+                <p class="about-content__role">Luiz Felipe Melo <span>·</span> Full Stack Developer</p>
+                <p>{{ isPt() ? 'Desenvolvedor Full Stack com foco em Java, Kotlin e Spring Boot. Participo de todo o ciclo de desenvolvimento, da modelagem de dados ao deploy em nuvem, criando sistemas seguros, escaláveis e fáceis de manter.' : 'Full Stack Developer focused on Java, Kotlin and Spring Boot. I work across the development lifecycle, from data modeling to cloud deployment, building secure, scalable and maintainable systems.' }}</p>
+                <p>{{ isPt() ? 'Tenho experiência com Angular, React, bancos relacionais, testes automatizados, CI/CD, autenticação e mensageria. Qualidade de código, colaboração e aprendizado contínuo orientam meu trabalho.' : 'My experience includes Angular, React, relational databases, automated testing, CI/CD, authentication and messaging. Code quality, collaboration and continuous learning guide my work.' }}</p>
               </div>
             }
             @case ('projects') {
@@ -97,6 +64,16 @@
             }
           }
         </div>
+        @if (!desktopWindow.maximized) {
+          <div class="app-window__resize app-window__resize--n" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'n')"></div>
+          <div class="app-window__resize app-window__resize--ne" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'ne')"></div>
+          <div class="app-window__resize app-window__resize--e" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'e')"></div>
+          <div class="app-window__resize app-window__resize--se" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'se')"></div>
+          <div class="app-window__resize app-window__resize--s" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 's')"></div>
+          <div class="app-window__resize app-window__resize--sw" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'sw')"></div>
+          <div class="app-window__resize app-window__resize--w" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'w')"></div>
+          <div class="app-window__resize app-window__resize--nw" aria-hidden="true" (pointerdown)="startResize($event, desktopWindow, 'nw')"></div>
+        }
       </section>
     }
   }
@@ -112,6 +89,15 @@
         } @empty { <p class="app-menu__empty">{{ isPt() ? 'Nenhum aplicativo encontrado.' : 'No apps found.' }}</p> }
       </div>
     </section>
+  }
+
+  @if (contextMenu(); as menu) {
+    <div class="desktop-context-menu" role="menu" [attr.aria-label]="isPt() ? 'Menu da área de trabalho' : 'Desktop menu'" [style.left.px]="menu.x" [style.top.px]="menu.y">
+      <button type="button" role="menuitem" (click)="openApp('about')"><img src="/icons/about.svg" alt="" />{{ isPt() ? 'Abrir Sobre' : 'Open About' }}</button>
+      <button type="button" role="menuitem" (click)="openApp('projects')"><img src="/icons/projects.svg" alt="" />{{ isPt() ? 'Abrir Projetos' : 'Open Projects' }}</button>
+      <button type="button" role="menuitem" (click)="openApp('customize')"><img src="/icons/customize.svg" alt="" />{{ isPt() ? 'Personalizar plano de fundo' : 'Change wallpaper' }}</button>
+      <button type="button" role="menuitem" (click)="showDesktop()"><img src="/arch-mark.svg" alt="" />{{ isPt() ? 'Mostrar área de trabalho' : 'Show desktop' }}</button>
+    </div>
   }
 
   <footer class="taskbar">

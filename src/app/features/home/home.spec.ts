@@ -27,7 +27,7 @@ describe('Desktop home', () => {
     const host = fixture.nativeElement as HTMLElement;
     (host.querySelector('[aria-label="Abrir Sobre"]') as HTMLButtonElement).click();
     fixture.detectChanges();
-    expect(host.querySelector('.fetch__details')?.textContent).toContain('Luiz Felipe Melo');
+    expect(host.querySelector('.about-content')?.textContent).toContain('Java, Kotlin e Spring Boot');
     expect(host.querySelectorAll('.taskbar__window').length).toBe(1);
     (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
     fixture.detectChanges();
@@ -113,5 +113,44 @@ describe('Desktop home', () => {
       if (previous === null) localStorage.removeItem('portfolio-wallpaper');
       else localStorage.setItem('portfolio-wallpaper', previous);
     }
+  });
+
+  it('opens a desktop context menu and launches an app from it', () => {
+    const fixture = TestBed.createComponent(Home);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    const desktop = host.querySelector('.desktop') as HTMLElement;
+    const event = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 120, clientY: 100 });
+    desktop.dispatchEvent(event);
+    fixture.detectChanges();
+    expect(event.defaultPrevented).toBe(true);
+    expect(host.querySelectorAll('.desktop-context-menu [role="menuitem"]').length).toBe(4);
+    (host.querySelector('.desktop-context-menu [role="menuitem"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.about-content')).toBeTruthy();
+    expect(host.querySelector('.desktop-context-menu')).toBeNull();
+    fixture.destroy();
+  });
+
+  it('resizes a window from its right and bottom edges', () => {
+    const fixture = TestBed.createComponent(Home);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const windowElement = host.querySelector('.app-window') as HTMLElement;
+    const initialWidth = parseInt(windowElement.style.width, 10);
+    const initialHeight = parseInt(windowElement.style.height, 10);
+    (host.querySelector('.app-window__resize--w') as HTMLElement).dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, cancelable: true, button: 0, clientX: 300, clientY: 300 }));
+    document.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, clientX: 240, clientY: 300 }));
+    document.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+    fixture.detectChanges();
+    expect(parseInt(windowElement.style.width, 10)).toBeGreaterThan(initialWidth);
+    (host.querySelector('.app-window__resize--s') as HTMLElement).dispatchEvent(new MouseEvent('pointerdown', { bubbles: true, cancelable: true, button: 0, clientX: 500, clientY: 500 }));
+    document.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, clientX: 500, clientY: 550 }));
+    document.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+    fixture.detectChanges();
+    expect(parseInt(windowElement.style.height, 10)).toBeGreaterThan(initialHeight);
+    fixture.destroy();
   });
 });
