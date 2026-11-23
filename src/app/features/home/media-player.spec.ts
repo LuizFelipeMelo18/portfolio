@@ -16,8 +16,12 @@ describe('MediaPlayer', () => {
       expect(host.querySelectorAll('.music-player__track').length).toBe(12);
       expect(host.querySelector('.music-player__track')?.textContent).toContain('Somewhere I Belong');
       expect(host.querySelector('.music-player__track')?.textContent).not.toContain('Meteora');
-      expect(decodeURIComponent(audio.src)).toContain('Somewhere I Belong (Official Music Video)');
+      expect(decodeURIComponent(audio.src)).toContain('Somewhere I Belong (Official Music Video) [4K UPGRADE] – Linkin Park.mp3');
       expect(host.querySelector<HTMLImageElement>('.music-player__cover')?.src).toContain('/covers/meteora.jpg');
+
+      (host.querySelector('[aria-label="Papercut — Linkin Park"]') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect(decodeURIComponent(audio.src)).toContain('Papercut [Official HD Music Video] - Linkin Park.mp3');
 
       (host.querySelector('[aria-label="Pixelated Kisses — Joji"]') as HTMLButtonElement).click();
       fixture.detectChanges();

@@ -8,8 +8,8 @@ interface Track {
 }
 
 const TRACKS: readonly Track[] = [
-  { title: 'Somewhere I Belong', artist: 'Linkin Park', file: 'Somewhere I Belong (Official Music Video) [4K UPGRADE] – Linkin Park.webm', cover: 'meteora.jpg' },
-  { title: 'Papercut', artist: 'Linkin Park', file: 'Papercut [Official HD Music Video] - Linkin Park.webm', cover: 'hybrid-theory.jpg' },
+  { title: 'Somewhere I Belong', artist: 'Linkin Park', file: 'Somewhere I Belong (Official Music Video) [4K UPGRADE] – Linkin Park.mp3', cover: 'meteora.jpg' },
+  { title: 'Papercut', artist: 'Linkin Park', file: 'Papercut [Official HD Music Video] - Linkin Park.mp3', cover: 'hybrid-theory.jpg' },
   { title: 'One Step Closer', artist: 'Linkin Park', file: 'One Step Closer.mp3', cover: 'hybrid-theory.jpg' },
   { title: 'Lying from You', artist: 'Linkin Park', file: 'Lying From You - Linkin Park (Meteora).mp3', cover: 'meteora.jpg' },
   { title: 'Pixelated Kisses', artist: 'Joji', file: 'Joji - PIXELATED KISSES.mp3', cover: 'pixelated-kisses.jpg' },
