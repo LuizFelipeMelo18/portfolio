@@ -113,10 +113,42 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     organization: { pt: 'DataTrusty Tecnologia', en: 'DataTrusty Tecnologia' },
     period: { pt: 'Nov/2024 - Mai/2026', en: 'Nov/2024 - May/2026' },
     summary: {
-      pt: 'Atuação no desenvolvimento, manutenção contínua e suporte de aplicações web, implementando melhorias, correções de bugs e novas funcionalidades para otimizar fluxos internos. Paralelamente, papel fundamental na gestão de infraestrutura de TI com instalação, configuração e manutenção corretiva de hardware, conduzindo o ciclo completo de chamados técnicos para garantir alta disponibilidade e operação ininterrupta.',
-      en: 'Contributed to the development, ongoing maintenance, and support of web applications, implementing enhancements, bug fixes, and new features to optimize internal workflows. Concurrently played a key role in IT infrastructure management by handling hardware installation, configuration, and corrective maintenance, while managing the full lifecycle of technical support tickets to ensure high system availability and uninterrupted operations.',
+      pt: 'Atuação no desenvolvimento, manutenção contínua e suporte de aplicações web, aliada à administração do ambiente produtivo e da infraestrutura de TI para garantir alta disponibilidade e operação ininterrupta.',
+      en: 'Contributed to the development, ongoing maintenance, and support of web applications alongside production environment and IT infrastructure administration to ensure high system availability and uninterrupted operations.',
     },
-    tags: ['Web Apps', 'Bug Fixes', 'IT Infrastructure', 'Support'],
+    points: [
+      {
+        heading: {
+          pt: 'Desenvolvimento Full Stack (React, Spring Boot, PostgreSQL)',
+          en: 'Full Stack Development (React, Spring Boot, PostgreSQL)',
+        },
+        body: {
+          pt: 'Desenvolvimento e entrega em produção de 2 aplicações web internas com usuários ativos: um sistema de Gestão de Incidentes de Qualidade (substituindo planilhas Excel) e uma plataforma de Controle de Visitas Corporativas com geração de relatórios.',
+          en: 'Developed and delivered 2 internal web applications to production with active users: a Quality Incident Management system (replacing Excel spreadsheets) and a Corporate Visit Control platform with report generation.',
+        },
+      },
+      {
+        heading: {
+          pt: 'Automação Operacional (Java, JS, MySQL)',
+          en: 'Operational Automation (Java, JS, MySQL)',
+        },
+        body: {
+          pt: 'Criação e implantação de uma aplicação web para impressão automatizada de etiquetas integrando mais de 1.000 produtos, eliminando processos manuais no envio de amostras a clientes.',
+          en: 'Built and deployed a web application for automated label printing integrating over 1,000 products, eliminating manual steps in shipping samples to clients.',
+        },
+      },
+      {
+        heading: {
+          pt: 'Deploy e Infraestrutura de TI',
+          en: 'Deployment & IT Infrastructure',
+        },
+        body: {
+          pt: 'Administração do ambiente produtivo das aplicações (configuração de VMs, redes, CORS e integrações), gestão de acesso remoto seguro (VPN/Cato Client) e suporte técnico de hardware e redes on-site.',
+          en: 'Administered the production application environment (VM setup, networking, CORS, and integrations), managed secure remote access (VPN/Cato Client), and provided on-site hardware and network technical support.',
+        },
+      },
+    ],
+    tags: ['React', 'Spring Boot', 'PostgreSQL', 'Java', 'JavaScript', 'MySQL', 'VMs & Redes', 'VPN/Cato'],
   },
   {
     id: 'dell',

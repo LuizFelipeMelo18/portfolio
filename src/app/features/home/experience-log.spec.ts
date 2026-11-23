@@ -22,6 +22,13 @@ describe('ExperienceLog', () => {
     expect(host.querySelector('.log-entry__meta')?.textContent).toContain('CTI Consultores Associados');
     expect(host.querySelector('.log-entry__points')?.textContent).toContain('IBM Planning Analytics');
 
+    // Click DataTrusty Tecnologia
+    const dataTrustyButton = items.find((button) => button.textContent?.includes('DataTrusty Tecnologia'))!;
+    dataTrustyButton.click();
+    fixture.detectChanges();
+    expect(host.querySelector('.log-entry__points')?.textContent).toContain('Gestão de Incidentes de Qualidade');
+    expect(host.querySelector('.log-entry__points')?.textContent).toContain('VPN/Cato Client');
+
     // Click Dell Technologies
     const dellButton = items.find((button) => button.textContent?.includes('Dell Technologies'))!;
     dellButton.click();

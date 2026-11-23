@@ -166,8 +166,8 @@ export class Home implements OnInit, OnDestroy {
       this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
     } else {
       const offset = this.windows().length * 28;
-      const width = Math.min(id === 'experience' ? 880 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : 660, window.innerWidth - 40);
-      const preferredHeight = id === 'customize' ? 600 : id === 'experience' ? 540 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
+      const width = Math.min(id === 'experience' ? 960 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : 660, window.innerWidth - 40);
+      const preferredHeight = id === 'customize' ? 600 : id === 'experience' ? 580 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
       const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
       const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));
