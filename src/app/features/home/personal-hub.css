@@ -95,12 +95,10 @@
 
 .personal__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 178px));
-  gap: 20px 18px;
-}
-
-.personal__grid--music {
-  grid-template-columns: repeat(auto-fill, minmax(156px, 186px));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px 24px;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .personal-card {
