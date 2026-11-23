@@ -53,7 +53,8 @@ describe('LibraryShelf', () => {
       expect(host.querySelector('.book-overlay')).toBeTruthy();
       expect(host.querySelector('.book-3d__cover')).toBeTruthy();
       expect(host.querySelector('.book-page__title')?.textContent?.trim()).toBe('Entendendo Algoritmos');
-      expect(host.querySelector('.book-page__review')?.textContent).toContain('busca binária');
+      expect(host.querySelector('.book-page__empty-title')?.textContent).toContain('Resenha ainda não adicionada.');
+      expect(host.querySelector<HTMLImageElement>('.book-3d__cover-front img')?.src).toContain('/books/entendendo-algoritmos.jpg');
 
       (host.querySelector('.book-page__close') as HTMLButtonElement).click();
       fixture.detectChanges();

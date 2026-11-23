@@ -209,21 +209,8 @@
                     [attr.aria-label]="(isPt() ? 'Abrir resenha de ' : 'Open review for ') + text(book.title)"
                     (click)="openReview(book)"
                   >
-                    <span class="book-card__frame" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
-                      @if (book.cover) {
-                        <img [src]="book.cover" [alt]="text(book.title)" loading="lazy" />
-                      } @else {
-                        <span class="book-jacket">
-                          <span class="book-jacket__bar"></span>
-                          <span class="book-jacket__kicker">{{ text(book.kicker) }}</span>
-                          <span class="book-jacket__title">{{ text(book.title) }}</span>
-                          <span class="book-jacket__rule"></span>
-                          <span class="book-jacket__author">{{ book.author }}</span>
-                          @if (book.publisher) {
-                            <span class="book-jacket__pub">{{ book.publisher }}</span>
-                          }
-                        </span>
-                      }
+                    <span class="book-card__frame">
+                      <img [src]="book.cover" [alt]="text(book.title)" loading="lazy" />
                       <span class="book-card__spine-sheen" aria-hidden="true"></span>
                     </span>
                   </button>
@@ -232,7 +219,7 @@
                     <h3 class="book-card__title">{{ text(book.title) }}</h3>
                     <p class="book-card__author">{{ book.author }}</p>
 
-                    @if (book.rating > 0) {
+                    @if (book.rating) {
                       <div
                         class="book-card__stars"
                         [attr.aria-label]="book.rating + (isPt() ? ' de 5 estrelas' : ' out of 5 stars')"
@@ -301,16 +288,18 @@
             </div>
 
             <div class="book-page__scroll">
-              <p class="book-page__review">{{ text(book.review) }}</p>
-
-              <div class="book-page__section">
-                <h4>{{ isPt() ? 'PONTOS-CHAVE' : 'KEY TAKEAWAYS' }}</h4>
-                <ul class="book-page__takeaways">
-                  @for (point of book.takeaways; track $index) {
-                    <li>{{ text(point) }}</li>
-                  }
-                </ul>
-              </div>
+              @if (book.review; as review) {
+                <p class="book-page__review">{{ text(review) }}</p>
+              } @else {
+                <div class="book-page__empty">
+                  <p class="book-page__empty-title">
+                    {{ isPt() ? 'Resenha ainda não adicionada.' : 'Review not added yet.' }}
+                  </p>
+                  <p class="book-page__empty-sub">
+                    {{ isPt() ? 'As anotações pessoais sobre este livro serão adicionadas em breve.' : 'Personal notes for this book will be added soon.' }}
+                  </p>
+                </div>
+              }
             </div>
 
             <div class="book-page__footer">
@@ -325,21 +314,8 @@
 
           <!-- Hinged Front Cover (Front = book cover, Back = Left open page) -->
           <div class="book-3d__cover">
-            <div class="book-3d__cover-front" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
-              @if (book.cover) {
-                <img [src]="book.cover" [alt]="text(book.title)" />
-              } @else {
-                <span class="book-jacket book-jacket--large">
-                  <span class="book-jacket__bar"></span>
-                  <span class="book-jacket__kicker">{{ text(book.kicker) }}</span>
-                  <span class="book-jacket__title">{{ text(book.title) }}</span>
-                  <span class="book-jacket__rule"></span>
-                  <span class="book-jacket__author">{{ book.author }}</span>
-                  @if (book.publisher) {
-                    <span class="book-jacket__pub">{{ book.publisher }}</span>
-                  }
-                </span>
-              }
+            <div class="book-3d__cover-front">
+              <img [src]="book.cover" [alt]="text(book.title)" />
               <span class="book-card__spine-sheen" aria-hidden="true"></span>
             </div>
 
@@ -350,28 +326,19 @@
               </div>
 
               <div class="book-page__left-body">
-                <div class="book-page__mini-cover" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
-                  @if (book.cover) {
-                    <img [src]="book.cover" [alt]="text(book.title)" />
-                  } @else {
-                    <span class="book-jacket book-jacket--mini">
-                      <span class="book-jacket__bar"></span>
-                      <span class="book-jacket__title">{{ text(book.title) }}</span>
-                    </span>
-                  }
+                <div class="book-page__mini-cover">
+                  <img [src]="book.cover" [alt]="text(book.title)" />
                 </div>
                 <h3 class="book-page__title">{{ text(book.title) }}</h3>
                 <p class="book-page__author">{{ book.author }}</p>
 
-                @if (book.rating > 0) {
+                @if (book.rating) {
                   <div class="book-page__stars" [attr.aria-label]="book.rating + (isPt() ? ' de 5 estrelas' : ' out of 5 stars')">
                     @for (star of stars; track star) {
                       <span [class.book-card__star--filled]="star <= book.rating" aria-hidden="true">★</span>
                     }
                   </div>
                 }
-
-                <blockquote class="book-page__quote">“{{ text(book.quote) }}”</blockquote>
               </div>
 
               <div class="book-page__footer">
