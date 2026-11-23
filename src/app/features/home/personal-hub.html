@@ -5,6 +5,14 @@
       <span class="personal__total">{{ totalItems }} {{ isPt() ? 'favoritos' : 'favorites' }}</span>
     </div>
 
+    <p class="personal__intro">
+      {{
+        isPt()
+          ? 'Aqui é a parte menos profissional do portfólio — meus gostos pessoais de animes, mangás, filmes, games e música.'
+          : 'This is the less professional corner of the portfolio — my personal favorites across anime, manga, movies, games, and music.'
+      }}
+    </p>
+
     <nav class="personal__tabs" role="tablist" [attr.aria-label]="isPt() ? 'Categorias pessoais' : 'Personal categories'">
       @for (tab of tabs; track tab.id) {
         <button

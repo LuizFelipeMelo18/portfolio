@@ -36,7 +36,7 @@ export const PERSONAL_ITEMS: readonly PersonalItem[] = [
     tab: 'anime',
     title: 'Cavaleiros do Zodíaco',
     subtitle: 'Toei Animation · 1986',
-    cover: '/personal/anime-cdz.png',
+    cover: '/personal/anime-cdz.jpg',
   },
   {
     id: 'jujutsu-kaisen',
@@ -57,7 +57,7 @@ export const PERSONAL_ITEMS: readonly PersonalItem[] = [
     tab: 'anime',
     title: 'Trigun',
     subtitle: 'Madhouse · 1998',
-    cover: '/personal/anime-trigun.png',
+    cover: '/personal/anime-trigun.jpg',
   },
   {
     id: 'solo-leveling',

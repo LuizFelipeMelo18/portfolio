@@ -38,6 +38,13 @@
   font-size: 10.5px;
 }
 
+.personal__intro {
+  margin: 0;
+  padding: 0 16px 10px;
+  color: #a9b8c2;
+  font: 12px/1.45 'Inter', Arial, sans-serif;
+}
+
 .personal__tabs {
   display: flex;
   align-items: stretch;
@@ -88,8 +95,12 @@
 
 .personal__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(148px, 178px));
   gap: 20px 18px;
+}
+
+.personal__grid--music {
+  grid-template-columns: repeat(auto-fill, minmax(156px, 186px));
 }
 
 .personal-card {

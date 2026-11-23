@@ -12,6 +12,7 @@ describe('PersonalHub', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('.personal__intro')?.textContent).toContain('menos profissional');
     const tabs = Array.from(host.querySelectorAll<HTMLButtonElement>('.personal__tab'));
     expect(tabs.map((tab) => tab.textContent?.trim())).toEqual(['Anime', 'Mangás', 'Filmes', 'Games', 'Música']);
 
