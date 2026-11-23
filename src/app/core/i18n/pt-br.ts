@@ -41,6 +41,10 @@ export const PT_BR: Translations = {
       startingCoding:
         'Plataforma educacional com trilhas de cursos, comunidades por curso, desafios, projetos colaborativos, certificados, mentoria e gerenciamento de aprendizado.',
       moviesLab: 'Site com consumo de API para consulta de filmes.',
+      limpay:
+        'Projeto acadêmico com o objetivo de criar uma plataforma que auxilia a contratação de serviços domésticos, incluindo cadastro, contratos, filtros, cálculo de distância e simulação de pagamentos.',
+      deadlock:
+        'Rede social focada em tecnologia que une o modelo de perguntas e respostas do Stack Overflow com o engajamento em comunidade do Reddit, com sistema de votos, fóruns técnicos e contagem de visualizações em tempo real.',
     },
   },
   contacts: {

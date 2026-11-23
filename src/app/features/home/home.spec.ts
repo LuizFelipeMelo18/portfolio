@@ -39,7 +39,7 @@ describe('Desktop home', () => {
     expect(host.querySelectorAll('.app-window').length).toBe(2);
     expect(host.querySelectorAll('.taskbar__window').length).toBe(2);
     expect(host.querySelector('.explorer-tree__root')?.textContent).toContain('projetos');
-    expect(host.querySelectorAll('.explorer-tree__node').length).toBe(3);
+    expect(host.querySelectorAll('.explorer-tree__node').length).toBe(5);
     expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toContain('github.com/LuizFelipeMelo18/portfolio');
     fixture.destroy();
   });

@@ -41,6 +41,10 @@ export const EN: Translations = {
       startingCoding:
         'Educational platform with course tracks, course communities, challenges, collaborative projects, certificates, mentoring and learning management.',
       moviesLab: 'Website that consumes an API to search for movies.',
+      limpay:
+        'Academic project aimed at creating a platform that simplifies hiring domestic services, including registration, contracts, filters, distance calculation, and payment simulation.',
+      deadlock:
+        'Tech-focused social network combining Stack Overflow-style technical Q&A with Reddit-like community engagement, featuring upvotes/downvotes, technical forums, and real-time view tracking.',
     },
   },
   contacts: {

@@ -43,5 +43,25 @@ export function portfolioProjects(descriptions: Translations['works']['projects'
       githubLink: 'https://github.com/LuizFelipeMelo18/Movies-Lab',
       repoName: 'LuizFelipeMelo18/Movies-Lab',
     },
+    {
+      id: 'limpay',
+      folder: 'limpay',
+      title: 'LimPay',
+      technologies: 'Java · Spring Boot · MySQL',
+      stack: ['Java', 'Spring Boot', 'MySQL'],
+      description: descriptions.limpay,
+      githubLink: 'https://github.com/limpay-com/BackEnd-LimPay',
+      repoName: 'limpay-com/BackEnd-LimPay',
+    },
+    {
+      id: 'deadlock',
+      folder: 'deadlock',
+      title: 'Deadlock',
+      technologies: 'TypeScript · NestJS · React · PostgreSQL · Prisma · Redis · Docker',
+      stack: ['TypeScript', 'NestJS', 'React', 'PostgreSQL', 'Prisma', 'Redis', 'Docker'],
+      description: descriptions.deadlock,
+      githubLink: 'https://github.com/Deadlock-System/deadlock',
+      repoName: 'Deadlock-System/deadlock',
+    },
   ];
 }

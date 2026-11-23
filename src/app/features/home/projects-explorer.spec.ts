@@ -20,7 +20,13 @@ describe('ProjectsExplorer', () => {
     expect(host.querySelector('.explorer-tree__root')?.textContent).toContain('projetos');
 
     const folderButtons = Array.from(host.querySelectorAll<HTMLButtonElement>('.explorer-tree__node'));
-    expect(folderButtons.map((button) => button.textContent?.trim())).toEqual(['Portfolio', 'StartingCoding', 'Movies Lab']);
+    expect(folderButtons.map((button) => button.textContent?.trim())).toEqual([
+      'Portfolio',
+      'StartingCoding',
+      'Movies Lab',
+      'LimPay',
+      'Deadlock',
+    ]);
 
     expect(host.querySelector('.explorer-summary__heading h2')?.textContent).toContain('Portfolio');
     expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toBe('https://github.com/LuizFelipeMelo18/portfolio');
@@ -32,10 +38,15 @@ describe('ProjectsExplorer', () => {
     expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toBe('https://github.com/LuizFelipeMelo18/StartaindCoding');
     expect(host.querySelector('.explorer__breadcrumb')?.textContent).toContain('starting-coding');
 
-    folderButtons[2].click();
+    folderButtons[3].click();
     fixture.detectChanges();
-    expect(host.querySelector('.explorer-summary__heading h2')?.textContent).toContain('Movies Lab');
-    expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toBe('https://github.com/LuizFelipeMelo18/Movies-Lab');
+    expect(host.querySelector('.explorer-summary__heading h2')?.textContent).toContain('LimPay');
+    expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toBe('https://github.com/limpay-com/BackEnd-LimPay');
+
+    folderButtons[4].click();
+    fixture.detectChanges();
+    expect(host.querySelector('.explorer-summary__heading h2')?.textContent).toContain('Deadlock');
+    expect(host.querySelector<HTMLAnchorElement>('.explorer-summary__repo-link')?.href).toBe('https://github.com/Deadlock-System/deadlock');
     fixture.destroy();
   });
 
@@ -54,8 +65,8 @@ describe('ProjectsExplorer', () => {
 
     (host.querySelector('.explorer__crumb--link') as HTMLButtonElement).click();
     fixture.detectChanges();
-    expect(host.querySelectorAll('.explorer-tree__node').length).toBe(3);
-    expect(host.querySelectorAll('.explorer-overview__card').length).toBe(3);
+    expect(host.querySelectorAll('.explorer-tree__node').length).toBe(5);
+    expect(host.querySelectorAll('.explorer-overview__card').length).toBe(5);
 
     (host.querySelectorAll<HTMLButtonElement>('.explorer-overview__card')[1]).click();
     fixture.detectChanges();

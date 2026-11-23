@@ -45,6 +45,8 @@ export interface Translations {
       readonly portfolio: string;
       readonly startingCoding: string;
       readonly moviesLab: string;
+      readonly limpay: string;
+      readonly deadlock: string;
     };
   };
   readonly contacts: {
