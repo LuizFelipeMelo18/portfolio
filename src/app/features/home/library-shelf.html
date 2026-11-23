@@ -1,0 +1,387 @@
+<div class="tellico" role="region" [attr.aria-label]="isPt() ? 'Biblioteca Tellico' : 'Tellico Library'">
+  <header class="tellico__toolbar">
+    <div class="tellico__brand">
+      <svg class="tellico__logo" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M3.5 3.5A1.5 1.5 0 0 1 5 2h4.2a2.5 2.5 0 0 1 1.8.8 2.5 2.5 0 0 1 1.8-.8H17a1.5 1.5 0 0 1 1.5 1.5v11.7a1.3 1.3 0 0 1-1.3 1.3h-4.4a1.8 1.8 0 0 0-1.3.55.7.7 0 0 1-1 0 1.8 1.8 0 0 0-1.3-.55H4.8a1.3 1.3 0 0 1-1.3-1.3V3.5Zm1.8.3v10.9h3.9c.5 0 .97.14 1.35.4V4.5c0-.4-.32-.7-.75-.7H5.3Zm6.45 11.3c.38-.26.85-.4 1.35-.4h3.6V3.8h-4.2c-.43 0-.75.3-.75.7v10.6Z" />
+      </svg>
+      <strong>Tellico</strong>
+      <span class="tellico__divider" aria-hidden="true">/</span>
+      <span class="tellico__collection">{{ isPt() ? 'biblioteca.tc' : 'library.tc' }}</span>
+    </div>
+
+    <div class="tellico__controls">
+      <div class="tellico__tabs" role="tablist" [attr.aria-label]="isPt() ? 'Filtrar categoria' : 'Filter category'">
+        <button
+          type="button"
+          role="tab"
+          [class.tellico__tab--active]="selectedCategory() === 'all'"
+          [attr.aria-selected]="selectedCategory() === 'all'"
+          (click)="selectCategory('all')"
+        >
+          {{ isPt() ? 'Todos' : 'All' }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          [class.tellico__tab--active]="selectedCategory() === 'technical'"
+          [attr.aria-selected]="selectedCategory() === 'technical'"
+          (click)="selectCategory('technical')"
+        >
+          {{ isPt() ? 'Técnicos' : 'Technical' }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          [class.tellico__tab--active]="selectedCategory() === 'general'"
+          [attr.aria-selected]="selectedCategory() === 'general'"
+          (click)="selectCategory('general')"
+        >
+          {{ isPt() ? 'Gerais' : 'General' }}
+        </button>
+      </div>
+
+      <label class="tellico__search">
+        <span aria-hidden="true">⌕</span>
+        <input
+          type="search"
+          [value]="searchQuery()"
+          (input)="updateSearch($event)"
+          [placeholder]="isPt() ? 'Filtrar livros...' : 'Filter books...'"
+          [attr.aria-label]="isPt() ? 'Filtrar livros' : 'Filter books'"
+        />
+      </label>
+    </div>
+  </header>
+
+  <div class="tellico__body">
+    <aside class="tellico__sidebar" [attr.aria-label]="isPt() ? 'Coleções e status' : 'Collections and statuses'">
+      <div class="tellico-sidebar__groups">
+        <div class="tellico-group">
+          <p class="tellico-group__title">{{ isPt() ? 'COLEÇÕES' : 'COLLECTIONS' }}</p>
+          <ul class="tellico-group__list">
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedCategory() === 'all'"
+                (click)="selectCategory('all')"
+              >
+                <span class="tellico-group__name">
+                  <span class="tellico-group__glyph" aria-hidden="true">▤</span>
+                  {{ isPt() ? 'Todos os livros' : 'All books' }}
+                </span>
+                <span class="tellico-group__count">{{ books.length }}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedCategory() === 'technical'"
+                (click)="selectCategory('technical')"
+              >
+                <span class="tellico-group__name">
+                  <span class="tellico-group__glyph" aria-hidden="true">⌘</span>
+                  {{ isPt() ? 'Técnicos' : 'Technical' }}
+                </span>
+                <span class="tellico-group__count">{{ technicalCount }}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedCategory() === 'general'"
+                (click)="selectCategory('general')"
+              >
+                <span class="tellico-group__name">
+                  <span class="tellico-group__glyph" aria-hidden="true">◫</span>
+                  {{ isPt() ? 'Gerais' : 'General' }}
+                </span>
+                <span class="tellico-group__count">{{ generalCount }}</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="tellico-group">
+          <p class="tellico-group__title">STATUS</p>
+          <ul class="tellico-group__list">
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedStatus() === 'all'"
+                (click)="selectStatus('all')"
+              >
+                <span class="tellico-group__name">
+                  <span class="status-dot status-dot--all" aria-hidden="true"></span>
+                  {{ isPt() ? 'Todos' : 'All' }}
+                </span>
+                <span class="tellico-group__count">{{ categoryBooks().length }}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedStatus() === 'completed'"
+                (click)="selectStatus('completed')"
+              >
+                <span class="tellico-group__name">
+                  <span class="status-dot status-dot--completed" aria-hidden="true"></span>
+                  {{ isPt() ? 'Concluído' : 'Completed' }}
+                </span>
+                <span class="tellico-group__count">{{ completedCount() }}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedStatus() === 'reading'"
+                (click)="selectStatus('reading')"
+              >
+                <span class="tellico-group__name">
+                  <span class="status-dot status-dot--reading" aria-hidden="true"></span>
+                  {{ isPt() ? 'Lendo' : 'Reading' }}
+                </span>
+                <span class="tellico-group__count">{{ readingCount() }}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="tellico-group__btn"
+                [class.tellico-group__btn--active]="selectedStatus() === 'backlog'"
+                (click)="selectStatus('backlog')"
+              >
+                <span class="tellico-group__name">
+                  <span class="status-dot status-dot--backlog" aria-hidden="true"></span>
+                  Backlog
+                </span>
+                <span class="tellico-group__count">{{ backlogCount() }}</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tellico-stats">
+        <p class="tellico-group__title">{{ isPt() ? 'RESUMO' : 'SUMMARY' }}</p>
+        <dl>
+          <div>
+            <dt>{{ isPt() ? 'Concluídos' : 'Completed' }}</dt>
+            <dd>{{ completedCount() }}</dd>
+          </div>
+          <div>
+            <dt>{{ isPt() ? 'Lendo' : 'Reading' }}</dt>
+            <dd>{{ readingCount() }}</dd>
+          </div>
+          <div>
+            <dt>Backlog</dt>
+            <dd>{{ backlogCount() }}</dd>
+          </div>
+        </dl>
+      </div>
+    </aside>
+
+    <main class="tellico__shelf-area" [attr.aria-label]="isPt() ? 'Estante de livros' : 'Bookshelf'">
+      @for (shelf of shelves(); track shelf.status) {
+        <section class="shelf" [attr.aria-label]="shelf.heading">
+          <header class="shelf__header">
+            <h2 class="shelf__heading">
+              <span class="status-dot" [class]="'status-dot status-dot--' + shelf.status" aria-hidden="true"></span>
+              {{ shelf.heading }}
+            </h2>
+            <span class="shelf__badge">
+              {{ shelf.books.length }} {{ shelf.books.length === 1 ? (isPt() ? 'título' : 'title') : (isPt() ? 'títulos' : 'titles') }}
+            </span>
+          </header>
+
+          <div class="shelf__rack">
+            <div class="shelf__row">
+              @for (book of shelf.books; track book.id) {
+                <article class="book-card">
+                  <button
+                    type="button"
+                    class="book-card__cover-btn"
+                    [attr.aria-label]="(isPt() ? 'Abrir resenha de ' : 'Open review for ') + text(book.title)"
+                    (click)="openReview(book)"
+                  >
+                    <span class="book-card__frame" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
+                      @if (book.cover) {
+                        <img [src]="book.cover" [alt]="text(book.title)" loading="lazy" />
+                      } @else {
+                        <span class="book-jacket">
+                          <span class="book-jacket__bar"></span>
+                          <span class="book-jacket__kicker">{{ text(book.kicker) }}</span>
+                          <span class="book-jacket__title">{{ text(book.title) }}</span>
+                          <span class="book-jacket__rule"></span>
+                          <span class="book-jacket__author">{{ book.author }}</span>
+                          @if (book.publisher) {
+                            <span class="book-jacket__pub">{{ book.publisher }}</span>
+                          }
+                        </span>
+                      }
+                      <span class="book-card__spine-sheen" aria-hidden="true"></span>
+                    </span>
+                  </button>
+
+                  <div class="book-card__info">
+                    <h3 class="book-card__title">{{ text(book.title) }}</h3>
+                    <p class="book-card__author">{{ book.author }}</p>
+
+                    @if (book.rating > 0) {
+                      <div
+                        class="book-card__stars"
+                        [attr.aria-label]="book.rating + (isPt() ? ' de 5 estrelas' : ' out of 5 stars')"
+                      >
+                        @for (star of stars; track star) {
+                          <span [class.book-card__star--filled]="star <= book.rating" aria-hidden="true">★</span>
+                        }
+                      </div>
+                    } @else {
+                      <span class="book-card__pill" [class]="'book-card__pill book-card__pill--' + book.status">
+                        {{ categoryLabel(book.category) }} · {{ statusLabel(book.status) }}
+                      </span>
+                    }
+
+                    <button
+                      type="button"
+                      class="book-card__review-btn"
+                      (click)="openReview(book)"
+                    >
+                      <span>{{ isPt() ? 'resenha' : 'review' }}</span>
+                      <span class="book-card__arrow" aria-hidden="true">→</span>
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+            <div class="shelf__ledge" aria-hidden="true"></div>
+          </div>
+        </section>
+      } @empty {
+        <p class="tellico__empty">
+          {{ isPt() ? 'Nenhum livro encontrado para este filtro.' : 'No books found for this filter.' }}
+        </p>
+      }
+    </main>
+  </div>
+
+  <footer class="tellico__status">
+    <span>{{ filteredBooks().length }} {{ isPt() ? 'de' : 'of' }} {{ books.length }} {{ isPt() ? 'livros na estante' : 'books on shelf' }}</span>
+    <span>Tellico <i>·</i> {{ isPt() ? 'Técnicos & Gerais' : 'Technical & General' }}</span>
+  </footer>
+
+  @if (activeBook(); as book) {
+    <div
+      class="book-overlay"
+      [class.book-overlay--closing]="closing()"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-label]="(isPt() ? 'Resenha de ' : 'Review of ') + text(book.title)"
+      (click)="closeReview()"
+    >
+      <div class="book-stage" [class.book-stage--closing]="closing()" (click)="$event.stopPropagation()">
+        <div class="book-3d">
+          <!-- Back cover / right page (Review content) -->
+          <div class="book-3d__page book-3d__page--right">
+            <div class="book-page__top">
+              <span class="book-page__kicker">{{ isPt() ? 'RESENHA' : 'REVIEW' }}</span>
+              <button
+                type="button"
+                class="book-page__close"
+                (click)="closeReview()"
+                [attr.aria-label]="isPt() ? 'Fechar livro' : 'Close book'"
+              >
+                {{ isPt() ? 'fechar' : 'close' }} ✕
+              </button>
+            </div>
+
+            <div class="book-page__scroll">
+              <p class="book-page__review">{{ text(book.review) }}</p>
+
+              <div class="book-page__section">
+                <h4>{{ isPt() ? 'PONTOS-CHAVE' : 'KEY TAKEAWAYS' }}</h4>
+                <ul class="book-page__takeaways">
+                  @for (point of book.takeaways; track $index) {
+                    <li>{{ text(point) }}</li>
+                  }
+                </ul>
+              </div>
+            </div>
+
+            <div class="book-page__footer">
+              <span>{{ statusLabel(book.status) }}</span>
+              <span>02</span>
+            </div>
+          </div>
+
+          <!-- Intermediate turning leaves for realistic opening animation -->
+          <div class="book-3d__leaf book-3d__leaf--2" aria-hidden="true"></div>
+          <div class="book-3d__leaf book-3d__leaf--1" aria-hidden="true"></div>
+
+          <!-- Hinged Front Cover (Front = book cover, Back = Left open page) -->
+          <div class="book-3d__cover">
+            <div class="book-3d__cover-front" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
+              @if (book.cover) {
+                <img [src]="book.cover" [alt]="text(book.title)" />
+              } @else {
+                <span class="book-jacket book-jacket--large">
+                  <span class="book-jacket__bar"></span>
+                  <span class="book-jacket__kicker">{{ text(book.kicker) }}</span>
+                  <span class="book-jacket__title">{{ text(book.title) }}</span>
+                  <span class="book-jacket__rule"></span>
+                  <span class="book-jacket__author">{{ book.author }}</span>
+                  @if (book.publisher) {
+                    <span class="book-jacket__pub">{{ book.publisher }}</span>
+                  }
+                </span>
+              }
+              <span class="book-card__spine-sheen" aria-hidden="true"></span>
+            </div>
+
+            <div class="book-3d__page book-3d__page--left">
+              <div class="book-page__top">
+                <span class="book-page__kicker">{{ categoryLabel(book.category) }}</span>
+                <span class="book-page__year">{{ statusLabel(book.status) }}</span>
+              </div>
+
+              <div class="book-page__left-body">
+                <div class="book-page__mini-cover" [style.--spine]="book.spineColor" [style.--book-accent]="book.accentColor">
+                  @if (book.cover) {
+                    <img [src]="book.cover" [alt]="text(book.title)" />
+                  } @else {
+                    <span class="book-jacket book-jacket--mini">
+                      <span class="book-jacket__bar"></span>
+                      <span class="book-jacket__title">{{ text(book.title) }}</span>
+                    </span>
+                  }
+                </div>
+                <h3 class="book-page__title">{{ text(book.title) }}</h3>
+                <p class="book-page__author">{{ book.author }}</p>
+
+                @if (book.rating > 0) {
+                  <div class="book-page__stars" [attr.aria-label]="book.rating + (isPt() ? ' de 5 estrelas' : ' out of 5 stars')">
+                    @for (star of stars; track star) {
+                      <span [class.book-card__star--filled]="star <= book.rating" aria-hidden="true">★</span>
+                    }
+                  </div>
+                }
+
+                <blockquote class="book-page__quote">“{{ text(book.quote) }}”</blockquote>
+              </div>
+
+              <div class="book-page__footer">
+                <span>{{ book.publisher ?? categoryLabel(book.category) }}</span>
+                <span>01</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

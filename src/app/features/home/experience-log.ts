@@ -112,10 +112,6 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Analista de Suporte e Sistemas', en: 'Systems & Support Analyst' },
     organization: { pt: 'DataTrusty Tecnologia', en: 'DataTrusty Tecnologia' },
     period: { pt: 'Nov/2024 - Mai/2026', en: 'Nov/2024 - May/2026' },
-    summary: {
-      pt: 'Atuação no desenvolvimento, manutenção contínua e suporte de aplicações web, aliada à administração do ambiente produtivo e da infraestrutura de TI para garantir alta disponibilidade e operação ininterrupta.',
-      en: 'Contributed to the development, ongoing maintenance, and support of web applications alongside production environment and IT infrastructure administration to ensure high system availability and uninterrupted operations.',
-    },
     points: [
       {
         heading: {
@@ -158,10 +154,28 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Analista de Suporte Técnico N1', en: 'Technical Support Analyst L1' },
     organization: { pt: 'Dell Technologies', en: 'Dell Technologies' },
     period: { pt: 'Jan/2024 - Nov/2024', en: 'Jan/2024 - Nov/2024' },
-    summary: {
-      pt: 'Atuação em suporte técnico Nível 1 com foco em diagnóstico de hardware e software, troubleshooting e manutenção preventiva para sistemas Dell, gerenciando registro, triagem e acompanhamento de chamados para resolução ágil de incidentes.',
-      en: 'Provided Tier 1 technical support focused on hardware and software diagnostics, troubleshooting, and preventive maintenance for Dell systems, managing ticket logging, triage, and tracking for rapid incident resolution.',
-    },
+    points: [
+      {
+        heading: {
+          pt: 'Suporte Técnico N1 e Diagnósticos',
+          en: 'Tier 1 Support & Diagnostics',
+        },
+        body: {
+          pt: 'Atuação em suporte técnico Nível 1 com foco em diagnóstico de hardware e software, troubleshooting e resolução de incidentes para sistemas Dell.',
+          en: 'Provided Tier 1 technical support focused on hardware and software diagnostics, troubleshooting, and incident resolution for Dell systems.',
+        },
+      },
+      {
+        heading: {
+          pt: 'Manutenção Preventiva e Gestão de Chamados',
+          en: 'Preventive Maintenance & Ticket Management',
+        },
+        body: {
+          pt: 'Execução de rotinas de manutenção preventiva e condução do registro, triagem e acompanhamento de chamados para resolução ágil de incidentes.',
+          en: 'Performed preventive maintenance routines while managing ticket logging, triage, and tracking for rapid incident resolution.',
+        },
+      },
+    ],
     tags: ['Hardware', 'Diagnostics', 'Troubleshooting', 'Service Desk'],
   },
   {
@@ -172,10 +186,28 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Desenvolvedor Back-End e Banco de Dados', en: 'Back-End & Database Developer' },
     organization: { pt: 'Limpay', en: 'Limpay' },
     period: { pt: 'Ago/2023 - Dez/2023', en: 'Aug/2023 - Dec/2023' },
-    summary: {
-      pt: 'Desenvolvimento de uma plataforma para simplificar a rotina operacional de profissionais de limpeza na Limpay (projeto educacional de startup). Atuação em todo o ciclo do projeto, do design UX/UI e prototipação no Figma até a implementação do back-end com Java, Spring Boot e MySQL em equipe multidisciplinar.',
-      en: 'Developed a platform designed to streamline daily operations for cleaning professionals at Limpay (an educational startup project). Contributed across the full project lifecycle, from UX/UI design and prototyping in Figma to backend implementation using Java, Spring Boot, and MySQL, collaborating closely within a cross-functional team.',
-    },
+    points: [
+      {
+        heading: {
+          pt: 'Concepção do Produto e UX/UI (Figma)',
+          en: 'Product Lifecycle & UX/UI (Figma)',
+        },
+        body: {
+          pt: 'Participação em todo o ciclo de desenvolvimento de uma plataforma para simplificar a rotina operacional de profissionais de limpeza na Limpay (projeto educacional de startup), incluindo design UX/UI e prototipação no Figma.',
+          en: 'Contributed across the full project lifecycle of a platform designed to streamline daily operations for cleaning professionals at Limpay (an educational startup project), including UX/UI design and prototyping in Figma.',
+        },
+      },
+      {
+        heading: {
+          pt: 'Desenvolvimento Back-End e Banco de Dados (Java, Spring Boot, MySQL)',
+          en: 'Back-End & Database Implementation (Java, Spring Boot, MySQL)',
+        },
+        body: {
+          pt: 'Implementação do back-end e modelagem do banco de dados utilizando Java, Spring Boot e MySQL em colaboração próxima com uma equipe multidisciplinar.',
+          en: 'Implemented backend services and relational data modeling using Java, Spring Boot, and MySQL, collaborating closely within a cross-functional team.',
+        },
+      },
+    ],
     tags: ['Java', 'Spring Boot', 'MySQL', 'Figma'],
   },
   {
@@ -187,10 +219,15 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Tecnólogo em Análise e Desenvolvimento de Sistemas', en: 'Systems Analysis and Development (Degree)' },
     organization: { pt: 'Uninter', en: 'Uninter' },
     period: { pt: 'Ago/2024 - Dez/2026', en: 'Aug/2024 - Dec/2026' },
-    summary: {
-      pt: 'Graduação tecnológica focada em engenharia de software, análise de requisitos, desenvolvimento de sistemas, bancos de dados e arquitetura de aplicações.',
-      en: 'Undergraduate technology degree focused on software engineering, requirements analysis, systems development, databases, and application architecture.',
-    },
+    points: [
+      {
+        heading: { pt: 'Formação Superior', en: 'Undergraduate Program' },
+        body: {
+          pt: 'Graduação tecnológica focada em engenharia de software, análise de requisitos, desenvolvimento de sistemas, bancos de dados e arquitetura de aplicações.',
+          en: 'Undergraduate technology degree focused on software engineering, requirements analysis, systems development, databases, and application architecture.',
+        },
+      },
+    ],
     tags: ['ADS', 'Engenharia de Software', 'Arquitetura', 'Banco de Dados'],
   },
   {
@@ -201,10 +238,15 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Programador Full Stack', en: 'Full Stack Developer Program' },
     organization: { pt: 'Instituto PROA / Senac', en: 'Instituto PROA / Senac' },
     period: { pt: 'Ago/2023 - Dez/2023', en: 'Aug/2023 - Dec/2023' },
-    summary: {
-      pt: 'Formação intensiva em desenvolvimento Full Stack com foco em projetos práticos em equipe, front-end, back-end, banco de dados e desenvolvimento profissional.',
-      en: 'Intensive Full Stack development program centered on hands-on team projects, front-end, back-end, databases, and career readiness.',
-    },
+    points: [
+      {
+        heading: { pt: 'Formação Intensiva Full Stack', en: 'Intensive Full Stack Program' },
+        body: {
+          pt: 'Formação intensiva em desenvolvimento Full Stack com foco em projetos práticos em equipe, front-end, back-end, banco de dados e desenvolvimento profissional.',
+          en: 'Intensive Full Stack development program centered on hands-on team projects, front-end, back-end, databases, and career readiness.',
+        },
+      },
+    ],
     tags: ['Full Stack', 'Java', 'Web', 'Projetos'],
   },
   {
@@ -215,10 +257,15 @@ const CAREER_ENTRIES: readonly CareerEntry[] = [
     title: { pt: 'Técnico em Redes de Computadores', en: 'Computer Networks Technician' },
     organization: { pt: 'Etec', en: 'Etec' },
     period: { pt: 'Ago/2022 - Dez/2023', en: 'Aug/2022 - Dec/2023' },
-    summary: {
-      pt: 'Formação técnica voltada para infraestrutura de redes, protocolos de comunicação, configuração de servidores, hardware e suporte técnico.',
-      en: 'Technical degree focused on network infrastructure, communication protocols, server administration, hardware, and technical support.',
-    },
+    points: [
+      {
+        heading: { pt: 'Formação Técnica', en: 'Technical Degree' },
+        body: {
+          pt: 'Formação técnica voltada para infraestrutura de redes, protocolos de comunicação, configuração de servidores, hardware e suporte técnico.',
+          en: 'Technical degree focused on network infrastructure, communication protocols, server administration, hardware, and technical support.',
+        },
+      },
+    ],
     tags: ['Redes', 'Infraestrutura', 'Servidores', 'Hardware'],
   },
 ];

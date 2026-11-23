@@ -26,6 +26,7 @@ describe('ExperienceLog', () => {
     const dataTrustyButton = items.find((button) => button.textContent?.includes('DataTrusty Tecnologia'))!;
     dataTrustyButton.click();
     fixture.detectChanges();
+    expect(host.querySelector('.log-entry__paragraph')).toBeNull();
     expect(host.querySelector('.log-entry__points')?.textContent).toContain('Gestão de Incidentes de Qualidade');
     expect(host.querySelector('.log-entry__points')?.textContent).toContain('VPN/Cato Client');
 
@@ -34,8 +35,15 @@ describe('ExperienceLog', () => {
     dellButton.click();
     fixture.detectChanges();
     expect(host.querySelector('.log-entry__meta')?.textContent).toContain('Analista de Suporte Técnico N1');
-    expect(host.querySelector('.log-entry__paragraph')?.textContent).toContain('Dell');
+    expect(host.querySelector('.log-entry__points')?.textContent).toContain('Dell');
     expect(host.querySelector('.tui-cmd')?.textContent).toContain('experiencia/dell-technologies.log');
+
+    // Click Limpay
+    const limpayButton = items.find((button) => button.textContent?.includes('Limpay'))!;
+    limpayButton.click();
+    fixture.detectChanges();
+    expect(host.querySelectorAll('.log-entry__points li').length).toBe(2);
+    expect(host.querySelector('.log-entry__points')?.textContent).toContain('Spring Boot');
 
     // Click Uninter (Education)
     const uninterButton = items.find((button) => button.textContent?.includes('Uninter'))!;

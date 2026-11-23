@@ -63,6 +63,10 @@ describe('Desktop home', () => {
     fixture.detectChanges();
     expect(host.querySelector('.career-tui')).toBeTruthy();
     expect(host.querySelectorAll('.tui-item').length).toBe(8);
+    (host.querySelector('[aria-label="Abrir Biblioteca"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.tellico')).toBeTruthy();
+    expect(host.querySelectorAll('.book-card').length).toBe(35);
     (host.querySelector('[aria-label="Abrir Contato"]') as HTMLButtonElement).click();
     fixture.detectChanges();
     expect(host.querySelector('.contact-fetch__command')?.textContent).toContain('fastfetch --contact');

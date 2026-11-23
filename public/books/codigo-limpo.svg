@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 360">
+  <rect width="240" height="360" rx="4" fill="#eef2f4"/>
+  <rect width="12" height="360" fill="#cfd8df"/>
+  <rect x="0" y="0" width="240" height="84" fill="#1e2a35"/>
+  <text x="26" y="34" fill="#9bb7c7" font-family="monospace" font-size="9" letter-spacing="1.6">HANDBOOK OF AGILE SOFTWARE</text>
+  <text x="26" y="64" fill="#f2f6f8" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700">Código Limpo</text>
+  <rect x="26" y="106" width="188" height="3" fill="#4f6d82"/>
+  <text x="26" y="132" fill="#293642" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700">Robert C. Martin</text>
+  <text x="26" y="150" fill="#5b6d7c" font-family="monospace" font-size="9.5">Habilidades práticas do Agile</text>
+  <g transform="translate(26,184)" font-family="monospace" font-size="9.5" fill="#3a4c5b">
+    <rect x="0" y="0" width="188" height="106" rx="4" fill="#dde5ea" stroke="#b6c6d1"/>
+    <text x="12" y="24" fill="#23313d" font-weight="700">function isReadable() &#123;</text>
+    <text x="22" y="44">clearNames();</text>
+    <text x="22" y="62">smallFunctions();</text>
+    <text x="22" y="80">cleanTests();</text>
+    <text x="12" y="96" fill="#23313d" font-weight="700">&#125;</text>
+  </g>
+  <text x="26" y="330" fill="#516270" font-family="monospace" font-size="9" letter-spacing="1">ALTA BOOKS · SOFTWARE</text>
+</svg>

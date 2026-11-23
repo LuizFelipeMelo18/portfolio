@@ -5,6 +5,7 @@ import { CONTACT_INFO } from '../../core/constants/contact-info';
 import { portfolioProjects } from '../../core/data/projects';
 import { TranslationService } from '../../core/services/translation.service';
 import { ExperienceLog } from './experience-log';
+import { LibraryShelf } from './library-shelf';
 import { MediaPlayer } from './media-player';
 import { ProjectsExplorer } from './projects-explorer';
 
@@ -45,7 +46,7 @@ const WALLPAPER_STORAGE_KEY = 'portfolio-wallpaper';
 
 @Component({
   selector: 'app-home',
-  imports: [DatePipe, ExperienceLog, MediaPlayer, ProjectsExplorer],
+  imports: [DatePipe, ExperienceLog, LibraryShelf, MediaPlayer, ProjectsExplorer],
   templateUrl: './home.html',
   styleUrl: './home.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -166,8 +167,8 @@ export class Home implements OnInit, OnDestroy {
       this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
     } else {
       const offset = this.windows().length * 28;
-      const width = Math.min(id === 'experience' ? 960 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : 660, window.innerWidth - 40);
-      const preferredHeight = id === 'customize' ? 600 : id === 'experience' ? 580 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
+      const width = Math.min(id === 'experience' || id === 'library' ? 960 : id === 'media' ? 860 : id === 'about' ? 800 : id === 'projects' ? 780 : 660, window.innerWidth - 40);
+      const preferredHeight = id === 'customize' ? 600 : id === 'experience' || id === 'library' ? 580 : id === 'about' ? 500 : id === 'projects' ? 460 : id === 'media' ? 450 : id === 'contact' ? 370 : 440;
       const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
       const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));

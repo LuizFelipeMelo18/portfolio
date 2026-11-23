@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 360">
+  <rect width="240" height="360" rx="4" fill="#e9eef1"/>
+  <rect width="12" height="360" fill="#cad4dc"/>
+  <rect x="0" y="0" width="240" height="22" fill="#24313d"/>
+  <text x="26" y="62" fill="#202b36" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Arquitetura</text>
+  <text x="26" y="90" fill="#3b5b73" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">Limpa</text>
+  <text x="26" y="114" fill="#576876" font-family="monospace" font-size="9.5">Robert C. Martin</text>
+  <!-- Concentric Clean Architecture rings -->
+  <g transform="translate(124,220)">
+    <circle r="72" fill="#cdd9e2" stroke="#4f697d" stroke-width="1.5"/>
+    <circle r="54" fill="#a8becd" stroke="#3c5568" stroke-width="1.5"/>
+    <circle r="36" fill="#718fa3" stroke="#2c4150" stroke-width="1.5"/>
+    <circle r="19" fill="#243442"/>
+    <text y="3" text-anchor="middle" fill="#eef4f7" font-family="monospace" font-size="7.5" font-weight="700">CORE</text>
+    <text y="-24" text-anchor="middle" fill="#f3f7fa" font-family="monospace" font-size="7">USE CASES</text>
+    <text y="-43" text-anchor="middle" fill="#1e2b36" font-family="monospace" font-size="7">ADAPTERS</text>
+    <text y="-60" text-anchor="middle" fill="#2d3c49" font-family="monospace" font-size="7">FRAMEWORKS</text>
+  </g>
+  <text x="26" y="330" fill="#4f606e" font-family="monospace" font-size="9" letter-spacing="1">SOFTWARE ARCHITECTURE</text>
+</svg>
