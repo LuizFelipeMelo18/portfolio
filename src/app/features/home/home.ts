@@ -77,21 +77,36 @@ export class Home implements OnInit, OnDestroy {
   protected readonly aboutLines = computed<readonly EditorLine[]>(() => {
     const pt = this.isPt();
     const line = (...parts: EditorLine['parts']): EditorLine => ({ parts });
+    const textLines = pt
+      ? [
+          'Desenvolvo sistemas corporativos de ponta a ponta, com foco em',
+          'Java, Kotlin e Spring Boot. Participo desde a concepção e modelagem de',
+          'dados até os testes automatizados, pipelines de CI/CD e deploy em nuvem.',
+          '',
+          'No dia a dia, trabalho com bancos de dados, mensageria assíncrona e',
+          'autenticação segura. Contribuo para decisões técnicas e de arquitetura',
+          'para criar soluções escaláveis, confiáveis e fáceis de manter.',
+          '',
+          'Também desenvolvo interfaces com Angular, React e TypeScript.',
+          'Valorizo código limpo, testes, colaboração e aprendizado contínuo.',
+        ]
+      : [
+          'I build enterprise systems end to end, focusing on Java, Kotlin and',
+          'Spring Boot. I work from the initial concept and data modeling',
+          'through automated tests, CI/CD pipelines and cloud deployment.',
+          '',
+          'My day-to-day work includes databases, asynchronous messaging and',
+          'secure authentication. I contribute to technical and architectural',
+          'decisions to keep systems scalable, reliable and maintainable.',
+          '',
+          'I also build interfaces with Angular, React and TypeScript.',
+          'I value clean code, testing, collaboration and continuous learning.',
+        ];
     return [
       line({ text: '# ', tone: 'keyword' }, { text: 'Luiz Felipe Melo', tone: 'heading' }),
       line({ text: pt ? 'Desenvolvedor Full Stack' : 'Full Stack Developer', tone: 'comment' }),
       line(),
-      line({ text: pt
-        ? 'Desenvolvo sistemas corporativos de ponta a ponta, com foco em Java, Kotlin e Spring Boot. Participo desde a concepção e modelagem de dados até os testes automatizados, pipelines de CI/CD e deploy em nuvem.'
-        : 'I build enterprise systems end to end, focusing on Java, Kotlin and Spring Boot. I work from the initial concept and data modeling through automated tests, CI/CD pipelines and cloud deployment.' }),
-      line(),
-      line({ text: pt
-        ? 'No dia a dia, trabalho com bancos de dados, mensageria assíncrona e autenticação segura. Contribuo para decisões técnicas e de arquitetura para criar soluções escaláveis, confiáveis e fáceis de manter.'
-        : 'My day-to-day work includes databases, asynchronous messaging and secure authentication. I contribute to technical and architectural decisions to keep systems scalable, reliable and maintainable.' }),
-      line(),
-      line({ text: pt
-        ? 'Também desenvolvo interfaces com Angular, React e TypeScript. Valorizo código limpo, testes, colaboração e aprendizado contínuo.'
-        : 'I also build interfaces with Angular, React and TypeScript. I value clean code, testing, collaboration and continuous learning.' }),
+      ...textLines.map((text) => (text ? line({ text }) : line())),
     ];
   });
 

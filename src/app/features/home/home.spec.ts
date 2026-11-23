@@ -31,6 +31,8 @@ describe('Desktop home', () => {
     expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Desenvolvo sistemas corporativos de ponta a ponta');
     expect(host.querySelector('.zed-editor__code')?.textContent).toContain('Java, Kotlin e Spring Boot');
     expect(host.querySelector('.zed-editor__code')?.textContent).not.toContain('export const');
+    const lineNumbers = Array.from(host.querySelectorAll('.zed-editor__number')).map((el) => el.textContent?.trim());
+    expect(lineNumbers).toEqual(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']);
     expect(host.querySelectorAll('.taskbar__window').length).toBe(1);
     (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
     fixture.detectChanges();

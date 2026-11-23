@@ -59,9 +59,9 @@ a { color: inherit; }
 .zed-editor__breadcrumb { flex: 0 0 29px; display: flex; align-items: center; gap: 9px; padding: 0 18px; color: #9ca9b3; font-size: 11px; }
 .zed-editor__breadcrumb span { color: #6f7d88; }
 .zed-editor__code { flex: 1; min-height: 0; overflow: auto; padding: 7px 0 14px; scrollbar-color: #65717e transparent; }
-.zed-editor__line { display: grid; grid-template-columns: 50px minmax(0,1fr); align-items: baseline; width: 100%; min-height: 22px; }
+.zed-editor__line { display: grid; grid-template-columns: 50px max-content; align-items: baseline; width: max-content; min-width: 100%; min-height: 22px; }
 .zed-editor__number { padding-right: 16px; color: #79858e; text-align: right; user-select: none; }
-.zed-editor__line code { display: block; max-width: 78ch; padding-right: 24px; color: #dce3e7; font: inherit; white-space: pre-wrap; overflow-wrap: break-word; }
+.zed-editor__line code { display: block; padding-right: 24px; color: #dce3e7; font: inherit; white-space: pre; }
 .zed-editor__token--comment { color: #91a09d; }
 .zed-editor__token--keyword { color: #c5b5d4; }
 .zed-editor__token--heading { color: #e5ecee; font-weight: 700; }
@@ -132,7 +132,7 @@ a { color: inherit; }
   .app-window__resize { display: none; }
   .zed-editor { font-size: 12px; }
   .zed-editor__brand { width: 45px; }
-  .zed-editor__line { grid-template-columns: 38px minmax(0,1fr); }
+  .zed-editor__line { grid-template-columns: 38px max-content; }
   .zed-editor__number { padding-right: 10px; }
   .contact-fetch { padding: 18px; font-size: 11px; }
   .contact-fetch__grid { grid-template-columns: 1fr; gap: 13px; margin: 15px 0; }
