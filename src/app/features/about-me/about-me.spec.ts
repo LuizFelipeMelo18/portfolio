@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AboutMe } from './about-me';
+import { TranslationService } from '../../core/services/translation.service';
 
 describe('AboutMe', () => {
   let component: AboutMe;
@@ -9,6 +10,8 @@ describe('AboutMe', () => {
     await TestBed.configureTestingModule({
       imports: [AboutMe],
     }).compileComponents();
+
+    TestBed.inject(TranslationService).setLanguage('EN');
 
     fixture = TestBed.createComponent(AboutMe);
     component = fixture.componentInstance;

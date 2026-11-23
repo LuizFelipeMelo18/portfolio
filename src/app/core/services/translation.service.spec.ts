@@ -11,8 +11,8 @@ describe('TranslationService', () => {
 
   it('should be created with default language', () => {
     expect(service).toBeTruthy();
-    expect(service.currentLanguage()).toBe('EN');
-    expect(service.t().nav.contacts).toBe('contacts');
+    expect(service.currentLanguage()).toBe('PT-BR');
+    expect(service.t().nav.contacts).toBe('contatos');
   });
 
   it('should update translations when language changes to PT-BR', () => {

@@ -1,31 +1,30 @@
-# Luiz Felipe — Portfolio
+# Portfólio · Luiz Felipe Melo
 
-Portfólio pessoal e profissional desenvolvido com **Angular**, apresentando projetos, habilidades técnicas e canais de contato.
+Portfólio em Angular com interface de área de trabalho inspirada no Arch Linux e no Hyprland.
 
----
+## Estado desta etapa
 
-## 🚀 Tecnologias e Recursos
+- Barra inferior com logo do sistema, janelas abertas, idioma PT/EN e relógio.
+- Menu do sistema com busca e acesso aos nove aplicativos.
+- Janelas com foco, arraste, minimizar, maximizar e fechar.
+- Aplicativo **Sobre** em formato fastfetch, com informações profissionais.
+- **Projetos**, **Stacks** e **Contato** usam os dados já presentes no portfólio.
+- **Personalizar** permite trocar o wallpaper entre oito opções e mantém a escolha no navegador.
+- **Experiência e formação**, **Biblioteca**, **Personal** e **Media Player** já abrem como janelas e aguardam suas etapas de conteúdo.
+- URLs antigas como `/works`, `/about-me` e `/contacts` abrem o aplicativo correspondente dentro do desktop.
 
-- **Framework**: [Angular](https://angular.dev/) (Standalone Components, Signals, Control Flow `@for` / `@if`)
-- **Linguagem**: [TypeScript](https://www.typescriptlang.org/)
-- **Estilização**: CSS Vanilla responsivo com design system moderno (One Dark theme, fonte monoespaçada Fira Code)
-- **Internacionalização (i18n)**: Suporte dinâmico a múltiplos idiomas (**EN** / **PT-BR**) via Signals
-- **Responsividade**: Layout 100% responsivo para mobile, tablets e desktops (menu hambúrguer em tela cheia no mobile)
-- **Testes**: Suíte de testes unitários com [Vitest](https://vitest.dev/)
+## Desenvolvimento
 
----
+```bash
+npm install
+npm start
+```
 
-## 📁 Estrutura de Páginas
+Abra `http://localhost:4200`. Para verificar:
 
-- **Home (`/home`)**: Hero section, destaques dos principais projetos, resumo de habilidades, apresentação e contato.
-- **Projects (`/works`)**: Listagem dos projetos desenvolvidos com tecnologias e links para os repositórios no GitHub.
-- **About Me (`/about-me`)**: Apresentação profissional e visão detalhada das stacks técnicas (Languages, Frameworks, Databases, Tools, Other).
-- **Contacts (`/contacts`)**: Canais diretos de comunicação e links para redes sociais.
+```bash
+npm test -- --watch=false
+npm run build
+```
 
----
-
-## 📬 Contato
-
-- **GitHub**: [LuizFelipeMelo18](https://github.com/LuizFelipeMelo18)
-- **LinkedIn**: [Luiz Felipe Melo dos Anjos](https://www.linkedin.com/in/luiz-felipe-melo-dos-anjos/)
-- **E-mail**: [luizfelipemelo.dev@gmail.com](mailto:luizfelipemelo.dev@gmail.com)
+Os aplicativos e o gerenciador de janelas ficam em `src/app/features/home/`. Os textos em PT/EN ficam em `src/app/core/i18n/`, e os dados dos projetos em `src/app/core/data/projects.ts`.

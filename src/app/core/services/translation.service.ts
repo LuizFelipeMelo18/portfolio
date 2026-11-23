@@ -53,6 +53,6 @@ export class TranslationService {
         // Ignora erros de acesso a localStorage
       }
     }
-    return 'EN';
+    return 'PT-BR';
   }
 }

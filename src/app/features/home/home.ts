@@ -1,103 +1,219 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { SocialSidebar } from '../../core/layout/social-sidebar/social-sidebar';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CONTACT_INFO } from '../../core/constants/contact-info';
+import { portfolioProjects } from '../../core/data/projects';
 import { TranslationService } from '../../core/services/translation.service';
-import { ContactBoxComponent } from '../../shared/components/contact-box/contact-box';
-import { ProjectCardComponent } from '../../shared/components/project-card/project-card';
-import { SkillsBoxComponent } from '../../shared/components/skills-box/skills-box';
 
-export interface ProjectItem {
-  readonly title: string;
-  readonly technologies: string;
-  readonly description: string;
-  readonly githubLink: string;
+type AppId = 'about' | 'projects' | 'stacks' | 'experience' | 'library' | 'personal' | 'customize' | 'media' | 'contact';
+
+interface DesktopApp {
+  readonly id: AppId;
+  readonly pt: string;
+  readonly en: string;
+  readonly hint: string;
 }
 
+interface DesktopWindow {
+  readonly id: AppId;
+  readonly x: number;
+  readonly y: number;
+  readonly z: number;
+  readonly minimized: boolean;
+  readonly maximized: boolean;
+}
+
+interface Wallpaper {
+  readonly id: string;
+  readonly src: string;
+  readonly pt: string;
+  readonly en: string;
+}
+
+const WALLPAPER_STORAGE_KEY = 'portfolio-wallpaper';
+
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    SocialSidebar,
-    ProjectCardComponent,
-    SkillsBoxComponent,
-    ContactBoxComponent,
-    RouterLink,
-  ],
   selector: 'app-home',
-  styleUrl: './home.css',
+  imports: [DatePipe],
   templateUrl: './home.html',
+  styleUrl: './home.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '(document:pointermove)': 'onPointerMove($event)',
+    '(document:pointerup)': 'endDrag()',
+    '(document:keydown.escape)': 'closeMenu()',
+  },
 })
-export class Home {
-  private readonly translationService = inject(TranslationService);
+export class Home implements OnInit, OnDestroy {
+  private readonly translation = inject(TranslationService);
+  private readonly route = inject(ActivatedRoute);
+  private nextZ = 10;
+  private drag: { id: AppId; startX: number; startY: number; x: number; y: number } | null = null;
+  private readonly clock = setInterval(() => this.now.set(new Date()), 30_000);
 
-  protected readonly t = this.translationService.t;
+  protected readonly now = signal(new Date());
+  protected readonly language = this.translation.currentLanguage;
+  protected readonly isPt = computed(() => this.language() === 'PT-BR');
+  protected readonly t = this.translation.t;
+  protected readonly contact = CONTACT_INFO;
+  protected readonly menuOpen = signal(false);
+  protected readonly menuQuery = signal('');
+  protected readonly windows = signal<readonly DesktopWindow[]>([]);
+  protected readonly activeId = signal<AppId | null>(null);
+  protected readonly projects = computed(() => portfolioProjects(this.t().works.projects));
 
-  /**
-   * Nomes, tecnologias e links do GitHub dos projetos fixos;
-   * as descrições acompanham o serviço de tradução.
-   */
-  protected readonly projects = computed<readonly ProjectItem[]>(() => {
-    const d = this.t().works.projects;
-    return [
-      {
-        title: 'Portfolio',
-        technologies: 'Angular TypeScript',
-        description: d.portfolio,
-        githubLink: 'https://github.com/LuizFelipeMelo18/portfolio',
-      },
-      {
-        title: 'StartingCoding',
-        technologies: 'React TypeScript Spring Boot Docker',
-        description: d.startingCoding,
-        githubLink: 'https://github.com/LuizFelipeMelo18/StartaindCoding',
-      },
-      {
-        title: 'Movies Lab',
-        technologies: 'React TypeScript',
-        description: d.moviesLab,
-        githubLink: 'https://github.com/LuizFelipeMelo18/Movies-Lab',
-      },
-    ];
+  protected readonly wallpapers: readonly Wallpaper[] = [
+    { id: 'winter', src: '/desktop-wallpaper.png', pt: 'Inverno', en: 'Winter' },
+    { id: 'ocean', src: '/wallpapers/ocean.png', pt: 'Oceano', en: 'Ocean' },
+    { id: 'midnight', src: '/wallpapers/midnight.png', pt: 'Meia-noite', en: 'Midnight' },
+    { id: 'studio', src: '/wallpapers/studio.png', pt: 'Ateliê', en: 'Studio' },
+    { id: 'horizon', src: '/wallpapers/horizon.png', pt: 'Horizonte', en: 'Horizon' },
+    { id: 'orange', src: '/wallpapers/orange.png', pt: 'Laranja', en: 'Orange' },
+    { id: 'jazz', src: '/wallpapers/jazz.png', pt: 'Jazz', en: 'Jazz' },
+    { id: 'dawn', src: '/wallpapers/dawn.png', pt: 'Aurora', en: 'Dawn' },
+  ];
+  protected readonly wallpaperId = signal(this.readWallpaperId());
+  protected readonly selectedWallpaper = computed(() => this.wallpapers.find((wallpaper) => wallpaper.id === this.wallpaperId())!);
+
+  protected readonly apps: readonly DesktopApp[] = [
+    { id: 'about', pt: 'Sobre', en: 'About', hint: 'fastfetch' },
+    { id: 'projects', pt: 'Projetos', en: 'Projects', hint: '~/dev' },
+    { id: 'stacks', pt: 'Stacks', en: 'Stacks', hint: 'stack.json' },
+    { id: 'experience', pt: 'Experiência e formação', en: 'Experience & education', hint: 'history.log' },
+    { id: 'library', pt: 'Biblioteca', en: 'Library', hint: 'library' },
+    { id: 'personal', pt: 'Personal', en: 'Personal', hint: 'personal' },
+    { id: 'customize', pt: 'Personalizar', en: 'Customize', hint: 'settings' },
+    { id: 'media', pt: 'Media Player', en: 'Media Player', hint: 'media' },
+    { id: 'contact', pt: 'Contato', en: 'Contact', hint: 'network' },
+  ];
+
+  protected readonly filteredApps = computed(() => {
+    const query = this.menuQuery().trim().toLocaleLowerCase();
+    return this.apps.filter((app) => this.label(app).toLocaleLowerCase().includes(query));
   });
 
-  /**
-   * 5 blocos de habilidades com os dados reais do Luiz
-   * organizados para renderização no layout assimétrico.
-   */
-  protected readonly skillGroups = computed(() => {
-    const s = this.t().aboutMe.skills;
-    return {
-      languages: {
-        title: s.languages,
-        items: ['Java', 'JavaScript', 'TypeScript', 'Kotlin'],
-      },
-      databases: {
-        title: s.databases,
-        items: ['PostgreSQL', 'MySQL'],
-      },
-      other: {
-        title: s.other,
-        items: ['REST APIs', 'SOLID', 'Clean Code', 'DDD', 'Hexagonal Architecture'],
-      },
-      tools: {
-        title: s.tools,
-        items: [
-          'Git',
-          'Docker',
-          'Linux',
-          'GitHub Actions',
-          'AWS',
-          'RabbitMQ',
-          'Apache Kafka',
-          'JUnit',
-          'Mockito',
-        ],
-      },
-      frameworks: {
-        title: s.frameworks,
-        items: ['Spring Boot', 'Spring Security', 'Spring Data JPA', 'Angular', 'React'],
-      },
-    };
-  });
+  ngOnInit(): void {
+    const requested = this.route.snapshot.data['openApp'];
+    if (this.apps.some((app) => app.id === requested)) this.openApp(requested as AppId);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.clock);
+  }
+
+  protected label(app: DesktopApp): string {
+    return this.isPt() ? app.pt : app.en;
+  }
+
+  protected appFor(id: AppId): DesktopApp {
+    return this.apps.find((app) => app.id === id)!;
+  }
+
+  protected openApp(id: AppId): void {
+    const existing = this.windows().find((item) => item.id === id);
+    const z = ++this.nextZ;
+    if (existing) {
+      this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z } : item));
+    } else {
+      const offset = this.windows().length * 28;
+      const width = id === 'about' ? 800 : 650;
+      const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
+      const y = Math.max(24, Math.min(70 + offset, window.innerHeight - 220));
+      this.windows.update((items) => [...items, { id, x, y, z, minimized: false, maximized: false }]);
+    }
+    this.activeId.set(id);
+    this.closeMenu();
+  }
+
+  protected focusWindow(id: AppId): void {
+    if (this.activeId() === id && this.windows().some((item) => item.id === id && !item.minimized)) return;
+    this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: false, z: ++this.nextZ } : item));
+    this.activeId.set(id);
+  }
+
+  protected minimizeWindow(id: AppId): void {
+    this.windows.update((items) => items.map((item) => item.id === id ? { ...item, minimized: true } : item));
+    this.updateActive();
+  }
+
+  protected closeWindow(id: AppId): void {
+    this.windows.update((items) => items.filter((item) => item.id !== id));
+    this.updateActive();
+  }
+
+  protected toggleMaximize(id: AppId): void {
+    this.windows.update((items) => items.map((item) => item.id === id ? { ...item, maximized: !item.maximized } : item));
+    this.focusWindow(id);
+  }
+
+  protected taskClick(id: AppId): void {
+    this.focusWindow(id);
+  }
+
+  protected toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+    this.menuQuery.set('');
+  }
+
+  protected closeMenu(): void {
+    this.menuOpen.set(false);
+    this.menuQuery.set('');
+  }
+
+  protected updateQuery(event: Event): void {
+    this.menuQuery.set((event.target as HTMLInputElement).value);
+  }
+
+  protected selectLanguage(language: 'PT-BR' | 'EN'): void {
+    this.translation.setLanguage(language);
+  }
+
+  protected wallpaperLabel(wallpaper: Wallpaper): string {
+    return this.isPt() ? wallpaper.pt : wallpaper.en;
+  }
+
+  protected selectWallpaper(id: string): void {
+    if (!this.wallpapers.some((wallpaper) => wallpaper.id === id)) return;
+    this.wallpaperId.set(id);
+    try {
+      localStorage.setItem(WALLPAPER_STORAGE_KEY, id);
+    } catch {
+      // The wallpaper still changes for this visit when storage is unavailable.
+    }
+  }
+
+  protected startDrag(event: PointerEvent, desktopWindow: DesktopWindow): void {
+    if (desktopWindow.maximized || event.button !== 0) return;
+    this.focusWindow(desktopWindow.id);
+    this.drag = { id: desktopWindow.id, startX: event.clientX, startY: event.clientY, x: desktopWindow.x, y: desktopWindow.y };
+    event.preventDefault();
+  }
+
+  protected onPointerMove(event: PointerEvent): void {
+    if (!this.drag) return;
+    const x = Math.max(0, Math.min(this.drag.x + event.clientX - this.drag.startX, window.innerWidth - 180));
+    const y = Math.max(0, Math.min(this.drag.y + event.clientY - this.drag.startY, window.innerHeight - 110));
+    this.windows.update((items) => items.map((item) => item.id === this.drag!.id ? { ...item, x, y } : item));
+  }
+
+  protected endDrag(): void {
+    this.drag = null;
+  }
+
+  private updateActive(): void {
+    const top = this.windows().filter((item) => !item.minimized).reduce<DesktopWindow | null>((current, item) => !current || item.z > current.z ? item : current, null);
+    this.activeId.set(top?.id ?? null);
+  }
+
+  private readWallpaperId(): string {
+    try {
+      const saved = localStorage.getItem(WALLPAPER_STORAGE_KEY);
+      if (this.wallpapers.some((wallpaper) => wallpaper.id === saved)) return saved!;
+    } catch {
+      // Use the default wallpaper when storage is unavailable.
+    }
+    return this.wallpapers[0].id;
+  }
 }
 
 export { Home as HomeComponent };

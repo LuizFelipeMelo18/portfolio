@@ -1,138 +1,117 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Home } from './home';
 import { TranslationService } from '../../core/services/translation.service';
 
-describe('Home', () => {
-  let component: Home;
-  let fixture: ComponentFixture<Home>;
-  let translationService: TranslationService;
-
+describe('Desktop home', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Home],
-      providers: [provideRouter([])],
-    }).compileComponents();
-
-    translationService = TestBed.inject(TranslationService);
-    translationService.setLanguage('EN');
-
-    fixture = TestBed.createComponent(Home);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
+    await TestBed.configureTestingModule({ imports: [Home], providers: [provideRouter([])] }).compileComponents();
+    TestBed.inject(TranslationService).setLanguage('PT-BR');
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should render the vertical social sidebar on the left', () => {
+  it('starts as a desktop with nine app icons and an empty taskbar', () => {
+    const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('app-social-sidebar')).toBeTruthy();
+    const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelectorAll('.desktop-icon').length).toBe(9);
+    expect(host.querySelectorAll('.desktop-icon__tile img').length).toBe(9);
+    expect(host.querySelectorAll('.app-window').length).toBe(0);
+    expect(host.querySelectorAll('.taskbar__window').length).toBe(0);
+    expect(host.querySelector('.taskbar__time')?.textContent).toMatch(/\d{2}\/\d{2}\/\d{4}/);
+    fixture.destroy();
   });
 
-  it('should render the hero section with highlighted title and contact button', () => {
+  it('opens multiple windows and tracks them beside the system logo', () => {
+    const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const heroTitle = compiled.querySelector('.hero__title');
-    expect(heroTitle?.textContent).toContain('Luiz is a');
-    expect(heroTitle?.textContent).toContain('Full Stack Developer');
-
-    const highlight = compiled.querySelector('.hero__highlight');
-    expect(highlight?.textContent).toBe('Full Stack Developer');
-
-    const contactBtn = compiled.querySelector('#hero-contact-button');
-    expect(contactBtn).toBeTruthy();
-    expect(contactBtn?.getAttribute('routerlink') || contactBtn?.getAttribute('href')).toBeTruthy();
-    expect(contactBtn?.textContent).toContain('Contact me!!');
+    const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('[aria-label="Abrir Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.fetch__details')?.textContent).toContain('Luiz Felipe Melo');
+    expect(host.querySelectorAll('.taskbar__window').length).toBe(1);
+    (host.querySelector('[aria-label="Abrir Projetos"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelectorAll('.app-window').length).toBe(2);
+    expect(host.querySelectorAll('.taskbar__window').length).toBe(2);
+    fixture.destroy();
   });
 
-  it('should render projects header with #projects and view all link', () => {
+  it('opens each of the nine desktop apps in its own window', () => {
+    const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const title = compiled.querySelector('#projects-title');
-    expect(title?.textContent).toContain('#');
-    expect(title?.textContent).toContain('projects');
-
-    const viewAllLink = compiled.querySelector('#view-all-projects-link');
-    expect(viewAllLink).toBeTruthy();
-    expect(viewAllLink?.textContent).toContain('View all');
+    const host = fixture.nativeElement as HTMLElement;
+    for (const icon of Array.from(host.querySelectorAll<HTMLButtonElement>('.desktop-icon'))) {
+      icon.click();
+      fixture.detectChanges();
+    }
+    expect(host.querySelectorAll('.app-window').length).toBe(9);
+    expect(host.querySelectorAll('.taskbar__window').length).toBe(9);
+    fixture.destroy();
   });
 
-  it('should render the 3 projects with ProjectCardComponent via property binding', () => {
+  it('minimizes, restores and closes a window', () => {
+    const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const cards = compiled.querySelectorAll('app-project-card');
-    expect(cards.length).toBe(3);
-
-    const titles = Array.from(cards).map(
-      (card) => card.querySelector('.project-card__title')?.textContent?.trim()
-    );
-    expect(titles).toContain('Portfolio');
-    expect(titles).toContain('StartingCoding');
-    expect(titles).toContain('Movies Lab');
+    const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('[aria-label="Abrir Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    (host.querySelector('[aria-label="Minimizar Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.app-window')).toBeNull();
+    (host.querySelector('[aria-label="Mostrar Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.app-window')).toBeTruthy();
+    (host.querySelector('[aria-label="Maximizar Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.app-window--maximized')).toBeTruthy();
+    (host.querySelector('[aria-label="Fechar Sobre"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelectorAll('.taskbar__window').length).toBe(0);
+    fixture.destroy();
   });
 
-  it('should render skills section with #skills, 5 skills boxes, and geometric decorations', () => {
+  it('opens apps from the system menu and changes language', () => {
+    const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const skillsTitle = compiled.querySelector('#skills-title');
-    expect(skillsTitle?.textContent).toContain('#');
-    expect(skillsTitle?.textContent).toContain('skills');
-
-    const skillBoxes = compiled.querySelectorAll('app-skills-box');
-    expect(skillBoxes.length).toBe(5);
-
-    const titles = Array.from(skillBoxes).map(
-      (box) => box.querySelector('.skills-box__title')?.textContent?.trim()
-    );
-    expect(titles).toContain('Languages');
-    expect(titles).toContain('Databases');
-    expect(titles).toContain('Other');
-    expect(titles).toContain('Tools');
-    expect(titles).toContain('Frameworks');
-
-    expect(compiled.querySelector('.skills__decor')).toBeTruthy();
+    const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('.taskbar__system') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelectorAll('.app-menu__list button').length).toBe(9);
+    (host.querySelector('.app-menu__list button') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.app-window')).toBeTruthy();
+    expect(host.querySelector('.app-menu')).toBeNull();
+    (host.querySelector('.taskbar__languages button:last-child') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('[aria-label="Abrir About"]')).toBeTruthy();
+    fixture.destroy();
   });
 
-  it('should render about-me section with #about-me, presentation text, and "Read more ->" button', () => {
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const aboutTitle = compiled.querySelector('#about-title');
-    expect(aboutTitle?.textContent).toContain('#');
-    expect(aboutTitle?.textContent).toContain('about-me');
+  it('changes the desktop wallpaper and remembers the choice', () => {
+    const previous = localStorage.getItem('portfolio-wallpaper');
+    try {
+      localStorage.removeItem('portfolio-wallpaper');
+      const fixture = TestBed.createComponent(Home);
+      fixture.detectChanges();
+      const host = fixture.nativeElement as HTMLElement;
+      (host.querySelector('[aria-label="Abrir Personalizar"]') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect(host.querySelectorAll('.wallpaper-option').length).toBe(8);
 
-    expect(compiled.querySelector('.about__greeting')?.textContent).toContain("Hello, i'm Luiz Felipe!");
+      (host.querySelector('[aria-label="Selecionar Oceano"]') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect((host.querySelector('.desktop') as HTMLElement).style.backgroundImage).toContain('/wallpapers/ocean.png');
+      expect(host.querySelector('[aria-label="Selecionar Oceano"]')?.getAttribute('aria-pressed')).toBe('true');
+      expect(localStorage.getItem('portfolio-wallpaper')).toBe('ocean');
+      fixture.destroy();
 
-    const readMoreBtn = compiled.querySelector('#about-read-more-button');
-    expect(readMoreBtn).toBeTruthy();
-    expect(readMoreBtn?.getAttribute('routerlink') || readMoreBtn?.getAttribute('href')).toBeTruthy();
-    expect(readMoreBtn?.textContent).toContain('Read more ->');
-  });
-
-  it('should render contacts section with #contacts, networking text, and ContactBoxComponent', () => {
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    const contactsTitle = compiled.querySelector('#contacts-title');
-    expect(contactsTitle?.textContent).toContain('#');
-    expect(contactsTitle?.textContent).toContain('contacts');
-
-    expect(compiled.querySelector('.contacts__text')?.textContent).toContain(
-      'I am always open to networking'
-    );
-    expect(compiled.querySelector('app-contact-box')).toBeTruthy();
-  });
-
-  it('should update section titles when changing language to PT-BR', async () => {
-    translationService.setLanguage('PT-BR');
-    fixture.detectChanges();
-    await fixture.whenStable();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('#skills-title')?.textContent).toContain('habilidades');
-    expect(compiled.querySelector('#about-title')?.textContent).toContain('sobre-mim');
-    expect(compiled.querySelector('#contacts-title')?.textContent).toContain('contatos');
-    expect(compiled.querySelector('#about-read-more-button')?.textContent).toContain('Saiba mais ->');
+      const reloaded = TestBed.createComponent(Home);
+      reloaded.detectChanges();
+      expect((reloaded.nativeElement as HTMLElement).querySelector<HTMLElement>('.desktop')?.style.backgroundImage).toContain('/wallpapers/ocean.png');
+      reloaded.destroy();
+    } finally {
+      if (previous === null) localStorage.removeItem('portfolio-wallpaper');
+      else localStorage.setItem('portfolio-wallpaper', previous);
+    }
   });
 });

@@ -1,224 +1,129 @@
-<div class="home-page">
-  <!-- Decorações de fundo flutuantes -->
-  <div class="decor decor--dots decor--dots-a" aria-hidden="true"></div>
-  <div class="decor decor--dots decor--dots-b" aria-hidden="true"></div>
-  <div class="decor decor--frame-right" aria-hidden="true"></div>
+<main class="desktop" aria-label="Área de trabalho" [style.background-image]="'url(' + selectedWallpaper().src + ')'">
+  <nav class="desktop-icons" aria-label="Aplicativos na área de trabalho">
+    @for (app of apps; track app.id) {
+      <button class="desktop-icon" type="button" (click)="openApp(app.id)" [attr.aria-label]="'Abrir ' + label(app)" [attr.title]="label(app)">
+        <span class="desktop-icon__tile"><img [src]="'/icons/' + app.id + '.svg'" alt="" /></span>
+        <span class="desktop-icon__label">{{ label(app) }}</span>
+      </button>
+    }
+  </nav>
 
-  <div class="home-page__body">
-    <!-- Barra lateral esquerda: linha vertical com ícones do GitHub e LinkedIn -->
-    <app-social-sidebar class="home-page__sidebar" />
-
-    <main class="home-page__main">
-      <!-- 2. Hero Section -->
-      <section class="hero" aria-label="Hero section">
-        <div class="hero__content">
-          <h1 class="hero__title">
-            Luiz is a <br class="hero__break" /><span class="hero__highlight">Full Stack <br class="hero__break" />Developer</span>
-          </h1>
-
-          <p class="hero__subtitle">
-            {{ t().home.hero.subtitle }}
-          </p>
-
-          <a
-            class="hero__button"
-            routerLink="/contacts"
-            id="hero-contact-button"
-            aria-label="Contact me"
-          >
-            {{ t().home.hero.contactBtn }}
-          </a>
-        </div>
-
-        <div class="hero__visual" aria-hidden="true">
-          <div class="hero__decor-dots hero__decor-dots--top"></div>
-
-          <div class="hero__logo-card">
-            <svg class="hero__art-svg" viewBox="0 0 160 160" fill="none">
-              <rect x="25" y="25" width="105" height="105" stroke="var(--accent)" stroke-width="2" />
-              <rect
-                x="15"
-                y="40"
-                width="105"
-                height="105"
-                stroke="#abb2bf"
-                stroke-width="1.5"
-                stroke-dasharray="5 5"
-                opacity="0.6"
-              />
-              <path
-                d="M48 80L70 102L112 55"
-                stroke="var(--accent)"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+  @for (desktopWindow of windows(); track desktopWindow.id) {
+    @if (!desktopWindow.minimized) {
+      <section class="app-window" [class.app-window--maximized]="desktopWindow.maximized" [class.app-window--active]="activeId() === desktopWindow.id" [attr.aria-label]="label(appFor(desktopWindow.id))" [attr.data-app]="desktopWindow.id" [style.left.px]="desktopWindow.x" [style.top.px]="desktopWindow.y" [style.z-index]="desktopWindow.z" (pointerdown)="focusWindow(desktopWindow.id)">
+        <header class="app-window__bar">
+          <div class="app-window__title" (pointerdown)="startDrag($event, desktopWindow)" [attr.aria-label]="(isPt() ? 'Mover ' : 'Move ') + label(appFor(desktopWindow.id))"></div>
+          <div class="app-window__controls">
+            <button type="button" (click)="minimizeWindow(desktopWindow.id)" [attr.aria-label]="'Minimizar ' + label(appFor(desktopWindow.id))" title="Minimizar">−</button>
+            <button type="button" (click)="toggleMaximize(desktopWindow.id)" [attr.aria-label]="'Maximizar ' + label(appFor(desktopWindow.id))" title="Maximizar">□</button>
+            <button type="button" class="app-window__close" (click)="closeWindow(desktopWindow.id)" [attr.aria-label]="'Fechar ' + label(appFor(desktopWindow.id))" title="Fechar">×</button>
           </div>
-
-          <div class="hero__decor-dots hero__decor-dots--bottom"></div>
-        </div>
-      </section>
-
-      <!-- 3. Projects Section -->
-      <section class="projects" aria-labelledby="projects-title">
-        <header class="section-header">
-          <div class="section-header__title-group">
-            <h2 id="projects-title" class="section-header__title">
-              <span class="accent" aria-hidden="true">#</span>{{ t().home.projects.title }}
-            </h2>
-            <div class="section-header__line" aria-hidden="true"></div>
-          </div>
-
-          <a
-            class="projects__view-all"
-            routerLink="/works"
-            id="view-all-projects-link"
-            aria-label="View all projects"
-          >
-            View all <span class="arrow" aria-hidden="true">~~&gt;</span>
-          </a>
         </header>
 
-        <!-- Listagem de Projetos com ProjectCardComponent -->
-        <div class="projects__grid">
-          @for (project of projects(); track project.githubLink) {
-            <app-project-card
-              [title]="project.title"
-              [technologies]="project.technologies"
-              [description]="project.description"
-              [githubLink]="project.githubLink"
-            />
+        <div class="app-window__body">
+          @switch (desktopWindow.id) {
+            @case ('about') {
+              <div class="fetch">
+                <div class="fetch__command"><span>luiz&#64;archlinux</span>:~$ fastfetch</div>
+                <div class="fetch__grid">
+                  <pre class="fetch__ascii" aria-hidden="true">
+                 .o+.
+                .ooo/
+               .+oooo:
+              .+oooooo:
+             -+oooooo+:
+           ./:-:++oooo+:
+          ./++++/+++++++:
+         ./++++++++++++++:
+        ./+++ooooooooooooo/
+       ./ooosssso++osssssso+.
+      .oossssso-   .ossssss+.
+     -osssssso.      :ssssss+.
+    :osssssss/        osssso+++.
+   /ossssssss/        +ssssooo/-
+  /ossssso+/:-        -:/+osssso+-
+ .osssso+/                       +-
+                ARCH LINUX</pre>
+                  <div class="fetch__details">
+                    <strong>luizfelipe<span>&#64;</span>archlinux</strong>
+                    <div class="fetch__separator"></div>
+                    <dl>
+                      <div><dt>{{ isPt() ? 'Nome' : 'Name' }}</dt><dd>Luiz Felipe Melo</dd></div>
+                      <div><dt>{{ isPt() ? 'Atuação' : 'Role' }}</dt><dd>Full Stack Developer</dd></div>
+                      <div><dt>{{ isPt() ? 'Linguagens' : 'Languages' }}</dt><dd>Java, TypeScript, JavaScript, Kotlin</dd></div>
+                      <div><dt>Frameworks</dt><dd>Spring Boot, Angular, React</dd></div>
+                      <div><dt>{{ isPt() ? 'Bancos' : 'Databases' }}</dt><dd>PostgreSQL, MySQL</dd></div>
+                      <div><dt>{{ isPt() ? 'Ferramentas' : 'Tools' }}</dt><dd>Git, Docker, Linux</dd></div>
+                      <div><dt>{{ isPt() ? 'Contato' : 'Contact' }}</dt><dd><a [href]="'mailto:' + contact.email">{{ contact.email }}</a></dd></div>
+                      <div><dt>GitHub</dt><dd><a [href]="contact.githubUrl" target="_blank" rel="noopener noreferrer">LuizFelipeMelo18</a></dd></div>
+                      <div><dt>LinkedIn</dt><dd><a [href]="contact.linkedinUrl" target="_blank" rel="noopener noreferrer">Luiz Felipe Melo</a></dd></div>
+                    </dl>
+                    <div class="fetch__swatches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                  </div>
+                </div>
+                <div class="fetch__prompt">luiz&#64;archlinux:~$ <span class="fetch__cursor">▌</span></div>
+              </div>
+            }
+            @case ('projects') {
+              <div class="app-content"><p class="app-content__path">~/dev/projects</p><h2>{{ isPt() ? 'Projetos' : 'Projects' }}</h2><div class="file-list">@for (project of projects(); track project.githubLink) { <a [href]="project.githubLink" target="_blank" rel="noopener noreferrer"><span class="file-list__icon">▣</span><span><strong>{{ project.title }}</strong><small>{{ project.technologies }}</small><small>{{ project.description }}</small></span><b aria-hidden="true">↗</b></a> }</div></div>
+            }
+            @case ('stacks') {
+              <div class="app-content"><p class="app-content__path">~/config/stack.json</p><h2>Stacks</h2><div class="stack-list"><div><strong>{{ t().aboutMe.skills.languages }}</strong><span>Java · JavaScript · TypeScript · Kotlin</span></div><div><strong>Frameworks</strong><span>Spring Boot · Angular · React</span></div><div><strong>{{ t().aboutMe.skills.databases }}</strong><span>PostgreSQL · MySQL</span></div><div><strong>{{ t().aboutMe.skills.tools }}</strong><span>Git · Docker · Linux · AWS · GitHub Actions</span></div></div></div>
+            }
+            @case ('contact') {
+              <div class="app-content"><p class="app-content__path">~/network/contact</p><h2>{{ isPt() ? 'Contato' : 'Contact' }}</h2><p class="app-content__text">{{ t().contacts.description }}</p><div class="contact-list"><a [href]="'mailto:' + contact.email">✉ &nbsp; {{ contact.email }} <span>↗</span></a><a [href]="contact.githubUrl" target="_blank" rel="noopener noreferrer">⌘ &nbsp; GitHub <span>↗</span></a><a [href]="contact.linkedinUrl" target="_blank" rel="noopener noreferrer">◈ &nbsp; LinkedIn <span>↗</span></a></div></div>
+            }
+            @case ('customize') {
+              <div class="app-content wallpaper-settings">
+                <p class="app-content__path">~/config/wallpaper</p>
+                <div class="wallpaper-settings__heading">
+                  <div>
+                    <h2>{{ isPt() ? 'Plano de fundo' : 'Wallpaper' }}</h2>
+                    <p>{{ isPt() ? 'Escolha uma imagem para sua área de trabalho.' : 'Choose an image for your desktop.' }}</p>
+                  </div>
+                  <button type="button" class="wallpaper-settings__show" (click)="minimizeWindow('customize')">{{ isPt() ? 'Ver área de trabalho' : 'View desktop' }}</button>
+                </div>
+                <div class="wallpaper-grid" role="group" [attr.aria-label]="isPt() ? 'Planos de fundo disponíveis' : 'Available wallpapers'">
+                  @for (wallpaper of wallpapers; track wallpaper.id) {
+                    <button type="button" class="wallpaper-option" [class.wallpaper-option--selected]="wallpaperId() === wallpaper.id" [attr.aria-pressed]="wallpaperId() === wallpaper.id" [attr.aria-label]="(isPt() ? 'Selecionar ' : 'Select ') + wallpaperLabel(wallpaper)" (click)="selectWallpaper(wallpaper.id)">
+                      <img [src]="wallpaper.src" alt="" loading="lazy" />
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+            @default {
+              <div class="app-content app-content--pending"><div class="pending-icon"><img [src]="'/icons/' + desktopWindow.id + '.svg'" alt="" /></div><p class="app-content__path">~/apps/{{ desktopWindow.id }}</p><h2>{{ label(appFor(desktopWindow.id)) }}</h2><p>{{ isPt() ? 'A janela está pronta. Vamos desenvolver este aplicativo na próxima etapa.' : 'The window is ready. We can develop this app in the next stage.' }}</p></div>
+            }
           }
         </div>
       </section>
+    }
+  }
 
-      <!-- 4. Skills Section -->
-      <section class="skills" aria-labelledby="skills-title">
-        <header class="section-header">
-          <div class="section-header__title-group">
-            <h2 id="skills-title" class="section-header__title">
-              <span class="accent" aria-hidden="true">#</span>{{ t().home.skills.title }}
-            </h2>
-            <div class="section-header__line" aria-hidden="true"></div>
-          </div>
-        </header>
+  @if (menuOpen()) {
+    <div class="menu-scrim" aria-hidden="true" (click)="closeMenu()"></div>
+    <section class="app-menu" aria-label="Menu do sistema">
+      <div class="app-menu__heading"><img src="/arch-mark.svg" alt="" /><div><strong>Arch Linux</strong><small>luizfelipe&#64;arch</small></div></div>
+      <label class="app-menu__search"><span aria-hidden="true">⌕</span><input type="search" [value]="menuQuery()" (input)="updateQuery($event)" [placeholder]="isPt() ? 'Pesquisar aplicativos' : 'Search apps'" [attr.aria-label]="isPt() ? 'Pesquisar aplicativos' : 'Search apps'" /></label>
+      <div class="app-menu__list">
+        @for (app of filteredApps(); track app.id) {
+          <button type="button" (click)="openApp(app.id)"><span class="app-menu__icon" aria-hidden="true"><img [src]="'/icons/' + app.id + '.svg'" alt="" /></span><span><strong>{{ label(app) }}</strong><small>{{ app.hint }}</small></span></button>
+        } @empty { <p class="app-menu__empty">{{ isPt() ? 'Nenhum aplicativo encontrado.' : 'No apps found.' }}</p> }
+      </div>
+    </section>
+  }
 
-        <div class="skills__content">
-          <!-- Elementos decorativos geométricos vazados à esquerda -->
-          <div class="skills__decor" aria-hidden="true">
-            <div class="skills__decor-dots skills__decor-dots--top"></div>
-            <div class="skills__decor-square skills__decor-square--large"></div>
-            <div class="skills__decor-dots skills__decor-dots--bottom"></div>
-            <div class="skills__decor-square skills__decor-square--small"></div>
-          </div>
-
-          <!-- Blocos de habilidades no layout assimétrico (3 colunas) -->
-          <div class="skills__boxes">
-            <div class="skills__column">
-              <app-skills-box
-                [title]="skillGroups().languages.title"
-                [skills]="skillGroups().languages.items"
-              />
-            </div>
-
-            <div class="skills__column">
-              <app-skills-box
-                [title]="skillGroups().databases.title"
-                [skills]="skillGroups().databases.items"
-              />
-              <app-skills-box
-                [title]="skillGroups().other.title"
-                [skills]="skillGroups().other.items"
-              />
-            </div>
-
-            <div class="skills__column">
-              <app-skills-box
-                [title]="skillGroups().tools.title"
-                [skills]="skillGroups().tools.items"
-              />
-              <app-skills-box
-                [title]="skillGroups().frameworks.title"
-                [skills]="skillGroups().frameworks.items"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 5. About-me Section -->
-      <section class="about" aria-labelledby="about-title">
-        <header class="section-header">
-          <div class="section-header__title-group">
-            <h2 id="about-title" class="section-header__title">
-              <span class="accent" aria-hidden="true">#</span>{{ t().home.aboutMe.title }}
-            </h2>
-            <div class="section-header__line" aria-hidden="true"></div>
-          </div>
-        </header>
-
-        <div class="about__body">
-          <div class="about__content">
-            <p class="about__greeting">{{ t().home.aboutMe.greeting }}</p>
-            @for (paragraph of t().home.aboutMe.paragraphs; track $index) {
-              <p class="about__text">{{ paragraph }}</p>
-            }
-
-            <a
-              class="about__button"
-              routerLink="/about-me"
-              id="about-read-more-button"
-              aria-label="Read more about me"
-            >
-              {{ t().home.aboutMe.readMore }}
-            </a>
-          </div>
-
-          <div class="about__illustration" aria-hidden="true">
-            <div class="about__decor-dots about__decor-dots--top"></div>
-            <div class="about__decor-frame">
-              <svg class="about__svg" viewBox="0 0 160 160" fill="none">
-                <rect x="25" y="25" width="110" height="110" stroke="var(--accent)" stroke-width="1.5" />
-                <rect
-                  x="40"
-                  y="40"
-                  width="80"
-                  height="80"
-                  stroke="#abb2bf"
-                  stroke-width="1"
-                  stroke-dasharray="4 4"
-                  opacity="0.6"
-                />
-                <line x1="25" y1="25" x2="135" y2="135" stroke="var(--accent)" stroke-width="1" opacity="0.3" />
-              </svg>
-            </div>
-            <div class="about__decor-dots about__decor-dots--bottom"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 6. Contacts Section -->
-      <section class="contacts" aria-labelledby="contacts-title">
-        <header class="section-header">
-          <div class="section-header__title-group">
-            <h2 id="contacts-title" class="section-header__title">
-              <span class="accent" aria-hidden="true">#</span>{{ t().home.contacts.title }}
-            </h2>
-            <div class="section-header__line" aria-hidden="true"></div>
-          </div>
-        </header>
-
-        <div class="contacts__content">
-          <p class="contacts__text">
-            {{ t().home.contacts.text }}
-          </p>
-
-          <div class="contacts__box">
-            <app-contact-box />
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-</div>
+  <footer class="taskbar">
+    <button type="button" class="taskbar__system" [class.taskbar__system--open]="menuOpen()" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()" aria-label="Abrir menu do sistema" title="Menu do sistema"><img src="/arch-mark.svg" alt="" /></button>
+    <div class="taskbar__windows" aria-label="Janelas abertas">
+      @for (desktopWindow of windows(); track desktopWindow.id) {
+        <button type="button" class="taskbar__window" [class.taskbar__window--active]="activeId() === desktopWindow.id && !desktopWindow.minimized" [class.taskbar__window--minimized]="desktopWindow.minimized" (click)="taskClick(desktopWindow.id)" [attr.aria-label]="'Mostrar ' + label(appFor(desktopWindow.id))"><span class="taskbar__window-icon" aria-hidden="true"><img [src]="'/icons/' + desktopWindow.id + '.svg'" alt="" /></span><span>{{ label(appFor(desktopWindow.id)) }}</span></button>
+      }
+    </div>
+    <div class="taskbar__right">
+      <div class="taskbar__languages" aria-label="Idioma"><button type="button" (click)="selectLanguage('PT-BR')" [attr.aria-pressed]="language() === 'PT-BR'">PT</button><button type="button" (click)="selectLanguage('EN')" [attr.aria-pressed]="language() === 'EN'">EN</button></div>
+      <time class="taskbar__time"><span class="taskbar__date-full">{{ now() | date:'dd/MM/yyyy' }}</span><span class="taskbar__date-short">{{ now() | date:'dd/MM' }}</span><span class="taskbar__time-divider">·</span>{{ now() | date:'HH:mm' }}</time>
+    </div>
+  </footer>
+</main>
