@@ -1,45 +1,15 @@
-<div class="tellico" role="region" [attr.aria-label]="isPt() ? 'Biblioteca Tellico' : 'Tellico Library'">
+<div class="tellico" role="region" [attr.aria-label]="isPt() ? 'Biblioteca' : 'Library'">
   <header class="tellico__toolbar">
     <div class="tellico__brand">
       <svg class="tellico__logo" viewBox="0 0 20 20" aria-hidden="true">
         <path d="M3.5 3.5A1.5 1.5 0 0 1 5 2h4.2a2.5 2.5 0 0 1 1.8.8 2.5 2.5 0 0 1 1.8-.8H17a1.5 1.5 0 0 1 1.5 1.5v11.7a1.3 1.3 0 0 1-1.3 1.3h-4.4a1.8 1.8 0 0 0-1.3.55.7.7 0 0 1-1 0 1.8 1.8 0 0 0-1.3-.55H4.8a1.3 1.3 0 0 1-1.3-1.3V3.5Zm1.8.3v10.9h3.9c.5 0 .97.14 1.35.4V4.5c0-.4-.32-.7-.75-.7H5.3Zm6.45 11.3c.38-.26.85-.4 1.35-.4h3.6V3.8h-4.2c-.43 0-.75.3-.75.7v10.6Z" />
       </svg>
-      <strong>Tellico</strong>
+      <strong>{{ isPt() ? 'Biblioteca' : 'Library' }}</strong>
       <span class="tellico__divider" aria-hidden="true">/</span>
-      <span class="tellico__collection">{{ isPt() ? 'biblioteca.tc' : 'library.tc' }}</span>
+      <span class="tellico__collection">{{ isPt() ? 'estante' : 'bookshelf' }}</span>
     </div>
 
     <div class="tellico__controls">
-      <div class="tellico__tabs" role="tablist" [attr.aria-label]="isPt() ? 'Filtrar categoria' : 'Filter category'">
-        <button
-          type="button"
-          role="tab"
-          [class.tellico__tab--active]="selectedCategory() === 'all'"
-          [attr.aria-selected]="selectedCategory() === 'all'"
-          (click)="selectCategory('all')"
-        >
-          {{ isPt() ? 'Todos' : 'All' }}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          [class.tellico__tab--active]="selectedCategory() === 'technical'"
-          [attr.aria-selected]="selectedCategory() === 'technical'"
-          (click)="selectCategory('technical')"
-        >
-          {{ isPt() ? 'Técnicos' : 'Technical' }}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          [class.tellico__tab--active]="selectedCategory() === 'general'"
-          [attr.aria-selected]="selectedCategory() === 'general'"
-          (click)="selectCategory('general')"
-        >
-          {{ isPt() ? 'Gerais' : 'General' }}
-        </button>
-      </div>
-
       <label class="tellico__search">
         <span aria-hidden="true">⌕</span>
         <input
@@ -259,7 +229,7 @@
 
   <footer class="tellico__status">
     <span>{{ filteredBooks().length }} {{ isPt() ? 'de' : 'of' }} {{ books.length }} {{ isPt() ? 'livros na estante' : 'books on shelf' }}</span>
-    <span>Tellico <i>·</i> {{ isPt() ? 'Técnicos & Gerais' : 'Technical & General' }}</span>
+    <span>{{ isPt() ? 'Biblioteca' : 'Library' }} <i>·</i> {{ isPt() ? 'Técnicos & Gerais' : 'Technical & General' }}</span>
   </footer>
 
   @if (activeBook(); as book) {

@@ -13,23 +13,26 @@ describe('LibraryShelf', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
+    expect(host.querySelector('.tellico__brand')?.textContent).toContain('Biblioteca');
+    expect(host.querySelector('.tellico__brand')?.textContent).not.toContain('Tellico');
+    expect(host.querySelector('.tellico__tabs')).toBeNull();
+
     const headings = Array.from(host.querySelectorAll('.shelf__heading')).map((el) => el.textContent?.trim());
     expect(headings).toEqual(['CONCLUÍDO', 'LENDO', 'BACKLOG']);
     expect(host.querySelectorAll('.book-card').length).toBe(35);
     expect(host.querySelector('.book-card__title')?.textContent?.trim()).toBe('Entendendo Algoritmos');
 
-    const tabs = Array.from(host.querySelectorAll<HTMLButtonElement>('.tellico__tabs button'));
-    tabs[1].click();
+    const sidebarButtons = Array.from(host.querySelectorAll<HTMLButtonElement>('.tellico-group__btn'));
+    sidebarButtons.find((button) => button.textContent?.includes('Técnicos'))!.click();
     fixture.detectChanges();
     expect(host.querySelectorAll('.book-card').length).toBe(15);
 
-    tabs[2].click();
+    sidebarButtons.find((button) => button.textContent?.includes('Gerais'))!.click();
     fixture.detectChanges();
     expect(host.querySelectorAll('.book-card').length).toBe(20);
 
     // Filter status -> Lendo inside Gerais (Blade Runner)
-    const statusButtons = Array.from(host.querySelectorAll<HTMLButtonElement>('.tellico-group__btn'));
-    const readingBtn = statusButtons.find((button) => button.textContent?.includes('Lendo'))!;
+    const readingBtn = sidebarButtons.find((button) => button.textContent?.includes('Lendo'))!;
     readingBtn.click();
     fixture.detectChanges();
     expect(host.querySelectorAll('.book-card').length).toBe(1);

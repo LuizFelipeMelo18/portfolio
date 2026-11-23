@@ -58,40 +58,6 @@
   min-width: 0;
 }
 
-.tellico__tabs {
-  display: flex;
-  border: 1px solid rgba(155, 183, 199, 0.28);
-  border-radius: 5px;
-  overflow: hidden;
-  background: #222730;
-}
-
-.tellico__tabs button {
-  padding: 4px 10px;
-  border: 0;
-  border-right: 1px solid rgba(155, 183, 199, 0.2);
-  background: transparent;
-  color: #b7c5ce;
-  font: 11px var(--mono);
-  transition: background 0.14s, color 0.14s;
-}
-
-.tellico__tabs button:last-child {
-  border-right: 0;
-}
-
-.tellico__tabs button:hover,
-.tellico__tabs button:focus-visible {
-  background: rgba(155, 183, 199, 0.14);
-  color: #f0f5f8;
-}
-
-.tellico__tabs .tellico__tab--active {
-  background: #738896;
-  color: #f6f9fb;
-  font-weight: 600;
-}
-
 .tellico__search {
   display: flex;
   align-items: center;
