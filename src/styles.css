@@ -24,11 +24,15 @@ a { color: inherit; }
 .app-window { position: absolute; display: flex; flex-direction: column; min-width: 340px; min-height: 260px; max-width: calc(100vw - 16px); max-height: calc(100dvh - 54px); overflow: hidden; border: 1px solid rgba(156,171,183,.65); border-radius: 10px; background: rgba(37,41,49,.83); box-shadow: 0 22px 60px #0008; backdrop-filter: blur(22px) saturate(108%); -webkit-backdrop-filter: blur(22px) saturate(108%); }
 .app-window--active { border-color: #b2c2cc; box-shadow: 0 24px 70px #0009, 0 0 0 1px #a4bac933; }
 .app-window--maximized { position: fixed; inset: 10px 10px 50px !important; width: auto !important; height: auto !important; max-width: none; max-height: none; }
-.app-window__bar { flex: 0 0 28px; display: flex; align-items: center; gap: 8px; padding: 3px 7px 0 12px; background: rgba(255,255,255,.025); }
+.app-window__bar { flex: 0 0 28px; display: flex; align-items: center; gap: 8px; padding: 0 7px 0 12px; background: rgba(255,255,255,.025); }
 .app-window__title { flex: 1; min-width: 0; height: 100%; cursor: grab; touch-action: none; user-select: none; }
 .app-window__title:active { cursor: grabbing; }
-.app-window__controls { display: flex; gap: 2px; }
-.app-window__controls button { width: 22px; height: 21px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #b9c8d4; font: 15px/1 var(--mono); opacity: .72; }
+.app-window__controls { display: flex; align-items: center; gap: 2px; height: 100%; }
+.app-window__controls button { position: relative; display: grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: #b9c8d4; opacity: .72; }
+.app-window__minimize::before { content: ''; width: 8px; height: 1px; background: currentColor; }
+.app-window__maximize::before { content: ''; width: 8px; height: 7px; border: 1px solid currentColor; border-radius: 1px; }
+.app-window__close::before,.app-window__close::after { content: ''; position: absolute; width: 9px; height: 1px; background: currentColor; transform: rotate(45deg); }
+.app-window__close::after { transform: rotate(-45deg); }
 .app-window__controls button:hover,.app-window__controls button:focus-visible { background: #ffffff22; color: #fff; opacity: 1; }
 .app-window__controls .app-window__close:hover { background: #dc72803b; }
 .app-window__body { flex: 1; min-height: 0; overflow: auto; background: radial-gradient(circle at 70% 5%,rgba(122,135,149,.16),rgba(29,34,43,.12) 65%); scrollbar-color: #7e8995 transparent; }

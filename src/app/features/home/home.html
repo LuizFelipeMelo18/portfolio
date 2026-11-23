@@ -14,9 +14,9 @@
         <header class="app-window__bar">
           <div class="app-window__title" (pointerdown)="startDrag($event, desktopWindow)" [attr.aria-label]="(isPt() ? 'Mover ' : 'Move ') + label(appFor(desktopWindow.id))"></div>
           <div class="app-window__controls">
-            <button type="button" (click)="minimizeWindow(desktopWindow.id)" [attr.aria-label]="'Minimizar ' + label(appFor(desktopWindow.id))" title="Minimizar">−</button>
-            <button type="button" (click)="toggleMaximize(desktopWindow.id)" [attr.aria-label]="'Maximizar ' + label(appFor(desktopWindow.id))" title="Maximizar">□</button>
-            <button type="button" class="app-window__close" (click)="closeWindow(desktopWindow.id)" [attr.aria-label]="'Fechar ' + label(appFor(desktopWindow.id))" title="Fechar">×</button>
+            <button type="button" class="app-window__minimize" (click)="minimizeWindow(desktopWindow.id)" [attr.aria-label]="'Minimizar ' + label(appFor(desktopWindow.id))" title="Minimizar"></button>
+            <button type="button" class="app-window__maximize" (click)="toggleMaximize(desktopWindow.id)" [attr.aria-label]="'Maximizar ' + label(appFor(desktopWindow.id))" title="Maximizar"></button>
+            <button type="button" class="app-window__close" (click)="closeWindow(desktopWindow.id)" [attr.aria-label]="'Fechar ' + label(appFor(desktopWindow.id))" title="Fechar"></button>
           </div>
         </header>
 
