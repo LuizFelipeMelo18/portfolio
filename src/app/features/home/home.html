@@ -38,7 +38,38 @@
               <div class="app-content"><p class="app-content__path">~/config/stack.json</p><h2>Stacks</h2><div class="stack-list"><div><strong>{{ t().aboutMe.skills.languages }}</strong><span>Java · JavaScript · TypeScript · Kotlin</span></div><div><strong>Frameworks</strong><span>Spring Boot · Angular · React</span></div><div><strong>{{ t().aboutMe.skills.databases }}</strong><span>PostgreSQL · MySQL</span></div><div><strong>{{ t().aboutMe.skills.tools }}</strong><span>Git · Docker · Linux · AWS · GitHub Actions</span></div></div></div>
             }
             @case ('contact') {
-              <div class="app-content"><p class="app-content__path">~/network/contact</p><h2>{{ isPt() ? 'Contato' : 'Contact' }}</h2><p class="app-content__text">{{ t().contacts.description }}</p><div class="contact-list"><a [href]="'mailto:' + contact.email">✉ &nbsp; {{ contact.email }} <span>↗</span></a><a [href]="contact.githubUrl" target="_blank" rel="noopener noreferrer">⌘ &nbsp; GitHub <span>↗</span></a><a [href]="contact.linkedinUrl" target="_blank" rel="noopener noreferrer">◈ &nbsp; LinkedIn <span>↗</span></a></div></div>
+              <div class="contact-fetch">
+                <p class="contact-fetch__command"><span>luiz&#64;archlinux</span>:~$ fastfetch --contact</p>
+                <div class="contact-fetch__grid">
+                  <pre class="contact-fetch__ascii" aria-hidden="true">
+           .o+.
+          .ooo/
+         .+oooo:
+        .+oooooo:
+       -+oooooo+:
+     ./:-:++oooo+:
+    ./++++/+++++++:
+   ./+++oooooooooo/
+  ./ooosssso++osssss+.
+ .oossssso-  .osssss+.
+-osssssso.    :sssssss.
+:osssss/       osssso+++
+/ossss/        +sssooo/-</pre>
+                  <div class="contact-fetch__details">
+                    <strong>luizfelipe<span>&#64;</span>archlinux</strong>
+                    <div class="contact-fetch__rule"></div>
+                    <dl>
+                      <div><dt>{{ isPt() ? 'Nome' : 'Name' }}</dt><dd>Luiz Felipe Melo</dd></div>
+                      <div><dt>{{ isPt() ? 'Atuação' : 'Role' }}</dt><dd>{{ contact.role }}</dd></div>
+                      <div><dt>Email</dt><dd><a [href]="'mailto:' + contact.email">{{ contact.email }}</a></dd></div>
+                      <div><dt>GitHub</dt><dd><a [href]="contact.githubUrl" target="_blank" rel="noopener noreferrer">LuizFelipeMelo18 ↗</a></dd></div>
+                      <div><dt>LinkedIn</dt><dd><a [href]="contact.linkedinUrl" target="_blank" rel="noopener noreferrer">Luiz Felipe Melo ↗</a></dd></div>
+                    </dl>
+                    <div class="contact-fetch__swatches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                  </div>
+                </div>
+                <p class="contact-fetch__prompt">luiz&#64;archlinux:~$ <span>▌</span></p>
+              </div>
             }
             @case ('customize') {
               <div class="app-content wallpaper-settings">

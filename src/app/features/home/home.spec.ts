@@ -36,6 +36,18 @@ describe('Desktop home', () => {
     fixture.destroy();
   });
 
+  it('shows contact details as fastfetch with working links', () => {
+    const fixture = TestBed.createComponent(Home);
+    fixture.detectChanges();
+    const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('[aria-label="Abrir Contato"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.contact-fetch__command')?.textContent).toContain('fastfetch --contact');
+    expect(host.querySelectorAll('.contact-fetch__details a').length).toBe(3);
+    expect(host.querySelector<HTMLAnchorElement>('.contact-fetch__details a[href^="mailto:"]')?.href).toContain('luizfelipemelo.dev@gmail.com');
+    fixture.destroy();
+  });
+
   it('opens each of the nine desktop apps in its own window', () => {
     const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();

@@ -125,7 +125,7 @@ export class Home implements OnInit, OnDestroy {
     } else {
       const offset = this.windows().length * 28;
       const width = Math.min(660, window.innerWidth - 40);
-      const preferredHeight = id === 'customize' ? 600 : id === 'about' ? 390 : 440;
+      const preferredHeight = id === 'customize' ? 600 : id === 'about' ? 390 : id === 'contact' ? 370 : 440;
       const height = Math.min(preferredHeight, window.innerHeight - 70);
       const x = Math.max(18, Math.min(350 + offset, window.innerWidth - width - 20));
       const y = Math.max(8, Math.min(70 + offset, window.innerHeight - height - 52));
