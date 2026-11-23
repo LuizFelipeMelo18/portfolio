@@ -43,6 +43,9 @@
             @case ('stacks') {
               <div class="app-content"><p class="app-content__path">~/config/stack.json</p><h2>Stacks</h2><div class="stack-list"><div><strong>{{ t().aboutMe.skills.languages }}</strong><span>Java · JavaScript · TypeScript · Kotlin</span></div><div><strong>Frameworks</strong><span>Spring Boot · Angular · React</span></div><div><strong>{{ t().aboutMe.skills.databases }}</strong><span>PostgreSQL · MySQL</span></div><div><strong>{{ t().aboutMe.skills.tools }}</strong><span>Git · Docker · Linux · AWS · GitHub Actions</span></div></div></div>
             }
+            @case ('experience') {
+              <app-experience-log [isPt]="isPt()" />
+            }
             @case ('media') {
               <app-media-player [isPt]="isPt()" />
             }

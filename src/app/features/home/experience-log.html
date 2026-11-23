@@ -1,0 +1,205 @@
+<div class="career-tui" role="region" [attr.aria-label]="isPt() ? 'Experiência e formação em formato de log' : 'Experience and education log view'">
+  <header class="career-tui__topbar">
+    <div class="career-tui__path">
+      <svg class="career-tui__folder-icon" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+      </svg>
+      <span>~/.career/{{ isPt() ? 'experiencia-e-formacao' : 'experience-education' }}</span>
+    </div>
+    <span class="career-tui__tab-index">1</span>
+  </header>
+
+  <div class="career-tui__workspace">
+    <aside class="career-tui__sidebar" [attr.aria-label]="isPt() ? 'Pastas de experiência e formação' : 'Experience and education folders'">
+      <section class="tui-panel tui-panel--status">
+        <span class="tui-panel__title">[1]-Status</span>
+        <div class="tui-status-line">
+          <span class="tui-accent">↑{{ experiences.length + education.length }}</span>
+          <strong>career</strong>
+          <span class="tui-muted">→</span>
+          <span class="tui-branch">main</span>
+        </div>
+      </section>
+
+      <section
+        class="tui-panel tui-panel--folder"
+        [class.tui-panel--active]="selectedEntry().category === 'experience'"
+      >
+        <span class="tui-panel__title">[2]-{{ isPt() ? 'Experiência' : 'Experience' }}</span>
+        <button
+          type="button"
+          class="tui-folder-toggle"
+          [attr.aria-expanded]="experienceOpen()"
+          (click)="toggleFolder('experience')"
+        >
+          <span class="tui-chevron" [class.tui-chevron--open]="experienceOpen()" aria-hidden="true">▸</span>
+          <svg class="career-tui__folder-icon" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+          </svg>
+          <span>{{ isPt() ? 'experiencia/' : 'experience/' }}</span>
+        </button>
+
+        @if (experienceOpen()) {
+          <ul class="tui-list" role="listbox" [attr.aria-label]="isPt() ? 'Experiências profissionais' : 'Work experience'">
+            @for (item of experiences; track item.id) {
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  class="tui-item"
+                  [class.tui-item--active]="selectedEntry().id === item.id"
+                  [attr.aria-selected]="selectedEntry().id === item.id"
+                  (click)="selectEntry(item)"
+                >
+                  <span class="tui-item__top">
+                    <span class="tui-item__marker" aria-hidden="true">{{ selectedEntry().id === item.id ? '*' : '◦' }}</span>
+                    <span class="tui-item__hash">{{ item.hash }}</span>
+                    <strong class="tui-item__org">{{ text(item.organization) }}</strong>
+                  </span>
+                  <span class="tui-item__sub">{{ text(item.title) }}</span>
+                  <span class="tui-item__period">{{ text(item.period) }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+        <span class="tui-panel__counter">
+          {{ selectedEntry().category === 'experience' ? activeIndexInCategory() : 0 }} {{ isPt() ? 'de' : 'of' }} {{ experiences.length }}
+        </span>
+      </section>
+
+      <section
+        class="tui-panel tui-panel--folder"
+        [class.tui-panel--active]="selectedEntry().category === 'education'"
+      >
+        <span class="tui-panel__title">[3]-{{ isPt() ? 'Formação' : 'Education' }}</span>
+        <button
+          type="button"
+          class="tui-folder-toggle"
+          [attr.aria-expanded]="educationOpen()"
+          (click)="toggleFolder('education')"
+        >
+          <span class="tui-chevron" [class.tui-chevron--open]="educationOpen()" aria-hidden="true">▸</span>
+          <svg class="career-tui__folder-icon" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M2.5 5.2A1.7 1.7 0 0 1 4.2 3.5h3.7l1.7 1.8h6.2a1.7 1.7 0 0 1 1.7 1.7v7.8a1.7 1.7 0 0 1-1.7 1.7H4.2a1.7 1.7 0 0 1-1.7-1.7V5.2Z" />
+          </svg>
+          <span>{{ isPt() ? 'formacao/' : 'education/' }}</span>
+        </button>
+
+        @if (educationOpen()) {
+          <ul class="tui-list" role="listbox" [attr.aria-label]="isPt() ? 'Formação acadêmica' : 'Education'">
+            @for (item of education; track item.id) {
+              <li>
+                <button
+                  type="button"
+                  role="option"
+                  class="tui-item"
+                  [class.tui-item--active]="selectedEntry().id === item.id"
+                  [attr.aria-selected]="selectedEntry().id === item.id"
+                  (click)="selectEntry(item)"
+                >
+                  <span class="tui-item__top">
+                    <span class="tui-item__marker" aria-hidden="true">{{ selectedEntry().id === item.id ? '*' : '◦' }}</span>
+                    <span class="tui-item__hash">{{ item.hash }}</span>
+                    <strong class="tui-item__org">{{ text(item.organization) }}</strong>
+                  </span>
+                  <span class="tui-item__sub">{{ text(item.title) }}</span>
+                  <span class="tui-item__period">{{ text(item.period) }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        }
+        <span class="tui-panel__counter">
+          {{ selectedEntry().category === 'education' ? activeIndexInCategory() : 0 }} {{ isPt() ? 'de' : 'of' }} {{ education.length }}
+        </span>
+      </section>
+    </aside>
+
+    <div class="career-tui__right">
+      <section class="tui-panel tui-panel--log tui-panel--active" [attr.aria-label]="isPt() ? 'Log detalhado' : 'Detailed log'">
+        <span class="tui-panel__title">Log</span>
+
+        @if (selectedEntry(); as entry) {
+          <article class="log-entry">
+            <div class="log-entry__commit">
+              <span class="log-entry__star" aria-hidden="true">*</span>
+              <span class="log-entry__commit-label">commit</span>
+              <span class="log-entry__hash">{{ entry.hash }}</span>
+              @if (entry.badge; as badge) {
+                <span class="log-entry__ref">({{ text(badge) }})</span>
+              }
+            </div>
+
+            <div class="log-entry__graph-body">
+              <dl class="log-entry__meta">
+                <div>
+                  <dt>{{ entry.category === 'experience' ? (isPt() ? 'Cargo:' : 'Role:') : (isPt() ? 'Curso:' : 'Program:') }}</dt>
+                  <dd class="log-entry__role">{{ text(entry.title) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ entry.category === 'experience' ? (isPt() ? 'Empresa:' : 'Company:') : (isPt() ? 'Instituição:' : 'Institution:') }}</dt>
+                  <dd>{{ text(entry.organization) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ isPt() ? 'Período:' : 'Period:' }}</dt>
+                  <dd>{{ text(entry.period) }}</dd>
+                </div>
+                <div>
+                  <dt>{{ isPt() ? 'Pasta:' : 'Folder:' }}</dt>
+                  <dd class="log-entry__folder-ref">
+                    {{ entry.category === 'experience' ? (isPt() ? 'experiencia/' : 'experience/') : (isPt() ? 'formacao/' : 'education/') }}{{ entry.slug }}
+                  </dd>
+                </div>
+              </dl>
+
+              <div class="log-entry__message">
+                @if (entry.summary; as summary) {
+                  <p class="log-entry__paragraph">{{ text(summary) }}</p>
+                }
+
+                @if (selectedPoints().length) {
+                  <ul class="log-entry__points">
+                    @for (point of selectedPoints(); track point.heading) {
+                      <li>
+                        <strong>{{ point.heading }}:</strong>
+                        <span>{{ point.body }}</span>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+
+              <ul class="log-entry__tags" [attr.aria-label]="isPt() ? 'Destaques técnicos' : 'Key highlights'">
+                @for (tag of entry.tags; track $index) {
+                  <li>{{ tag }}</li>
+                }
+              </ul>
+            </div>
+          </article>
+        }
+      </section>
+
+      <section class="tui-panel tui-panel--cmd" aria-label="Command log">
+        <span class="tui-panel__title">Command log</span>
+        <p class="tui-cmd">{{ commandLine() }}</p>
+      </section>
+    </div>
+  </div>
+
+  <footer class="career-tui__footer">
+    <div class="career-tui__hints">
+      <span>{{ isPt() ? 'Abrir pasta: clique' : 'Toggle folder: click' }}</span>
+      <i>|</i>
+      <span>{{ isPt() ? 'Inspecionar log: selecionar item' : 'Inspect log: select item' }}</span>
+      <i>|</i>
+      <span>lazygit · history.log</span>
+    </div>
+    <div class="career-tui__statusline">
+      <span class="career-tui__mode">LOG</span>
+      <span class="career-tui__branch">⎇ main</span>
+      <span class="career-tui__file">term:~/career/history.log</span>
+      <span class="career-tui__counts">{{ experiences.length }} exp · {{ education.length }} {{ isPt() ? 'form' : 'edu' }}</span>
+    </div>
+  </footer>
+</div>

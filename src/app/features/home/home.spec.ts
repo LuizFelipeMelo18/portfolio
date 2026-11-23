@@ -59,6 +59,10 @@ describe('Desktop home', () => {
     const fixture = TestBed.createComponent(Home);
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
+    (host.querySelector('[aria-label="Abrir Experiência e formação"]') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    expect(host.querySelector('.career-tui')).toBeTruthy();
+    expect(host.querySelectorAll('.tui-item').length).toBe(8);
     (host.querySelector('[aria-label="Abrir Contato"]') as HTMLButtonElement).click();
     fixture.detectChanges();
     expect(host.querySelector('.contact-fetch__command')?.textContent).toContain('fastfetch --contact');

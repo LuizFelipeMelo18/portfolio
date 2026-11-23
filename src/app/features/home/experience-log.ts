@@ -1,0 +1,251 @@
+import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+
+type Category = 'experience' | 'education';
+
+interface DetailPoint {
+  readonly heading: string;
+  readonly body: string;
+}
+
+interface CareerEntry {
+  readonly id: string;
+  readonly slug: string;
+  readonly category: Category;
+  readonly hash: string;
+  readonly badge?: { readonly pt: string; readonly en: string };
+  readonly title: { readonly pt: string; readonly en: string };
+  readonly organization: { readonly pt: string; readonly en: string };
+  readonly period: { readonly pt: string; readonly en: string };
+  readonly summary?: { readonly pt: string; readonly en: string };
+  readonly points?: readonly { readonly heading: { readonly pt: string; readonly en: string }; readonly body: { readonly pt: string; readonly en: string } }[];
+  readonly tags: readonly string[];
+}
+
+const CAREER_ENTRIES: readonly CareerEntry[] = [
+  {
+    id: 'cti',
+    slug: 'cti-consultores',
+    category: 'experience',
+    hash: '26a5cti',
+    badge: { pt: 'HEAD -> atual', en: 'HEAD -> current' },
+    title: { pt: 'Software Developer', en: 'Software Developer' },
+    organization: { pt: 'CTI Consultores Associados', en: 'CTI Consultores Associados' },
+    period: { pt: 'Mai/2026 - Atual', en: 'May/2026 - Present' },
+    points: [
+      {
+        heading: { pt: 'Análise de Requisitos e Alinhamento de Negócio', en: 'Requirements Analysis & Business Alignment' },
+        body: {
+          pt: 'Participação ativa em sessões de levantamento e análise de requisitos junto a clientes e à equipe técnica, ajudando a traduzir regras de negócio e necessidades operacionais em soluções técnicas eficientes.',
+          en: 'Actively participated in requirements gathering and analysis sessions alongside clients and the technical team, helping translate business rules and operational needs into efficient technical solutions.',
+        },
+      },
+      {
+        heading: { pt: 'Desenvolvimento de Sistemas Escaláveis', en: 'Scalable Systems Development' },
+        body: {
+          pt: 'Desenvolvimento e implementação de soluções escaláveis no ecossistema IBM Planning Analytics, contribuindo para alta performance e fluxos estruturados de processamento de dados.',
+          en: 'Developed and implemented scalable solutions within the IBM Planning Analytics ecosystem, contributing to high performance and structured data processing workflows.',
+        },
+      },
+      {
+        heading: { pt: 'Análise e Processamento de Dados', en: 'Data Analysis & Processing' },
+        body: {
+          pt: 'Execução de rotinas de extração, análise, limpeza e transformação de dados para garantir integridade, otimizar consultas e apoiar as entregas aos clientes.',
+          en: 'Executed data extraction, analysis, cleansing, and transformation routines to ensure data integrity, optimize queries, and support client deliverables.',
+        },
+      },
+      {
+        heading: { pt: 'Manutenção e Depuração de Software', en: 'Software Maintenance & Debugging' },
+        body: {
+          pt: 'Atuação em manutenção corretiva e evolutiva contínua de software, depurando funções, resolvendo incidentes e refinando regras para garantir estabilidade e confiabilidade em produção.',
+          en: 'Contributed to ongoing corrective and evolutionary software maintenance by debugging functions, resolving issues, and refining logic to ensure production stability and reliability.',
+        },
+      },
+    ],
+    tags: ['IBM Planning Analytics', 'Data Processing', 'Requirements', 'Debugging'],
+  },
+  {
+    id: 'independent',
+    slug: 'independent-projects',
+    category: 'experience',
+    hash: '23c3dev',
+    badge: { pt: 'atual', en: 'current' },
+    title: { pt: 'Full Stack Developer', en: 'Full Stack Developer' },
+    organization: { pt: 'Independent / Contract Projects', en: 'Independent / Contract Projects' },
+    period: { pt: 'Mar/2023 - Atual', en: 'Mar/2023 - Present' },
+    points: [
+      {
+        heading: { pt: 'Levantamento de Requisitos e Soluções Sob Medida', en: 'Requirements Gathering & Custom Solutions' },
+        body: {
+          pt: 'Levantamento e análise de requisitos diretamente com clientes, traduzindo necessidades operacionais e regras de negócio em sistemas web completos entregues em produção.',
+          en: 'Gathered and analyzed requirements directly with clients, translating operational needs and business rules into full-featured web systems deployed in production.',
+        },
+      },
+      {
+        heading: { pt: 'Desenvolvimento Back-End e APIs', en: 'Backend & API Development' },
+        body: {
+          pt: 'Construção de APIs RESTful escaláveis com Java e ecossistema Spring (Spring Boot, Security, Data JPA), aplicando código limpo, autenticação segura e integrações com terceiros.',
+          en: 'Built scalable RESTful APIs using Java and the Spring ecosystem (Spring Boot, Security, Data JPA), applying clean code practices, secure authentication, and third-party integrations.',
+        },
+      },
+      {
+        heading: { pt: 'Desenvolvimento Front-End e UX', en: 'Frontend Development & UX' },
+        body: {
+          pt: 'Criação de interfaces dinâmicas e responsivas com React, Angular e TypeScript, garantindo integração fluida com serviços de back-end e uma experiência consistente para o usuário.',
+          en: 'Created dynamic, responsive user interfaces with React, Angular, and TypeScript, ensuring seamless integration with backend services and a smooth end-user experience.',
+        },
+      },
+      {
+        heading: { pt: 'Bancos de Dados, Containers e Deploy', en: 'Databases, Containerization & Deployment' },
+        body: {
+          pt: 'Modelagem de bancos de dados relacionais (PostgreSQL e MySQL), padronização de ambientes com Docker e gestão de deploys em produção junto à manutenção contínua.',
+          en: 'Modeled relational databases (PostgreSQL and MySQL), standardized environments using Docker, and managed production deployments alongside ongoing maintenance.',
+        },
+      },
+    ],
+    tags: ['Java', 'Spring Boot', 'React', 'Angular', 'TypeScript', 'PostgreSQL', 'MySQL', 'Docker'],
+  },
+  {
+    id: 'datatrusty',
+    slug: 'datatrusty-tecnologia',
+    category: 'experience',
+    hash: '24b1dtt',
+    title: { pt: 'Analista de Suporte e Sistemas', en: 'Systems & Support Analyst' },
+    organization: { pt: 'DataTrusty Tecnologia', en: 'DataTrusty Tecnologia' },
+    period: { pt: 'Nov/2024 - Mai/2026', en: 'Nov/2024 - May/2026' },
+    summary: {
+      pt: 'Atuação no desenvolvimento, manutenção contínua e suporte de aplicações web, implementando melhorias, correções de bugs e novas funcionalidades para otimizar fluxos internos. Paralelamente, papel fundamental na gestão de infraestrutura de TI com instalação, configuração e manutenção corretiva de hardware, conduzindo o ciclo completo de chamados técnicos para garantir alta disponibilidade e operação ininterrupta.',
+      en: 'Contributed to the development, ongoing maintenance, and support of web applications, implementing enhancements, bug fixes, and new features to optimize internal workflows. Concurrently played a key role in IT infrastructure management by handling hardware installation, configuration, and corrective maintenance, while managing the full lifecycle of technical support tickets to ensure high system availability and uninterrupted operations.',
+    },
+    tags: ['Web Apps', 'Bug Fixes', 'IT Infrastructure', 'Support'],
+  },
+  {
+    id: 'dell',
+    slug: 'dell-technologies',
+    category: 'experience',
+    hash: '24a1del',
+    title: { pt: 'Analista de Suporte Técnico N1', en: 'Technical Support Analyst L1' },
+    organization: { pt: 'Dell Technologies', en: 'Dell Technologies' },
+    period: { pt: 'Jan/2024 - Nov/2024', en: 'Jan/2024 - Nov/2024' },
+    summary: {
+      pt: 'Atuação em suporte técnico Nível 1 com foco em diagnóstico de hardware e software, troubleshooting e manutenção preventiva para sistemas Dell, gerenciando registro, triagem e acompanhamento de chamados para resolução ágil de incidentes.',
+      en: 'Provided Tier 1 technical support focused on hardware and software diagnostics, troubleshooting, and preventive maintenance for Dell systems, managing ticket logging, triage, and tracking for rapid incident resolution.',
+    },
+    tags: ['Hardware', 'Diagnostics', 'Troubleshooting', 'Service Desk'],
+  },
+  {
+    id: 'limpay',
+    slug: 'limpay',
+    category: 'experience',
+    hash: '23h8lmp',
+    title: { pt: 'Desenvolvedor Back-End e Banco de Dados', en: 'Back-End & Database Developer' },
+    organization: { pt: 'Limpay', en: 'Limpay' },
+    period: { pt: 'Ago/2023 - Dez/2023', en: 'Aug/2023 - Dec/2023' },
+    summary: {
+      pt: 'Desenvolvimento de uma plataforma para simplificar a rotina operacional de profissionais de limpeza na Limpay (projeto educacional de startup). Atuação em todo o ciclo do projeto, do design UX/UI e prototipação no Figma até a implementação do back-end com Java, Spring Boot e MySQL em equipe multidisciplinar.',
+      en: 'Developed a platform designed to streamline daily operations for cleaning professionals at Limpay (an educational startup project). Contributed across the full project lifecycle, from UX/UI design and prototyping in Figma to backend implementation using Java, Spring Boot, and MySQL, collaborating closely within a cross-functional team.',
+    },
+    tags: ['Java', 'Spring Boot', 'MySQL', 'Figma'],
+  },
+  {
+    id: 'uninter',
+    slug: 'uninter-ads',
+    category: 'education',
+    hash: '24e8uni',
+    badge: { pt: 'em andamento', en: 'in progress' },
+    title: { pt: 'Tecnólogo em Análise e Desenvolvimento de Sistemas', en: 'Systems Analysis and Development (Degree)' },
+    organization: { pt: 'Uninter', en: 'Uninter' },
+    period: { pt: 'Ago/2024 - Dez/2026', en: 'Aug/2024 - Dec/2026' },
+    summary: {
+      pt: 'Graduação tecnológica focada em engenharia de software, análise de requisitos, desenvolvimento de sistemas, bancos de dados e arquitetura de aplicações.',
+      en: 'Undergraduate technology degree focused on software engineering, requirements analysis, systems development, databases, and application architecture.',
+    },
+    tags: ['ADS', 'Engenharia de Software', 'Arquitetura', 'Banco de Dados'],
+  },
+  {
+    id: 'proa',
+    slug: 'proa-senac',
+    category: 'education',
+    hash: '23e8pro',
+    title: { pt: 'Programador Full Stack', en: 'Full Stack Developer Program' },
+    organization: { pt: 'Instituto PROA / Senac', en: 'Instituto PROA / Senac' },
+    period: { pt: 'Ago/2023 - Dez/2023', en: 'Aug/2023 - Dec/2023' },
+    summary: {
+      pt: 'Formação intensiva em desenvolvimento Full Stack com foco em projetos práticos em equipe, front-end, back-end, banco de dados e desenvolvimento profissional.',
+      en: 'Intensive Full Stack development program centered on hands-on team projects, front-end, back-end, databases, and career readiness.',
+    },
+    tags: ['Full Stack', 'Java', 'Web', 'Projetos'],
+  },
+  {
+    id: 'etec',
+    slug: 'etec-redes',
+    category: 'education',
+    hash: '22e8etc',
+    title: { pt: 'Técnico em Redes de Computadores', en: 'Computer Networks Technician' },
+    organization: { pt: 'Etec', en: 'Etec' },
+    period: { pt: 'Ago/2022 - Dez/2023', en: 'Aug/2022 - Dec/2023' },
+    summary: {
+      pt: 'Formação técnica voltada para infraestrutura de redes, protocolos de comunicação, configuração de servidores, hardware e suporte técnico.',
+      en: 'Technical degree focused on network infrastructure, communication protocols, server administration, hardware, and technical support.',
+    },
+    tags: ['Redes', 'Infraestrutura', 'Servidores', 'Hardware'],
+  },
+];
+
+@Component({
+  selector: 'app-experience-log',
+  templateUrl: './experience-log.html',
+  styleUrl: './experience-log.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ExperienceLog {
+  readonly isPt = input(true);
+
+  protected readonly experiences = CAREER_ENTRIES.filter((entry) => entry.category === 'experience');
+  protected readonly education = CAREER_ENTRIES.filter((entry) => entry.category === 'education');
+  protected readonly experienceOpen = signal(true);
+  protected readonly educationOpen = signal(true);
+  protected readonly selectedId = signal<string>(CAREER_ENTRIES[0].id);
+
+  protected readonly selectedEntry = computed<CareerEntry>(() => {
+    const id = this.selectedId();
+    return CAREER_ENTRIES.find((entry) => entry.id === id) ?? CAREER_ENTRIES[0];
+  });
+
+  protected readonly selectedPoints = computed<readonly DetailPoint[]>(() => {
+    const entry = this.selectedEntry();
+    const pt = this.isPt();
+    return (entry.points ?? []).map((point) => ({
+      heading: pt ? point.heading.pt : point.heading.en,
+      body: pt ? point.body.pt : point.body.en,
+    }));
+  });
+
+  protected readonly activeIndexInCategory = computed(() => {
+    const selected = this.selectedEntry();
+    const list = selected.category === 'experience' ? this.experiences : this.education;
+    return list.findIndex((item) => item.id === selected.id) + 1;
+  });
+
+  protected readonly commandLine = computed(() => {
+    const selected = this.selectedEntry();
+    const folder = selected.category === 'experience'
+      ? (this.isPt() ? 'experiencia' : 'experience')
+      : (this.isPt() ? 'formacao' : 'education');
+    return `git show ${selected.hash} -- ${folder}/${selected.slug}.log`;
+  });
+
+  protected text(value: { readonly pt: string; readonly en: string }): string {
+    return this.isPt() ? value.pt : value.en;
+  }
+
+  protected toggleFolder(category: Category): void {
+    if (category === 'experience') this.experienceOpen.update((open) => !open);
+    else this.educationOpen.update((open) => !open);
+  }
+
+  protected selectEntry(entry: CareerEntry): void {
+    if (entry.category === 'experience') this.experienceOpen.set(true);
+    else this.educationOpen.set(true);
+    this.selectedId.set(entry.id);
+  }
+}
